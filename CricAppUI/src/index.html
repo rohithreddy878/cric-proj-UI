@@ -72,11 +72,13 @@
             <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
             <!-- CUSTOM DESIGNED HEADER GOES HERE.. -->
           </div>
-          <div class="oj-flex-bar-end" id="proceed-button-div">
+          <div style="display: none;" class="oj-flex-bar-end" id="proceed-button-div">
             <!-- Proceed Button -->
             <oj-button class="oj-button-lg" 
+                       display="all"
                        chroming="callToAction"
                        on-click="[[goToDashboard]]">
+                  <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
                   Proceed
             </oj-button>
           </div>

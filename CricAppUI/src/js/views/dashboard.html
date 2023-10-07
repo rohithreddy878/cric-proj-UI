@@ -4,8 +4,20 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
+  <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+      <oj-navigation-list id="navList" data="[[navDataProvider2]]"
+                          :class="[[{'oj-md-condense oj-md-justify-content-flex-end': !smScreen()}]]"
+                          display="[[smScreen() ? 'icons' : 'all']]"
+                          edge="top"
+                          item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                          selection="[[selection]]"
+                          on-oj-selection-action="[[navOptionChanged]]">
+      </oj-navigation-list>
+  </div> 
+
   <h1>Dashboard Content Area</h1>
   <div>
       To change the content of this section, you will make edits to the dashboard.html file located in the /js/views folder.
   </div>
+
 </div>

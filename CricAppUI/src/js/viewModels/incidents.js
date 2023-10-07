@@ -8,8 +8,8 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['../accUtils'],
- function(accUtils) {
+define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
+ function(accUtils,CommonUtils, Constants) {
     function IncidentsViewModel() {
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
