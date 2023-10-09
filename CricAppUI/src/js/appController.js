@@ -19,7 +19,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
            KnockoutTemplateUtils) {
 
      function ControllerViewModel() {
-
+        var self = this;
         this.KnockoutTemplateUtils = KnockoutTemplateUtils;
 
         // Handle announcements sent when pages change, for Accessibility.
@@ -29,7 +29,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
         announcementHandler = (event) => {
           this.message(event.detail.message);
           this.manner(event.detail.manner);
-      };
+        };
 
       document.getElementById('globalBody').addEventListener('announce', announcementHandler, false);
 
@@ -39,11 +39,11 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       let navData = [
         { path: '', redirect: 'home' },
-        { path: 'home', detail: { label: 'Home', iconClass: 'oj-ux-ico-bar-chart' }  },
-        { path: 'dashboard', detail: { label: 'Dashboard', iconClass: 'oj-ux-ico-bar-chart' } },
-        { path: 'incidents', detail: { label: 'Incidents', iconClass: 'oj-ux-ico-fire' } },
-        { path: 'players', detail: { label: 'Players', iconClass: 'oj-ux-ico-contact-group' } },
-        { path: 'about', detail: { label: 'About', iconClass: 'oj-ux-ico-information-s' } }
+        { path: 'home', detail: { label: 'Home' }  },
+        { path: 'dashboard', detail: { label: 'Dashboard' } },
+        { path: 'players', detail: { label: 'Players'} },
+        { path: 'matches', detail: { label: 'Matches' } },
+        { path: 'analyses', detail: { label: 'Analize' } }
       ];
       // Router setup
       let router = new CoreRouter(navData, {
@@ -55,15 +55,17 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       this.selection = new KnockoutRouterAdapter(router);
 
-      // Setup the navDataProvider with the routes, excluding the first redirected
-      // route.
+      // Setup the navDataProvider with the routes, excluding the first redirected route.
       this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
 
-      // Header
-      // Application Name used in Branding Area
-      this.appName = ko.observable(Constants.APPLICATION_NAME);
-      // User Info used in Global Navigation area
-      this.userLogin = ko.observable("rohith.sample@gmail.com");
+      let navData2 = [
+        { path: 'dashboard', detail: { label: 'Home' , iconClass: 'oj-ux-ico-home' } },
+        { path: 'players', detail: { label: 'Players', iconClass: 'oj-ux-ico-human-8' } },
+        { path: 'matches', detail: { label: 'Matches', iconClass: 'oj-ux-ico-unmatched' } },
+        { path: 'analyses', detail: { label: 'Analize', iconClass: 'oj-ux-ico-chart-bubble' } }
+      ];
+      self.navDataProvider2 = new ArrayDataProvider(navData2, {keyAttributes: "path"});
+      self.selection2 = ko.observable("");
 
 
       this.goToDashboard = function(){
@@ -77,13 +79,24 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       }
 
+
+      self.navOptionChanged = function(event){
+        let v = event.detail.value;
+        console.log("selection changed..", v);
+        let params = {
+        }
+        router.go(
+          {
+              path: v,
+              params: params
+          });
+      }
+
       // Footer
       this.footerLinks = [
-        {name: 'About Oracle', linkId: 'aboutOracle', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about'},
-        { name: "Contact Us", id: "contactUs", linkTarget: "http://www.oracle.com/us/corporate/contact/index.html" },
-        { name: "Legal Notices", id: "legalNotices", linkTarget: "http://www.oracle.com/us/legal/index.html" },
-        { name: "Terms Of Use", id: "termsOfUse", linkTarget: "http://www.oracle.com/us/legal/terms/index.html" },
-        { name: "Your Privacy Rights", id: "yourPrivacyRights", linkTarget: "http://www.oracle.com/us/legal/privacy/index.html" },
+        {name: 'About', linkId: 'about', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about', target:"_blank"},
+        { name: "Feedback", id: "feedback", linkTarget: "mailto:rohithreddysanta@mail.com", target:"_blank"},
+        {name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
       ];
      }
 

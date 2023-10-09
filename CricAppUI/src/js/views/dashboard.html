@@ -3,21 +3,73 @@
  Licensed under The Universal Permissive License (UPL), Version 1.0
  as shown at https://oss.oracle.com/licenses/upl/
  -->
-<div class="oj-hybrid-padding">
-  <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
-      <oj-navigation-list id="navList" data="[[navDataProvider2]]"
+<!-- <div class="oj-hybrid-padding">
+  <div >
+      <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+        <oj-navigation-list id="navList" data="[[navDataProvider2]]"
                           :class="[[{'oj-md-condense oj-md-justify-content-flex-end': !smScreen()}]]"
                           display="[[smScreen() ? 'icons' : 'all']]"
                           edge="top"
                           item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                           selection="[[selection]]"
                           on-oj-selection-action="[[navOptionChanged]]">
-      </oj-navigation-list>
-  </div> 
-
+        </oj-navigation-list>
+    </div> 
+  </div>
   <h1>Dashboard Content Area</h1>
   <div>
       To change the content of this section, you will make edits to the dashboard.html file located in the /js/views folder.
   </div>
 
+</div> -->
+
+
+
+ <div id="dashboard-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
+  
+  <div class="oj-flex oj-flex-item oj-sm-12 oj-bg-neutral-160 dashboard-header-bg-image-div" style="min-height: 225px;">  
+      <!-- <div class="oj-flex-item oj-flex-bar oj-sm-12 oj-sm-align-items-center"> 
+            
+          <div class="oj-flex-bar-end oj-sm-align-items-center oj-sm-12">   
+            <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+              <oj-navigation-list id="navList" data="[[navDataProvider2]]"
+                                :class="[[{'oj-md-condense oj-md-justify-content-flex-end': !smScreen()}]]"
+                                display="[[smScreen() ? 'icons' : 'all']]"
+                                edge="top"
+                                item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                                selection="[[selection]]"
+                                on-oj-selection-action="[[navOptionChanged]]">
+              </oj-navigation-list> 
+            </div>
+          </div>  
+      </div> -->
+  
+  </div>
+  <oj-st-scroll-to-top></oj-st-scroll-to-top>
+</div>  
+
+<!-- page not available dialog when all services are down -->
+<oj-dialog id="page-na-dialog" dialog-title="Page Not Available">
+  <div id="na-dialog-header-div" class="oj-flex-bar cpf-dialog-title" slot="header">
+    <div id="na-error-icon-div"
+         class="oj-flex-bar-start oj-sm-align-self-center oj-icon-color-danger oj-ux-ico-error-s oj-ux-icon-size-6x"
+         role="img"
+         aria-label="error">
+    </div>
+    <div id="na-error-msg-div" class="oj-flex-bar-middle">
+        <oj-bind-text value="{{errorPageTitle}}"></oj-bind-text>
+    </div>
+  </div>
+
+  <div id="na-dialog-body-div" slot="body">
+      <oj-bind-text value="{{errorPageMsg}}"></oj-bind-text>
+    </div>
+  <div id="na-dialog-footer-div" slot="footer">
+    <oj-button id="reload-button" on-oj-action="[[reloadPage]]">
+      Reload
+    </oj-button>
+  </div>
+</oj-dialog>
+
+<div id="dashboard-loader-div" style="background-color: antiquewhite;display: block;">
 </div>

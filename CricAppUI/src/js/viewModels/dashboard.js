@@ -10,10 +10,10 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         'ojs/ojarraydataprovider', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 
-        'ojs/ojknockouttemplateutils'],
+        'ojs/ojknockouttemplateutils','ojs/ojdialog',"ojs/ojnavigationlist"],
  function(ko, Context,accUtils,CommonUtils, Constants, ArrayDataProvider,  ResponsiveUtils, ResponsiveKnockoutUtils,
           KnockoutTemplateUtils) {
-    function DashboardViewModel() {
+    function DashboardViewModel(routerArgs) {
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
       var self = this;
@@ -29,6 +29,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         accUtils.announce('Dashboard page loaded.');
         document.title = "Dashboard";
         // Implement further logic if needed
+        document.getElementById("navigation-div").style.display = "block";
+        document.getElementById("proceed-button-div").style.display = "none";
       };
       self.KnockoutTemplateUtils = KnockoutTemplateUtils;
       self.selection = ko.observable("");
@@ -47,21 +49,21 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         // Implement if needed
       };
 
-      let navData2 = [
-        { path: 'players', detail: { label: 'Players', iconClass: 'oj-ux-ico-human-8' } },
-        { path: 'matches', detail: { label: 'Matches', iconClass: 'oj-ux-ico-unmatched' } },
-        { path: 'anlayses', detail: { label: 'Analize', iconClass: 'oj-ux-ico-chart-bubble' } }
-      ];
-      self.navDataProvider2 = new ArrayDataProvider(navData2, {keyAttributes: "path"});
+      self.errorPageMsg = ko.observable();
+      self.errorPageTitle = ko.observable();
+      self.errorFlag = ko.observable();
+
+      self.reloadPage = function () {
+        window.location.reload();
+      }
+
+
 
       // Media queries for repsonsive layouts
       const smQuery = ResponsiveUtils.getFrameworkQuery(ResponsiveUtils.FRAMEWORK_QUERY_KEY.SM_ONLY);
       self.smScreen = ResponsiveKnockoutUtils.createMediaQueryObservable(smQuery);
 
-      self.navOptionChanged = function(event){
-        console.log("selection changed..");
-        console.log(event.detail.value);
-      }
+      
 
     }
 

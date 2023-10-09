@@ -8,9 +8,9 @@
 /*
  * Your customer ViewModel code goes here
  */
-define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
+define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton'],
  function(accUtils,CommonUtils, Constants) {
-    function HomeViewModel() {
+    function HomeViewModel(routerArgs) {
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
@@ -25,11 +25,10 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
       this.connected = () => {
         accUtils.announce('home page loaded.');
         document.title = "Home";
-        document.getElementById("footer-element").style.display = "None";
-        document.getElementById("user-menu-toolbar-div").style.display = "None";
-        document.getElementById("proceed-button-div").style.display = "Block";
+        document.getElementById("footer-element").style.display = "none";
+        document.getElementById("navigation-div").style.display = "none";
+        document.getElementById("proceed-button-div").style.display = "block";
 
-        // Implement further logic if needed
       };
 
       /**
@@ -38,8 +37,6 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
       this.disconnected = () => {
         // Implement if needed
         document.getElementById("footer-element").style.display = "Block";
-        document.getElementById("user-menu-toolbar-div").style.display = "Block";
-        document.getElementById("proceed-button-div").style.display = "None";
       };
 
       /**
@@ -49,6 +46,15 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
       this.transitionCompleted = () => {
         // Implement if needed
       };
+
+
+      self.goToDashboard = function(){
+        let params = {
+        }
+        CommonUtils.changeRoute(routerArgs,"dashboard", params);
+
+      }
+
     }
 
     /*

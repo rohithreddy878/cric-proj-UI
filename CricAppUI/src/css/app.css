@@ -63,5 +63,49 @@ html[dir="rtl"] .demo-oracle-icon {
   background-position: center center;
   background-repeat: no-repeat;
   opacity: 0.75;
-  min-height: 620px;
+  min-height: 500px;
+}
+
+
+
+#appn-header-bg-image-div{
+  background-size: 100% 100%;
+}
+
+#appn-header{
+  background-color: #061931;
+  margin: 10px;
+}
+
+
+
+#appn-title{
+  /* The Cover Drive Zone */
+
+  font-family: 'Rock Salt'; 
+  font-style: oblique;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 64px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #F5F5F5;
+}
+
+#appn-caption{
+  /* Studying a funny Game... */
+  font-family: 'Satisfy';
+  font-style: oblique;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #F5F5F5;
+}
+
+#appn-logo{
+  src: url(images/logo-circle.png);
 }

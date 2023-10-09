@@ -66,57 +66,77 @@
          ** on the JET website for more information on how to use this pattern.
       -->
       <header role="banner" class="oj-web-applayout-header">
-        <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
-          <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-            <!-- <span role="img" class="oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span>  -->
-            <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
-            <!-- CUSTOM DESIGNED HEADER GOES HERE.. -->
+        <div id="appn-header" class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+          <div class="oj-flex oj-sm-3 oj-flex-bar-start oj-sm-align-items-center">
+            <div class="oj-flex-item oj-sm-4 oj-flex"></div>
+            <div class="oj-flex-item oj-sm-8 oj-flex">
+            <!-- logo goes here.. -->
+              <img  id="appn-logo" src="css/images/logo-circle.png"
+                  alt="bulleted list image"
+                  width="120"
+                  height="120"/>
+            </div>
           </div>
-          <div style="display: none;" class="oj-flex-bar-end" id="proceed-button-div">
-            <!-- Proceed Button -->
-            <oj-button class="oj-button-lg" 
-                       display="all"
-                       chroming="callToAction"
-                       on-click="[[goToDashboard]]">
-                  <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
-                  Proceed
-            </oj-button>
+          
+          <div class="oj-flex oj-sm-5 oj-flex-bar-middle oj-sm-align-items-center">
+            <!-- application title and caption -->
+            <div> 
+              <oj-bind-text id="appn-title" class="oj-flex-item oj-sm-12 oj-flex">
+                The Cover Drive Zone
+              </oj-bind-text> 
+              <div class="oj-flex oj-sm-align-items-flex-end"> 
+              <oj-bind-text class="oj-flex-item oj-sm-6 oj-flex"></oj-bind-text>
+              <oj-bind-text id="appn-caption" class="oj-flex-item oj-sm-6 oj-flex">
+                Studying a funny Game...
+              </oj-bind-text> 
+              </div>
+            </div>
           </div>
-          <div class="oj-flex-bar-end" id="user-menu-toolbar-div">
-            <!-- Responsive Toolbar -->
-            <oj-toolbar>
-              <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
-                <span><oj-bind-text value="[[userLogin]]"></oj-bind-text></span>
-                <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
-                <oj-menu id="menu1" slot="menu">
-                  <oj-option id="pref" value="pref">Preferences</oj-option>
-                  <oj-option id="help" value="help">Help</oj-option>
-                  <oj-option id="about" value="about">About</oj-option>
-                  <oj-option id="out" value="out">Sign Out</oj-option>
-                </oj-menu>
-              </oj-menu-button>
-            </oj-toolbar>
+            <!-- <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name"><oj-bind-text value="[[appName]]"></oj-bind-text></h1> -->
+          <div class="oj-flex oj-flex-item oj-sm-4 oj-flex-bar-end  oj-bg-neutral-160" style="min-height: 225px;">  
+              <div class="oj-flex-item oj-flex-bar oj-sm-12 oj-sm-align-items-flex-end">                
+                  <div id="navigation-div" class="oj-flex-bar-end oj-sm-align-items-center oj-color-invert oj-sm-padding-1x" >   
+                    <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+                      <oj-navigation-list id="navList" data="[[navDataProvider2]]"
+                                        :class="[[{'oj-md-condense oj-md-justify-content-flex-end': !smScreen()}]]"
+                                        display="[[smScreen() ? 'icons' : 'all']]"
+                                        edge="top"
+                                        item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
+                                        selection="[[selection2]]"
+                                        on-oj-selection-action="[[navOptionChanged]]">
+                      </oj-navigation-list> 
+                    </div>
+                  </div> 
+                  
+                  <div id="proceed-button-div" class="oj-flex-bar-end oj-md-justify-content-flex-end oj-sm-padding-10x" style="display: none;">   
+                    <!-- <div class="oj-flex oj-sm-9"></div>   -->
+                    <div class="oj-flex">
+                      <oj-button class="oj-button-lg oj-color-invert" 
+                               display="all"
+                               chroming="callToAction"
+                               on-click="[[goToDashboard]]">
+                        <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
+                        Proceed
+                      </oj-button>
+                    </div>  
+                  </div> 
+              </div>
           </div>
+
         </div>
-        <!-- <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
-          <oj-navigation-list id="navList" data="[[navDataProvider]]"
-                              :class="[[{'oj-md-condense oj-md-justify-content-flex-end': !smScreen()}]]"
-                              display="[[smScreen() ? 'icons' : 'all']]"
-                              edge="top"
-                              item.renderer="[[KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
-                              selection="{{selection.path}}">
-          </oj-navigation-list>
-        </div> -->
       </header>
+
       <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleAdapter.koObservableConfig]]">
       </oj-module>
+      
       <footer id="footer-element" class="oj-web-applayout-footer" role="contentinfo">
         <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
           <ul>
             <oj-bind-for-each data="[[footerLinks]]">
               <template>
                 <li>
-                  <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]">
+                  <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]" 
+                      :target="[[$current.data.target]]">
                     <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
                   </a>
                 </li>
@@ -125,7 +145,7 @@
           </ul>
         </div>
         <div class="oj-web-applayout-footer-item oj-web-applayout-max-width oj-text-color-secondary oj-typography-body-sm">
-          Copyright © 2014, 2023 Oracle and/or its affiliates All rights reserved.
+          Copyright © All rights reserved.
         </div>
       </footer>
     </div>
