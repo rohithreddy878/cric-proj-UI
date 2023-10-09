@@ -58,6 +58,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
       // Setup the navDataProvider with the routes, excluding the first redirected route.
       this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
 
+      let navDataList = ['dashboard', 'players', 'matches',  'analyses'];
       let navData2 = [
         { path: 'dashboard', detail: { label: 'Home' , iconClass: 'oj-ux-ico-home' } },
         { path: 'players', detail: { label: 'Players', iconClass: 'oj-ux-ico-human-8' } },
@@ -66,6 +67,17 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
       ];
       self.navDataProvider2 = new ArrayDataProvider(navData2, {keyAttributes: "path"});
       self.selection2 = ko.observable("dashboard");
+
+      router.beforeStateChange.subscribe(function (args) {
+        var state = args.state;
+        var accept = args.accept;
+        var path = state.path;
+        // If we don't want to leave, block navigation
+        if(navDataList.includes(path)){
+          //console.log("inside with path:-- ", path);
+          self.selection2(path);
+        }
+      });
 
 
       this.goToDashboard = function(){
@@ -82,7 +94,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       self.navOptionChanged = function(event){
         let v = event.detail.value;
-        console.log("selection changed..", v);
+        //console.log("selection changed..", v);
         let params = {
         }
         router.go(
@@ -94,9 +106,9 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       // Footer
       this.footerLinks = [
-        {name: 'About', linkId: 'about', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about', target:"_blank"},
+        { name: 'About', linkId: 'about', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about', target:"_blank"},
         { name: "Feedback", linkId: "feedback", linkTarget: "mailto:rohithreddysanta@mail.com", target:"_blank"},
-        {name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
+        { name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
       ];
      }
 

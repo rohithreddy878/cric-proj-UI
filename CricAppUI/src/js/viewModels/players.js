@@ -8,10 +8,15 @@
 /*
  * Your customer ViewModel code goes here
  */
-define(['../accUtils','../utils/CommonUtils', '../utils/Constants',
-        'oj-st-scroll-to-top/loader'],
- function(accUtils,CommonUtils, Constants) {
+define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
+        'ojs/ojarraydataprovider',
+        'oj-st-scroll-to-top/loader','oj-player-card/loader',
+        'ojs/ojlistview'],
+ function(ko, Context,accUtils,CommonUtils, Constants, ArrayDataProvider) {
     function PlayersViewModel(routerArgs) {
+
+      var self = this;
+
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
@@ -43,8 +48,20 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants',
       this.transitionCompleted = () => {
         // Implement if needed
       };
-    }
 
+      self.playersToDisplay = ko.observable(new ArrayDataProvider([], {keyAttributes: "playerId"}));
+
+      self.viewPlayerClick = function(){
+  
+      }
+
+      self.fetchFavouritePlayers = function(){
+        
+      }
+
+
+    }
+  
     /*
      * Returns an instance of the ViewModel providing one instance of the ViewModel. If needed,
      * return a constructor for the ViewModel so that the ViewModel is constructed

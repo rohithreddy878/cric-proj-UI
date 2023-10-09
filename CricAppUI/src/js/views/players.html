@@ -5,5 +5,29 @@
  -->
  <div id="players-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
   
+          <oj-list-view id="listView-players"  
+                      data="[[playersToDisplay]]" 
+                      display="list"
+                      style="min-height: inherit;"
+                      class="oj-flex oj-flex-item oj-listview-item-layout"> 
+                <template slot="itemTemplate"> 
+                  <li>
+                    <oj-player-card player-id="[[$current.data.applicationId]]"
+                                 player-name="[[$current.data.applicationName]]"
+                                 player-role="[[$current.data.playerRole]]"
+                                 on-card-click="{{viewPlayerClick}}">
+                    </oj-player-card>
+                  </li>   
+                </template>   
+                <template slot="noData">
+                  <div class="oj-flex oj-sm-12 ">
+                    <div class="oj-sm-3"></div>
+                    <div class="oj-sm-6 welcome-dialog" style="background-color: white; height: 375px;">
+                    </div>
+                    <div class="oj-sm-3"></div>
+                  </div>
+                </template>   
+        </oj-list-view>
+
   <oj-st-scroll-to-top></oj-st-scroll-to-top>
 </div> 
