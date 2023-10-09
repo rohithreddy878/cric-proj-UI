@@ -10,7 +10,7 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         'ojs/ojarraydataprovider', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 
-        'ojs/ojknockouttemplateutils','ojs/ojdialog',"ojs/ojnavigationlist"],
+        'ojs/ojknockouttemplateutils','oj-st-scroll-to-top/loader','ojs/ojdialog',"ojs/ojnavigationlist"],
  function(ko, Context,accUtils,CommonUtils, Constants, ArrayDataProvider,  ResponsiveUtils, ResponsiveKnockoutUtils,
           KnockoutTemplateUtils) {
     function DashboardViewModel(routerArgs) {

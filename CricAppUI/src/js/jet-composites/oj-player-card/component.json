@@ -1,0 +1,38 @@
+{
+  "name": "oj-player-card",
+  "version": "1.0.0",
+  "jetVersion": "^15.0.0",
+  "displayName": "Card to show Player and his details",
+  "description": "A translatable high-level description for the component.",
+  "properties": {
+    "playerId":{
+      "description":"Id of the player",
+      "type":"number"
+    },    
+    "playerName":{
+      "description":"Name of the player",
+      "type":"string"
+    },
+    "playerRole":{
+      "description":"Role of the current player",
+      "type":"string"
+    }
+  },
+  "methods": {
+
+  },
+  "events": {
+    "cardClick": {
+      "description": "Triggered when a card is clicked and contains the player name of the clicked card.",
+      "bubbles": true,
+      "detail": {
+        "value": {
+          "description": "The (player)name of the card.",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "slots": {
+  }
+}

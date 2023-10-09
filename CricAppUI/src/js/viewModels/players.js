@@ -8,9 +8,10 @@
 /*
  * Your customer ViewModel code goes here
  */
-define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
+define(['../accUtils','../utils/CommonUtils', '../utils/Constants',
+        'oj-st-scroll-to-top/loader'],
  function(accUtils,CommonUtils, Constants) {
-    function PlayersViewModel() {
+    function PlayersViewModel(routerArgs) {
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
