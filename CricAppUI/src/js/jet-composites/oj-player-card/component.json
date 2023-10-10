@@ -16,6 +16,22 @@
     "playerRole":{
       "description":"Role of the current player",
       "type":"string"
+    },
+    "country":{
+      "description":"country of the current player",
+      "type":"string"
+    },
+    "battingStyle":{
+      "description":"Batting Style of the current player",
+      "type":"string"
+    },
+    "bowlingStyle":{
+      "description":"Bowling Style of the current player",
+      "type":"string"
+    },
+    "playerFullName":{
+      "description":"player Full Name Style of the current player",
+      "type":"string"
     }
   },
   "methods": {

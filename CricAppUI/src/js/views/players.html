@@ -4,18 +4,34 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
  <div id="players-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
-  
+    <div id="player-search-div" class="oj-sm-padding-5x-start">
+      <oj-input-search id="search1" class="oj-form-control-max-width-md"
+                       value="{{playerSearcVal}}"
+                       on-oj-value-action="[[searchPlayers]]"
+                       placeholder="Search...">
+      </oj-input-search>
+  </div>
+    </div>
+  <div id="fav-players-div">  
+    <div id="fav-player-heaing-div">
+      <h3 class="oj-sm-padding-5x-start tab-header">Favourites</h3>
+    </div>
+        <div id="fav-results-div">
           <oj-list-view id="listView-players"  
                       data="[[favPlayers]]" 
-                      display="list"
+                      display="card"
                       style="min-height: inherit;"
                       class="oj-flex oj-flex-item oj-listview-item-layout"> 
                 <template slot="itemTemplate"> 
                   <li>
-                    <oj-player-card player-id="[[$current.data.applicationId]]"
-                                 player-name="[[$current.data.applicationName]]"
-                                 player-role="[[$current.data.playerRole]]"
-                                 on-card-click="{{viewPlayerClick}}">
+                    <oj-player-card player-id="[[$current.data.playerId]]"
+                                    player-name="[[$current.data.playerName]]"
+                                    player-full-name="[[$current.data.playerFullName]]"
+                                    player-role="[[$current.data.playerRole]]"
+                                    country="[[$current.data.country]]"
+                                    batting-style="[[$current.data.battingStyle]]"
+                                    bowling-style="[[$current.data.bowlingStyle]]"
+                                    on-card-click="{{viewPlayerClick}}">
                     </oj-player-card>
                   </li>   
                 </template>   
@@ -27,7 +43,9 @@
                     <div class="oj-sm-3"></div>
                   </div>
                 </template>   
-        </oj-list-view>
+          </oj-list-view>
+        </div>
+  </div>      
 
   <oj-st-scroll-to-top></oj-st-scroll-to-top>
 </div> 

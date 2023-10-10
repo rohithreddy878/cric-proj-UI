@@ -14,9 +14,6 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
 
       var self = this;
 
-      // Below are a set of the ViewModel methods invoked by the oj-module component.
-      // Please reference the oj-module jsDoc for additional information.
-
       /**
        * Optional ViewModel method invoked after the View is inserted into the
        * document DOM.  The application can put logic that requires the DOM being

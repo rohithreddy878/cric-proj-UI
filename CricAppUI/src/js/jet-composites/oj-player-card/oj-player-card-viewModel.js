@@ -8,7 +8,7 @@
 define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-card-strings', 'ojs/ojcontext',
         'ojs/ojarraydataprovider',
         'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojactioncard','ojs/ojtoolbar','ojs/ojchart',
-        'ojs/ojselectsingle'], 
+        'ojs/ojselectsingle',"oj-c/list-item-layout", "ojs/ojlistview"], 
   function (ko,$, Constants,componentStrings, Context, ArrayDataProvider) {
 
     function PlayerCardComponentModel(context) {
@@ -27,11 +27,13 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
 
         // Component properties
         self.properties = context.properties;
-
         var tileContainer;
 
         self.isNotAdmin = ko.observable(true);
-
+        var props = [
+          { "Full Name": self.properties.playerFullName }
+        ];
+        self.playerProperties = new ArrayDataProvider(props,{});
         
         self.cardClick = function (event) {
           if (event.type === 'click' || (event.type === 'keypress' && event.keyCode === 13)) {
@@ -42,16 +44,16 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
             element.dispatchEvent(new CustomEvent('cardClick', params));
           }
         };
-  
+        
         function addListener() {
-          tileContainer.addEventListener('click', self.clickTile);
+          //tileContainer.addEventListener('click', self.clickTile);
         };
 
         //Once all startup and async activities have finished, relocate if there are any async activities
         self.busyResolve();
 
         self.connected = function(){
-          tileContainer = element.querySelector('.player-card-app-name-div');
+          //tileContainer = element.querySelector('.player-card-app-name-div');
           addListener();
         }
 

@@ -7,39 +7,36 @@
 
 -->
 <!-- Template to put in oj-list-view "itemTemplate slot-->
-  <div :id="[[contextCellId]]">
+  <div :id="[[contextCellId]]" class="oj-sm-justify-content-center">
    <oj-action-card :id="[[contextCardId]]"
-                   class="oj-sm-margin-2x oj-flex oj-flex-item player-card" style="height: auto;">
-      <div class="oj-flex oj-sm-12">
-        <div class="oj-flex  oj-sm-4 oj-sm-flex-items-initial oj-sm-align-items-center oj-sm-justify-content-space-between">
-          <div class="oj-flex  oj-sm-1 oj-sm-flex-items-initial oj-sm-align-items-center">
-            
-          </div>
-          <!-- player name details -->
-          <div class="oj-flex  oj-sm-11 oj-sm-align-items-center">
-            <div class="oj-sm-padding-5x-end">
-              <div class="oj-typography-subheading-xs player-card-app-name-div">
-                <oj-bind-text value="[[$properties.playerName]]"></oj-bind-text>
-              </div>
-              <br>
-              <div class="oj-typography-body-sm">
-                <oj-bind-text value="[[$properties.playerRole]]"></oj-bind-text>
-              </div>   
-            </div>
-          </div>  
-        </div>
-        <div class="oj-sm-7 oj-flex oj-flex-item  oj-sm-align-items-center oj-sm-justify-content-space-between">
-          <!-- player stats details -->
+                   class="oj-sm-margin-2x oj-flex oj-flex-item player-card">
+      <div class="oj-flex oj-sm-12 oj-sm-padding-10x-top">
+        <oj-list-view id="listviewone" data="[[playerProperties]]" gridlines.item="visible"
+                      class="demo-list-view1 oj-sm-padding-2x-vertical">
+                <template slot="itemTemplate" data-oj-as="item">
+                  <li>
+                    <oj-c-list-item-layout>
+                      
+                      <!-- <div slot="leading">
+                        <span class="oj-badge">
+                          <oj-bind-text value="Leading Slot"></oj-bind-text>
+                        </span>
+                      </div>
+                      <div slot="overline" class="oj-typography-body-xs oj-text-color-secondary oj-line-clamp-1">
+                        <oj-bind-text  value="Overline slot trucates text if the text is too long like this."></oj-bind-text>
+                      </div> -->
+                      
+                    </oj-c-list-item-layout>
+                  </li>
+                </template>
+              </oj-list-view>
          
-        </div>
+        
 
       </div>
-      <div class="oj-sm-2"></div>
-      <div class="oj-flex oj-flex-item oj-sm-8 oj-sm-align-items-center oj-sm-justify-content-center" > 
-        
-        
-      </div>
-      <div class="oj-sm-2"></div>
+      <tag class="p-tag">
+        <oj-bind-text value="[[$properties.playerName]]"></oj-bind-text>
+      </tag>
       
    </oj-action-card>
   </div>

@@ -109,3 +109,9 @@ html[dir="rtl"] .demo-oracle-icon {
 #appn-logo{
   src: url(images/logo-circle.png);
 }
+
+.tab-header{
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-size:large;
+  font-style: normal;
+}

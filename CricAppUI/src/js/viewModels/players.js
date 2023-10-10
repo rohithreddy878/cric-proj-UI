@@ -11,7 +11,7 @@
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         '../utils/DataUtils','ojs/ojarraydataprovider',
         'oj-st-scroll-to-top/loader','oj-player-card/loader',
-        'ojs/ojlistview'],
+        'ojs/ojlistview','ojs/ojinputsearch'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayersViewModel(routerArgs) {
 
@@ -34,13 +34,17 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         // Implement further logic if needed
       };
 
+      self.playerSearcVal = ko.observable("");
+      self.searchPlayers = function(){
+
+      }
 
       self.playersToDisplay = ko.observable(new ArrayDataProvider([], {keyAttributes: "playerId"}));
 
       self.viewPlayerClick = function(){
   
       }
-      
+      self.favPlayers = ko.observable();
       self.fetchFavouritePlayers = function(){
         var getFavouritePlayersUrl = Constants.SERVICES_CONTEXT_PATH + "players/favourites";
         console.log("fetching Favourite Players details, ", getFavouritePlayersUrl);
@@ -57,7 +61,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           },
           //complete call back
           (xhr, res) => { 
-            console.log("inside complete callback",res);
+            //console.log("inside complete callback",res);
             if (res.status == 200){
               var data = res.responseJSON;
               $.each(data, function () {
@@ -65,6 +69,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                     playerName: this.commonName==null?this.name:this.commonName,
                     playerId: this.playerId,
                     playerRole: this.role,
+                    playerFullName: this.name,
                     battingStyle: this.batStyle,
                     bowlingStyle: this.bowlStyle,
                     country: this.country
@@ -74,11 +79,15 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             DataUtils.favouritePlayersList(new ArrayDataProvider(favs, {
               keyAttributes: "playerId",
             }));
+            self.favPlayers(new ArrayDataProvider(favs, {
+              keyAttributes: "playerId",
+            }));
           }
         );
       }
       self.fetchFavouritePlayers();
-      self.favPlayers = ko.observable(DataUtils.favouritePlayersList());
+      //self.favPlayers = ko.observable(DataUtils.favouritePlayersList());
+      console.log(DataUtils.favouritePlayersList());
 
       /**
        * Optional ViewModel method invoked after the View is disconnected from the DOM.
