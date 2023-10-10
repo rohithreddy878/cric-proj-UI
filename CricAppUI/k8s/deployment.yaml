@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cric-ui-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-cric-ui-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        app: app-cric-ui-service
+    spec:
+      containers:
+        - name: app-cric-ui-service
+          image: iad.ocir.io/oalprod/oalcpfui:{{commit}}
+          imagePullPolicy: Always
+          terminationMessagePolicy: FallbackToLogsOnError
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: 100m
+            limits:
+              memory: "4Gi"
+              cpu: 500m
+          securityContext:
+            runAsNonRoot: true    
+      imagePullSecrets:
+        - name: regcred
+      securityContext:
+        runAsGroup: 3000
+        runAsUser: 1000  

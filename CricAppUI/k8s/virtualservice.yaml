@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: app-cric-ui-service
+  namespace: oalatg-at
+spec:
+  gateways:
+  - oalatg-at-gateway.oalatg-at
+  hosts:
+  - '*'
+  http:
+  - match:
+    - uri:
+        prefix: /criczone/web/
+    route:
+    - destination:
+        host: app-cric-ui-service.oalatg-at.svc.cluster.local
+        port:
+          number: 9000

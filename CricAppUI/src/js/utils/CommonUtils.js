@@ -7,10 +7,6 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
     function CommonUtils(){
         var self = this;
 
-        var failedAjaxCalls = 0;
-        var successAjaxCalls = 0;
-        var totalAjaxCalls = 0;
-
         /** common call for ajax functions */
         self.ajaxCall = function (requestType, reqUrl, payload, contentType, dataType, async, successCallBack, failureCallBack, completeCallBack) {
             //console.log(payload);
@@ -91,15 +87,12 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
             self.ajaxCall("GET",lookupsUrl,{},"","json",false,
                 //success callback
                 function (data) {
-                    successAjaxCalls++;
                 },
                 //failuer callback
                 function (data) {
-                    failedAjaxCalls++;
                 },
                 //complete callback
                 (xhr, res) => {
-                    totalAjaxCalls++;
                     if(res.status == 200){
                         result = res.responseJSON;
                     }   

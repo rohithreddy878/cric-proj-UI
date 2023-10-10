@@ -11,6 +11,9 @@
 define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton'],
  function(accUtils,CommonUtils, Constants) {
     function HomeViewModel(routerArgs) {
+
+      var self = this;
+
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
 
@@ -47,13 +50,6 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
         // Implement if needed
       };
 
-
-      self.goToDashboard = function(){
-        let params = {
-        }
-        CommonUtils.changeRoute(routerArgs,"dashboard", params);
-
-      }
 
     }
 
