@@ -31,7 +31,17 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
 
         self.isNotAdmin = ko.observable(true);
         var props = [
-          { "Full Name": self.properties.playerFullName }
+          { "key":  "Name",
+            "value": self.properties.playerFullName },
+          { "key":  "Role",
+            "value": self.properties.playerRole },
+          { "key":  "Country",
+            "value": self.properties.country },
+          { "key":  "Batting",
+            "value": self.properties.battingStyle },
+          { "key":  "Bowling",
+            "value": self.properties.bowlingStyle },
+
         ];
         self.playerProperties = new ArrayDataProvider(props,{});
         

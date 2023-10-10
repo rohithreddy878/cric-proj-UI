@@ -16,15 +16,21 @@
                 <template slot="itemTemplate" data-oj-as="item">
                   <li>
                     <oj-c-list-item-layout>
-                      
-                      <!-- <div slot="leading">
-                        <span class="oj-badge">
-                          <oj-bind-text value="Leading Slot"></oj-bind-text>
+                      <div slot="leading">
+                        <span class="oj-typography-body-sm">
+                          <oj-bind-text value="[[item.data.key]]"></oj-bind-text>
                         </span>
                       </div>
-                      <div slot="overline" class="oj-typography-body-xs oj-text-color-secondary oj-line-clamp-1">
+
+
+                      <div slot="secondary">
+                        <span class="oj-badge badge-player-detail">
+                          <oj-bind-text class="oj-typography-body-md" value="[[item.data.value]]"></oj-bind-text>
+                        </span>
+                      </div>
+                      <!-- <div slot="overline" class="oj-typography-body-xs oj-text-color-secondary oj-line-clamp-1">
                         <oj-bind-text  value="Overline slot trucates text if the text is too long like this."></oj-bind-text>
-                      </div> -->
+                      </div>  -->
                       
                     </oj-c-list-item-layout>
                   </li>

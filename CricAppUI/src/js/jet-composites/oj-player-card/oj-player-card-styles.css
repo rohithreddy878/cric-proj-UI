@@ -7,8 +7,8 @@ oj-player-card:not(.oj-complete){
   box-sizing: border-box;
   width: 304px;
   height: 346px;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: 2px;
+  padding-right: 2px;
   padding-top: 1rem;
   padding-bottom: 1rem;
   border: 1px solid #c9c9c9;
@@ -48,3 +48,7 @@ oj-player-card:not(.oj-complete){
   
 }
 
+.badge-player-detail{
+  --oj-badge-bg-color: #061931;
+
+}
