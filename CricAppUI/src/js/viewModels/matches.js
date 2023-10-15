@@ -8,25 +8,112 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['../accUtils','../utils/CommonUtils', '../utils/Constants',],
- function(accUtils,CommonUtils, Constants) {
+define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
+        'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
+        'ojs/ojselectsingle'],
+ function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function MatchesViewModel() {
-      // Below are a set of the ViewModel methods invoked by the oj-module component.
-      // Please reference the oj-module jsDoc for additional information.
+     
+      var self = this;
 
-      /**
-       * Optional ViewModel method invoked after the View is inserted into the
-       * document DOM.  The application can put logic that requires the DOM being
-       * attached here.
-       * This method might be called multiple times - after the View is created
-       * and inserted into the DOM and after the View is reconnected
-       * after being disconnected.
-       */
       this.connected = () => {
         accUtils.announce('Matches page loaded.');
         document.title = "Matches";
         // Implement further logic if needed
       };
+
+      self.selectedSeasonVal = ko.observable("");
+      self.selectedLeagueEventVal = ko.observable();
+
+      self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
+
+      self.getLeagueEventSeasons = function(){
+        var seasons = []
+        var getLeagueEventSeasonsUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/seasons";
+        console.log("fetching all League Event Seasons, ", getLeagueEventSeasonsUrl);
+        CommonUtils.ajaxCall('GET',getLeagueEventSeasonsUrl,true,"","json","",
+          //success call back
+          function(data){
+            console.log("successful to all League Event Seasons..");
+            //DataUtils.favouritePlayersList(data);
+          },
+          //failure call back
+          function(data){
+            console.log("failed to get all League Event Seasons");
+          },
+          //complete call back
+          (xhr, res) => { 
+            console.log("inside complete callback of get all League Event Seasons",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              $.each(data, function () {
+                seasons.push({
+                    value: this
+                })
+              });
+              self.seasonListDP(new ArrayDataProvider(seasons, { keyAttributes: "value", }));
+            }
+          }
+        );
+      }
+
+      self.getLeagueEventSeasons();
+
+      self.leagueEventsListDP = ko.observable(new ArrayDataProvider([], { }));
+      self.onSeasonSelectionChange = function(){
+        if(self.selectedSeasonVal() ==null || self.selectedSeasonVal()==""){
+          self.leagueEventsListDP(new ArrayDataProvider([], { }));
+        }
+        var leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
+        self.leagueEventsListDP(new ArrayDataProvider(leagueEvents, { keyAttributes: "value", }));
+      }
+
+      self.getLeagueEventsForSeason = function(season){
+        var events = []
+        var getLeagueEventsForSeasonUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/events?season="+season;
+        console.log("fetching all League Events for a Season, ", getLeagueEventsForSeasonUrl);
+        CommonUtils.ajaxCall('GET',getLeagueEventsForSeasonUrl,true,"","json","",
+          //success call back
+          function(data){
+            console.log("successful to get all League Events for Season..");
+          },
+          //failure call back
+          function(data){
+            console.log("failed to get all League Events for Season");
+          },
+          //complete call back
+          (xhr, res) => { 
+            console.log("inside complete callback of get all League Events for Season",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              $.each(data, function () {
+                events.push({
+                    value: this.leagueEventId,
+                    name: this.name,
+                    season: this.season,
+                    matchType: this.matchType,
+                    league: this.league.name,
+                    format: this.league.format
+
+                    
+                })
+              });
+              self.seasonListDP(new ArrayDataProvider(events, { keyAttributes: "value", }));
+            }
+          }
+        );
+      }
+
+      self.onLeagueEventSelectionChange = function(){
+
+      }
+
+
+
+
+
+
+
 
       /**
        * Optional ViewModel method invoked after the View is disconnected from the DOM.

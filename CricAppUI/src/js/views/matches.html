@@ -1,11 +1,33 @@
-<!--
- Copyright (c) 2014, 2023, Oracle and/or its affiliates.
- Licensed under The Universal Permissive License (UPL), Version 1.0
- as shown at https://oss.oracle.com/licenses/upl/
- -->
-<div class="oj-hybrid-padding">
-  <h1>Matches Content Area</h1>
-  <div>
-      To change the content of this section, you will make edits to the incidents.html file located in the /js/views folder.
+<div id="matches-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
+
+
+  <div id="matches-div" class="oj-flex oj-flex-bar">  
+    <div id="matches-heaing-div" class="oj-sm-3 oj-flex-bar-start">
+      <h2 class="oj-sm-padding-5x-start tab-header">Matches</h2>
+    </div>
+
+    <div id="leagues-seasons-div" class="oj-sm-2 oj-flex-bar-end">
+      <oj-select-single data="[[seasonListDP]]" 
+                          item-text="value" 
+                          label-hint="Season"
+                          value="{{selectedSeasonVal}}"
+                          on-value-changed="[[onSeasonSelectionChange]]">
+      </oj-select-single>
+    </div>
+
   </div>
+
+  <div id="leagues-div" class="oj-flex oj-sm-4 oj-flex-bar">
+    <oj-select-single data="[[leagueEventsListDP]]" 
+                        item-text="league" 
+                        label-hint="League"
+                        value="{{selectedLeagueEventVal}}"
+                        on-value-changed="[[onLeagueEventSelectionChange]]">
+    </oj-select-single>
+  </div>
+
+
+
+
+
 </div>
