@@ -8,10 +8,10 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
+define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils','../utils/AusTourofIndia',
         'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
-        'ojs/ojselectsingle'],
- function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
+        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog'],
+ function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,ArrayDataProvider) {
     function MatchesViewModel() {
      
       var self = this;
@@ -22,7 +22,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         // Implement further logic if needed
       };
 
-      self.selectedSeasonVal = ko.observable("");
+      self.selectedSeasonVal = ko.observable('2023/24');
       self.selectedLeagueEventVal = ko.observable();
 
       self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
@@ -57,15 +57,23 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         );
       }
 
-      self.getLeagueEventSeasons();
 
-      self.leagueEventsListDP = ko.observable(new ArrayDataProvider([], { }));
-      self.onSeasonSelectionChange = function(){
-        if(self.selectedSeasonVal() ==null || self.selectedSeasonVal()==""){
-          self.leagueEventsListDP(new ArrayDataProvider([], { }));
+      self.leagueEvents = [];
+      self.leagueEventsListDP = ko.observableArray([]);
+
+      self.onSeasonSelectionChange = function(event){
+        let pv = event.detail.previousValue;
+        let v = event.detail.value;
+        console.log(pv, v,(pv==v));
+        if(v==pv){
+          //self.leagueEventsListDP(new ArrayDataProvider(self.leagueEvents, { keyAttributes: "value" }));
         }
-        var leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
-        self.leagueEventsListDP(new ArrayDataProvider(leagueEvents, { keyAttributes: "value", }));
+        else if(v ==null || v==""){
+          self.leagueEvents = [];
+        }
+        else{
+          self.getLeagueEventsForSeason(v);
+        }
       }
 
       self.getLeagueEventsForSeason = function(season){
@@ -94,48 +102,172 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                     matchType: this.matchType,
                     league: this.league.name,
                     format: this.league.format
-
-                    
                 })
               });
-              self.seasonListDP(new ArrayDataProvider(events, { keyAttributes: "value", }));
+              self.leagueEvents = events;
+              self.leagueEventsListDP(new ArrayDataProvider(events, { keyAttributes: "value" }));
+              console.log(events);
+              //return events;
             }
           }
         );
       }
 
-      self.onLeagueEventSelectionChange = function(){
+      self.matchesArray = []
+      self.matchesListDP =  ko.observableArray([]);
+
+      self.onLeagueEventSelectionChange = function(event){
+        let pv = event.detail.previousValue;
+        let v = event.detail.value;
+        console.log(pv, v,(pv==v));
+        if(v==pv){
+          //do nothing
+        }
+        else if(v ==null || v==""){
+          self.matchesArray = [];
+        }
+        else{
+          self.getMatchesForLeagueEvent(v);
+        }
 
       }
 
 
 
+      self.getMatchesForLeagueEvent = function(le){
+        var matches = []
+        var getMatchesForLeagueEventUrl = Constants.SERVICES_CONTEXT_PATH + "matches?leagueEvent="+le;
+        console.log("fetching all matches for League Event, ", getMatchesForLeagueEventUrl);
+        CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
+          //success call back
+          function(data){
+            console.log("successful to get matches for League Event..");
+          },
+          //failure call back
+          function(data){
+            console.log("failed to get matches for League Event");
+          },
+          //complete call back
+          (xhr, res) => { 
+            console.log("inside complete callback of get matches for League Event",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              $.each(data, function () {
+                matches.push({
+                    value: this.matchId,
+                    date: this.date,
+                    enddate: this.enddate,
+                    name: this.name,
+                    venue: this.venue,
+                    tosswinner: this.tossWonTeam.name,
+                    tosschoice: this.tossWonTeam.tossWinnerChoice,
+                    winner: this.matchOutcome.winner.name,
+                    outcome: this.matchOutcome.outcome,
+                    mom: this.matchOutcome.manOfTheMatch.name
+                })
+              });
+              self.matchesArray = matches;
+              self.matchesListDP(new ArrayDataProvider(matches, { keyAttributes: "value" }));
+            }
+          }
+        );
+      }
 
 
+      self.matchesTableColumn = [
+          {
+            id:"datesColumn",
+            headerText: "Date(s)", 
+            field: "date",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+          },
+          {
+            id:"nameColumn",
+            headerText: "Match", 
+            field: "name",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+          },
+          {
+            id:"venueColumn",
+            headerText: "Venue", 
+            field: "venue",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+          },
+          {
+            id:"resultColumn",
+            headerText: "Result", 
+            field: "result",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+          },
+          {
+            id:"momColumn",
+            headerText: "Man of the Match", 
+            field: "mom",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+          },
+          {
+            id:"actionsColumn",
+            headerText:"Actions",
+            field:"value",
+            template:"actionsTemplate"
+          }
+      ];
+      
+      //for local testing
+      var mts = [];  //AusTourofIndia.matches;
+      $.each(AusTourofIndia.matches, function () {
+        mts.push({
+            value: this.matchId,
+            date: this.date,
+            enddate: this.enddate,
+            name: this.name,
+            venue: this.venue,
+            tosswinner: this.tossWonTeam.name,
+            tosschoice: this.tossWonTeam.tossWinnerChoice,
+            result: this.matchOutcome.winner.name + " " +  this.matchOutcome.outcome,
+            mom: this.matchOutcome.manOfTheMatch.commonName!=null? this.matchOutcome.manOfTheMatch.commonName: this.matchOutcome.manOfTheMatch.name
+        })
+      });
+      self.matchesListDP(new ArrayDataProvider(mts, { keyAttributes: "value" }));  
 
+      self.currMatch = ko.observable();
+      self.currMatchName = ko.observable("");
+      self.onOpenMatchDetailsClick = function(data, context){
+        console.log(context.data);
+        let mid = context.data;
+        mts.forEach(m=>{
+          if(m["value"]==mid){
+            self.currMatch(m);
+            self.currMatchName(m.name);
+          }
+        });
+        console.log(self.currMatch());
+        document.querySelector("#details-dialog").open();
+      }
 
+      //on start
+      self.getLeagueEventSeasons();
+      self.leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
 
-      /**
-       * Optional ViewModel method invoked after the View is disconnected from the DOM.
-       */
       this.disconnected = () => {
         // Implement if needed
       };
 
-      /**
-       * Optional ViewModel method invoked after transition to the new View is complete.
-       * That includes any possible animation between the old and the new View.
-       */
       this.transitionCompleted = () => {
         // Implement if needed
       };
     }
 
-    /*
-     * Returns an instance of the ViewModel providing one instance of the ViewModel. If needed,
-     * return a constructor for the ViewModel so that the ViewModel is constructed
-     * each time the view is displayed.
-     */
     return MatchesViewModel;
   }
 );

@@ -8,10 +8,10 @@
 
     <div id="leagues-seasons-div" class="oj-sm-2 oj-flex-bar-end">
       <oj-select-single data="[[seasonListDP]]" 
-                          item-text="value" 
-                          label-hint="Season"
-                          value="{{selectedSeasonVal}}"
-                          on-value-changed="[[onSeasonSelectionChange]]">
+                        item-text="value" 
+                        label-hint="Season"
+                        value="[[selectedSeasonVal]]"
+                        on-value-changed="[[onSeasonSelectionChange]]">
       </oj-select-single>
     </div>
 
@@ -19,14 +19,47 @@
 
   <div id="leagues-div" class="oj-flex oj-sm-4 oj-flex-bar">
     <oj-select-single data="[[leagueEventsListDP]]" 
-                        item-text="league" 
-                        label-hint="League"
-                        value="{{selectedLeagueEventVal}}"
-                        on-value-changed="[[onLeagueEventSelectionChange]]">
+                      item-text="name" 
+                      label-hint="League"
+                      value="[[selectedLeagueEventVal]]"
+                      on-value-changed="[[onLeagueEventSelectionChange]]">
     </oj-select-single>
+    <h6><oj-bind-text value="[[selectedLeagueEventVal.name]]"></oj-bind-text></h6>
+
+    </h3>
   </div>
 
+  <div id="matches-table-div" class="oj-flex oj-sm-12">
+    <oj-table id="matches-table"
+              data="[[matchesListDP]]"
+              dnd='{"reorder": {"columns": "enabled"}}'
+              columns="{{matchesTableColumn}}"
+              class="oj-sm-padding-3x">
+              <template id="actionsTemplate" slot="actionsTemplate" data-oj-as="cell">
+                <div class="oj-flex-item oj-sm-align-self-center">
+                    <oj-toolbar>
+                      <oj-button class="oj-button-sm"
+                                 display='icons'
+                                 chroming="borderless"
+                                 on-click="[[onOpenMatchDetailsClick]]">
+                          <span class="oj-ux-ico-information" slot='startIcon'></span>
+                              Details 
+                      </oj-button>
+                    </oj-toolbar>    
+                </div>
+              </template>
+    </oj-table>
+  </div>
 
+  <div id="details-dialog-div">
+    <oj-dialog id="details-dialog" dialog-title="Match Details" cancel-behavior="icon">
+      <div slot="body">
+        ghjkg
+      </div>
+      <div slot="header">
+        <h6><oj-bind-text value=[[currMatchName]]></oj-bind-text> </h6>
+      </div>
+    </oj-dialog>
 
 
 
