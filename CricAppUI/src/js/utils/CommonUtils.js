@@ -181,6 +181,20 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
             return currentUTCDate;
         }
 
+        self.formPlaying11Para = function(playing11List){
+            team = playing11List.team.name;
+            pslist = ['player1','player2','player3','player4','player5','player6','player7','player8','player9','player10','player11'];
+            ps = ': ';
+            for(p in pslist){
+                t = pslist[p];
+                if(playing11List[t]!=null){
+                    player=playing11List[t];
+                    ps = ps+player.commonName+', ';
+                }
+            }
+            return [team,ps];
+        }
+
     }
     return new CommonUtils();
 });

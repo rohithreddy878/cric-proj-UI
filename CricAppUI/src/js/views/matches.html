@@ -54,10 +54,34 @@
   <div id="details-dialog-div">
     <oj-dialog id="details-dialog" dialog-title="Match Details" cancel-behavior="icon">
       <div slot="body">
-        ghjkg
+        <div id="playing11s-div">
+          <oj-collapsible id="playing11s-collapsible">
+            <span slot='header'>
+               <h6>Playing 11</h6>
+            </span>
+            <div class="oj-sm-padding-5x-start"> 
+              <p>
+                <b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b>
+                <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
+              </p>
+              <p>
+                <b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b>
+                <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
+              </p>
+            </div>
+          </oj-collapsible>
+          
+        </div>
+        <div id="scorecards-div">
+            <oj-collapsible id="scorecards-collapsible">
+              <span slot='header'>
+                <h6>Scorecard</h6>
+             </span>
+            </oj-collapsible>
+        </div>  
       </div>
       <div slot="header">
-        <h6><oj-bind-text value=[[currMatchName]]></oj-bind-text> </h6>
+        <h5><oj-bind-text value=[[currMatchName]]></oj-bind-text> </h5>
       </div>
     </oj-dialog>
 

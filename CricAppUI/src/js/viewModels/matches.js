@@ -10,7 +10,7 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils','../utils/AusTourofIndia',
         'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
-        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog'],
+        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,ArrayDataProvider) {
     function MatchesViewModel() {
      
@@ -226,6 +226,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       //for local testing
       var mts = [];  //AusTourofIndia.matches;
       $.each(AusTourofIndia.matches, function () {
+        console.log("assinging---",this)
         mts.push({
             value: this.matchId,
             date: this.date,
@@ -235,23 +236,41 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             tosswinner: this.tossWonTeam.name,
             tosschoice: this.tossWonTeam.tossWinnerChoice,
             result: this.matchOutcome.winner.name + " " +  this.matchOutcome.outcome,
-            mom: this.matchOutcome.manOfTheMatch.commonName!=null? this.matchOutcome.manOfTheMatch.commonName: this.matchOutcome.manOfTheMatch.name
+            mom: this.matchOutcome.manOfTheMatch.commonName!=null? 
+                    this.matchOutcome.manOfTheMatch.commonName: 
+                    this.matchOutcome.manOfTheMatch.name,
+            playing111:this.playing11List[0],
+            playing112:this.playing11List[1],
         })
       });
       self.matchesListDP(new ArrayDataProvider(mts, { keyAttributes: "value" }));  
 
       self.currMatch = ko.observable();
       self.currMatchName = ko.observable("");
+      self.currMatchId = ko.observable("");
+      self.currTeam1 = ko.observable("");
+      self.currTeam2 = ko.observable("");
+      self.currPlaying111Para = ko.observable("");
+      self.currPlaying112Para = ko.observable("");
       self.onOpenMatchDetailsClick = function(data, context){
         console.log(context.data);
         let mid = context.data;
         mts.forEach(m=>{
           if(m["value"]==mid){
+            console.log('using+++++',m);
             self.currMatch(m);
+            self.currMatchId(m.matchId);
             self.currMatchName(m.name);
+            ar1 = CommonUtils.formPlaying11Para(m.playing111);
+            self.currPlaying111Para(ar1[1]);
+            self.currTeam1(ar1[0]);
+            ar2 = CommonUtils.formPlaying11Para(m.playing112);
+            self.currPlaying112Para(ar2[1]);
+            self.currTeam2(ar2[0]);
           }
         });
-        console.log(self.currMatch());
+        //fetch scorecard using self.currMatchId:
+        
         document.querySelector("#details-dialog").open();
       }
 

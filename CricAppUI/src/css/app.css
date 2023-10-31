@@ -115,3 +115,11 @@ html[dir="rtl"] .demo-oracle-icon {
   font-size:x-large;
   font-style: normal;
 }
+
+#details-dialog{
+  height: auto;
+  width: 800px;
+  min-width: 200px;
+  max-width: 100vw - 3rem;
+  max-height: 100vh - 3rem;
+}
