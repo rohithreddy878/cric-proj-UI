@@ -33,19 +33,25 @@
     <oj-table id="matches-table"
               data="[[matchesListDP]]"
               dnd='{"reorder": {"columns": "enabled"}}'
-              columns="{{matchesTableColumn}}"
+              columns="{{matchesTableColumns}}"
               class="oj-sm-padding-3x">
               <template id="actionsTemplate" slot="actionsTemplate" data-oj-as="cell">
                 <div class="oj-flex-item oj-sm-align-self-center">
                     <oj-toolbar>
-                      <oj-button class="oj-button-sm"
+                      <oj-c-button class="oj-button-sm"
                                  display='icons'
                                  chroming="borderless"
-                                 on-click="[[onOpenMatchDetailsClick]]">
+                                 on-oj-action="[[onOpenMatchDetailsClick]]">
                           <span class="oj-ux-ico-information" slot='startIcon'></span>
                               Details 
-                      </oj-button>
+                      </oj-c-button>
                     </oj-toolbar>    
+                </div>
+              </template>
+              <template slot="noData">
+                <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
+                  <span class="oj-sm-padding-2x oj-typography-body-xl">No League/Season Selected.</span>
+                  
                 </div>
               </template>
     </oj-table>
@@ -55,7 +61,7 @@
     <oj-dialog id="details-dialog" dialog-title="Match Details" cancel-behavior="icon">
       <div slot="body">
         <div id="playing11s-div">
-          <oj-collapsible id="playing11s-collapsible">
+          <oj-collapsible id="playing11s-collapsible" expanded="true">
             <span slot='header'>
                <h6>Playing 11</h6>
             </span>
@@ -72,11 +78,39 @@
           </oj-collapsible>
           
         </div>
-        <div id="scorecards-div">
-            <oj-collapsible id="scorecards-collapsible">
+        <div id="scorecards-div" class="oj-flex oj-sm-12">
+            <oj-collapsible id="scorecards-collapsible" expanded="true">
               <span slot='header'>
                 <h6>Scorecard</h6>
-             </span>
+              </span>
+              <oj-c-list-view id="innings-list" class="oj-sm-padding-2x-vertical"
+                            data="[[currInningsDP]]"
+                            gridlines.item="visible">
+              <template slot="itemTemplate" data-oj-as="item">
+                <li>
+                  <!-- each item is one innings -->
+                  <oj-c-list-item-layout> 
+                    <oj-bind-text value="[[item.name]]"></oj-bind-text>
+                    <oj-table data="[[item.batterScoresList]]"
+                              columns="{{battingScorecardsTableColumns}}"
+                              class="oj-sm-padding-3x oj-sm-12">
+
+                    </oj-table>
+                    <oj-table data="[[item.bowlerScoresList]]"
+                              columns="{{bowlingScorecardsTableColumns}}"
+                              class="oj-sm-padding-3x oj-sm-12">
+
+                    </oj-table>
+                  </oj-c-list-item-layout>
+                </li>
+              </template>            
+              <template slot="noData">
+                <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
+                  <span class="oj-sm-padding-2x oj-typography-body-xl">Scores unavailable for this match.</span>
+                
+                </div>
+              </template>
+            </oj-c-list-view>
             </oj-collapsible>
         </div>  
       </div>

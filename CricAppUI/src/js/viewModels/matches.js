@@ -8,9 +8,10 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils','../utils/AusTourofIndia',
-        'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
-        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible'],
+define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
+        '../utils/AusTourofIndia','ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
+        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible',"oj-c/button",
+        'oj-c/list-view','oj-c/list-item-layout'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,ArrayDataProvider) {
     function MatchesViewModel() {
      
@@ -26,6 +27,56 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.selectedLeagueEventVal = ko.observable();
 
       self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
+
+      self.fetchMatchDetails = function(matchId){
+        var match = null;
+        var getMatchDetailsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/matchDetails?matchId="+matchId;
+        console.log("fetching match details with URL: ", getMatchDetailsUrl);
+        CommonUtils.ajaxCall('GET',getMatchDetailsUrl,true,"","json","",
+          //success call back
+          function(data){
+            console.log("successful to get match details..");
+          },
+          //failure call back
+          function(data){
+            console.log("failed to to get match details");
+          },
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get match details",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              match=data;
+            }
+          }
+        );
+        return match;
+      }
+
+      self.fetchMatchScorecards = function(matchId){
+        var scorecards = null;
+        var getMatchScorecardsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/scorecards?matchId="+matchId;
+        console.log("fetching match Scorecards with URL: ", getMatchScorecardsUrl);
+        CommonUtils.ajaxCall('GET',getMatchScorecardsUrl,true,"","json","",
+          //success call back
+          function(data){
+            console.log("successful to get match Scorecards..");
+          },
+          //failure call back
+          function(data){
+            console.log("failed to to get match Scorecards");
+          },
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get match details",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              scorecards=data;
+            }
+          }
+        );
+        return scorecards;
+      }
 
       self.getLeagueEventSeasons = function(){
         var seasons = []
@@ -43,7 +94,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           },
           //complete call back
           (xhr, res) => { 
-            console.log("inside complete callback of get all League Event Seasons",res);
+            //console.log("inside complete callback of get all League Event Seasons",res);
             if (res.status == 200){
               var data = res.responseJSON;
               $.each(data, function () {
@@ -57,14 +108,13 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         );
       }
 
-
-      self.leagueEvents = [];
-      self.leagueEventsListDP = ko.observableArray([]);
+      //self.leagueEvents = ko.observableArray([]);
+      self.leagueEventsListDP = ko.observable([]);//new ArrayDataProvider(self.leagueEvents(), { keyAttributes: "value" });
 
       self.onSeasonSelectionChange = function(event){
         let pv = event.detail.previousValue;
         let v = event.detail.value;
-        console.log(pv, v,(pv==v));
+        //console.log(pv, v,(pv==v));
         if(v==pv){
           //self.leagueEventsListDP(new ArrayDataProvider(self.leagueEvents, { keyAttributes: "value" }));
         }
@@ -91,7 +141,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           },
           //complete call back
           (xhr, res) => { 
-            console.log("inside complete callback of get all League Events for Season",res);
+            //console.log("inside complete callback of get all League Events for Season",res);
             if (res.status == 200){
               var data = res.responseJSON;
               $.each(data, function () {
@@ -104,9 +154,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                     format: this.league.format
                 })
               });
-              self.leagueEvents = events;
+              //self.leagueEvents =events;
               self.leagueEventsListDP(new ArrayDataProvider(events, { keyAttributes: "value" }));
-              console.log(events);
               //return events;
             }
           }
@@ -114,12 +163,11 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       }
 
       self.matchesArray = []
-      self.matchesListDP =  ko.observableArray([]);
+      self.matchesListDP =  ko.observable(new ArrayDataProvider(self.matchesArray, { keyAttributes: "value" }));
 
       self.onLeagueEventSelectionChange = function(event){
         let pv = event.detail.previousValue;
         let v = event.detail.value;
-        console.log(pv, v,(pv==v));
         if(v==pv){
           //do nothing
         }
@@ -149,21 +197,29 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           },
           //complete call back
           (xhr, res) => { 
-            console.log("inside complete callback of get matches for League Event",res);
+            console.log(res.status);
+            //console.log("inside complete callback of get matches for League Event",res);
             if (res.status == 200){
               var data = res.responseJSON;
               $.each(data, function () {
                 matches.push({
-                    value: this.matchId,
-                    date: this.date,
-                    enddate: this.enddate,
-                    name: this.name,
-                    venue: this.venue,
-                    tosswinner: this.tossWonTeam.name,
-                    tosschoice: this.tossWonTeam.tossWinnerChoice,
-                    winner: this.matchOutcome.winner.name,
-                    outcome: this.matchOutcome.outcome,
-                    mom: this.matchOutcome.manOfTheMatch.name
+                  value: this.matchId,
+                  date: this.date,
+                  enddate: this.enddate,
+                  name: this.name,
+                  venue: this.venue,
+                  tosswinner: this.tossWonTeam.name,
+                  tosschoice: this.tossWonTeam.tossWinnerChoice,
+                  result: this.matchOutcome.winner!=null?
+                            this.matchOutcome.winner.name + " " +  this.matchOutcome.outcome:
+                            this.matchOutcome.outcome,
+                  mom:    this.matchOutcome.manOfTheMatch!=null?
+                          (this.matchOutcome.manOfTheMatch.commonName!=null? 
+                                  this.matchOutcome.manOfTheMatch.commonName: 
+                                  this.matchOutcome.manOfTheMatch.name):
+                          "--",
+                  //playing111:this.playing11List[0],
+                  //playing112:this.playing11List[1],
                 })
               });
               self.matchesArray = matches;
@@ -174,7 +230,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       }
 
 
-      self.matchesTableColumn = [
+      self.matchesTableColumns = [
           {
             id:"datesColumn",
             headerText: "Date(s)", 
@@ -222,8 +278,86 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             template:"actionsTemplate"
           }
       ];
+
+      self.battingScorecardsTableColumns = [
+        {
+          id:"batter",
+          headerText: "batter", 
+          field: "batter.name",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "enabled",
+        },
+        {
+          id:"runs",
+          headerText: "runs", 
+          field: "runs",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"balls",
+          headerText: "balls", 
+          field: "balls",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"fours",
+          headerText: "4s", 
+          field: "fours",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"sixes",
+          headerText: "6s", 
+          field: "sixes",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+      ];
+      self.bowlingScorecardsTableColumns = [
+        {
+          id:"bowler",
+          headerText: "bowler", 
+          field: "bowler.name",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "enabled",
+        },
+        {
+          id:"overs",
+          headerText: "overs", 
+          field: "overs",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"runs",
+          headerText: "runs", 
+          field: "runs",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"wickets",
+          headerText: "wickets", 
+          field: "wickets",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+      ];
       
-      //for local testing
+      //for local testing 
+      /** 
       var mts = [];  //AusTourofIndia.matches;
       $.each(AusTourofIndia.matches, function () {
         console.log("assinging---",this)
@@ -244,6 +378,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         })
       });
       self.matchesListDP(new ArrayDataProvider(mts, { keyAttributes: "value" }));  
+      */
 
       self.currMatch = ko.observable();
       self.currMatchName = ko.observable("");
@@ -252,25 +387,38 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.currTeam2 = ko.observable("");
       self.currPlaying111Para = ko.observable("");
       self.currPlaying112Para = ko.observable("");
+
+      self.currInnings = ko.observableArray(new Array());
+      self.currInningsDP = new ArrayDataProvider(self.currInnings, {keyAttributes: 'inningsId'});
+
+
       self.onOpenMatchDetailsClick = function(data, context){
-        console.log(context.data);
-        let mid = context.data;
-        mts.forEach(m=>{
-          if(m["value"]==mid){
-            console.log('using+++++',m);
-            self.currMatch(m);
+        //console.log(context.data);
+        let mId = context.data;
+        self.matchesArray.forEach(m=>{
+          if(m["value"]==mId){
             self.currMatchId(m.matchId);
-            self.currMatchName(m.name);
-            ar1 = CommonUtils.formPlaying11Para(m.playing111);
-            self.currPlaying111Para(ar1[1]);
-            self.currTeam1(ar1[0]);
-            ar2 = CommonUtils.formPlaying11Para(m.playing112);
-            self.currPlaying112Para(ar2[1]);
-            self.currTeam2(ar2[0]);
           }
         });
+        var matchDetails = self.fetchMatchDetails(mId);
+        var mt = matchDetails.match;
+        self.currMatch(matchDetails);
+        self.currMatchName(mt.name);
+        var pList = matchDetails.playing11List;
+        ar1 = CommonUtils.formPlaying11Para(pList[0]);
+        self.currPlaying111Para(ar1[1]);
+        self.currTeam1(ar1[0]);
+        ar2 = CommonUtils.formPlaying11Para(pList[1]);
+        self.currPlaying112Para(ar2[1]);
+        self.currTeam2(ar2[0]);
+
         //fetch scorecard using self.currMatchId:
-        
+        var scorecards = self.fetchMatchScorecards(mId);
+        if(scorecards[0].runs!=0 || scorecards[1].runs!=0){
+          scorecards.forEach(sc=>{
+            self.currInnings.push(sc);
+          });
+        }
         document.querySelector("#details-dialog").open();
       }
 

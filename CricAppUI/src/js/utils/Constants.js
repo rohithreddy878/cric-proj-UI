@@ -6,7 +6,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout'], function (oj, ko,
         self.APPLICATION_NAME = "The Cover Drive Zone";
 
         //self.SERVICES_CONTEXT_PATH = "/cric/services/";
-        self.SERVICES_CONTEXT_PATH = "http://localhost:8090/cric/services/";
+        self.SERVICES_CONTEXT_PATH = "http://localhost:8080/cric/services/";
         self.UI_CONTEXT_PATH = "/cric/web/thecoverdrivezone/";
 
 
