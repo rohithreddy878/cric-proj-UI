@@ -32,6 +32,7 @@
   <div id="matches-table-div" class="oj-flex oj-sm-12">
     <oj-table id="matches-table"
               data="[[matchesListDP]]"
+              layout="fixed"
               dnd='{"reorder": {"columns": "enabled"}}'
               columns="{{matchesTableColumns}}"
               class="oj-sm-padding-3x">
@@ -85,32 +86,43 @@
               </span>
               <oj-c-list-view id="innings-list" class="oj-sm-padding-2x-vertical"
                             data="[[currInningsDP]]"
-                            gridlines.item="visible">
-              <template slot="itemTemplate" data-oj-as="item">
-                <li>
-                  <!-- each item is one innings -->
-                  <oj-c-list-item-layout> 
-                    <oj-bind-text value="[[item.name]]"></oj-bind-text>
-                    <oj-table data="[[item.batterScoresList]]"
-                              columns="{{battingScorecardsTableColumns}}"
-                              class="oj-sm-padding-3x oj-sm-12">
+                            gridlines.item="hidden">
+                <template slot="itemTemplate" data-oj-as="item">
+                  <li>
+                    <!-- each item is one innings -->
+                    <oj-c-list-item-layout> 
+                      <div id="innings-heading-div" class="oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar  scores-header oj-sm-align-items-center">
+                        <div class="oj-sm-4 oj-flex-bar-start">
+                          <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
 
-                    </oj-table>
-                    <oj-table data="[[item.bowlerScoresList]]"
-                              columns="{{bowlingScorecardsTableColumns}}"
-                              class="oj-sm-padding-3x oj-sm-12">
+                        </div>
+                        <div class="oj-sm-2 oj-flex-bar-end">
+                          <p><oj-bind-text value="[[item.data.score]]"></oj-bind-text></p>
+                        </div>
+                      </div>
+                      <oj-table data="[[item.data.battersDP]]"
+                                columns="{{battingScorecardsTableColumns}}"
+                                class="oj-sm-padding-1x oj-sm-12"
+                                columns-default.sortable="disabled"
+                                columns-default.header-style="background-color: #b2d0f6; border-radius: 3px;">
+                      </oj-table>
+                      <oj-table data="[[item.data.bowlersDP]]"
+                                columns="{{bowlingScorecardsTableColumns}}"
+                                class="oj-sm-padding-1x oj-sm-12"
+                                columns-default.sortable="disabled"
+                                columns-default.header-style="background-color: #b2d0f6; border-radius: 3px;">
 
-                    </oj-table>
-                  </oj-c-list-item-layout>
-                </li>
-              </template>            
-              <template slot="noData">
-                <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
-                  <span class="oj-sm-padding-2x oj-typography-body-xl">Scores unavailable for this match.</span>
+                      </oj-table>
+                    </oj-c-list-item-layout>
+                  </li>
+                </template>            
+                <template slot="noData">
+                  <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
+                    <span class="oj-sm-padding-2x oj-typography-body-xl">Scores unavailable for this match.</span>
                 
-                </div>
-              </template>
-            </oj-c-list-view>
+                  </div>
+                </template>
+              </oj-c-list-view>
             </oj-collapsible>
         </div>  
       </div>

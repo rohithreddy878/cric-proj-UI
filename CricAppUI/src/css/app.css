@@ -51,7 +51,9 @@ html[dir="rtl"] .demo-oracle-icon {
       transform:translate(-25%, -25%) scale(0.5)
   }
 }
-
+li{
+  list-style-type: none;
+}
 
 /*  custom css */
 
@@ -122,4 +124,14 @@ html[dir="rtl"] .demo-oracle-icon {
   min-width: 200px;
   max-width: 100vw - 3rem;
   max-height: 100vh - 3rem;
+}
+
+.scores-table-header{
+  background-color: #b2d0f6;
+}
+
+.scores-header{
+  background-color: #061931;
+  color: #ffffff;
+  border-radius: 8px;
 }

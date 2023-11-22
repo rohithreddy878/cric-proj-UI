@@ -11,7 +11,7 @@
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
         '../utils/AusTourofIndia','ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
         'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible',"oj-c/button",
-        'oj-c/list-view','oj-c/list-item-layout'],
+        'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,ArrayDataProvider) {
     function MatchesViewModel() {
      
@@ -283,7 +283,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         {
           id:"batter",
           headerText: "batter", 
-          field: "batter.name",
+          field: "batterName",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",
           resizable: "enabled",
@@ -320,12 +320,20 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           className: "oj-sm-only-hide",
           resizable: "disabled",
         },
+        {
+          id:"strikeRate",
+          headerText: "SR", 
+          field: "strikeRate",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
       ];
       self.bowlingScorecardsTableColumns = [
         {
           id:"bowler",
           headerText: "bowler", 
-          field: "bowler.name",
+          field: "bowlerName",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",
           resizable: "enabled",
@@ -350,6 +358,30 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           id:"wickets",
           headerText: "wickets", 
           field: "wickets",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"noballs",
+          headerText: "No Balls", 
+          field: "noballs",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"wides",
+          headerText: "wides", 
+          field: "wides",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "disabled",
+        },
+        {
+          id:"economy",
+          headerText: "economy", 
+          field: "economy",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",
           resizable: "disabled",
@@ -415,8 +447,22 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         //fetch scorecard using self.currMatchId:
         var scorecards = self.fetchMatchScorecards(mId);
         if(scorecards[0].runs!=0 || scorecards[1].runs!=0){
-          scorecards.forEach(sc=>{
-            self.currInnings.push(sc);
+          scorecards.forEach(inn => {
+            innings = {
+              "extras": inn.extras,
+              "index": inn.index,
+              "inningsId": inn.inningsId,
+              "matchId": inn.matchId,
+              "name": inn.name,
+              "overs": inn.overs,
+              "runs": inn.runs,
+              "wickets": inn.wickets,
+              "score":inn.runs+"-"+inn.wickets+"("+inn.overs+" Ov)",
+              "battersDP": new ArrayDataProvider(inn.batterScoresList, { keyAttributes: "batterId" }),
+              "bowlersDP": new ArrayDataProvider(inn.bowlerScoresList, { keyAttributes: "bowlerId" }),
+
+            };
+            self.currInnings.push(innings);
           });
         }
         document.querySelector("#details-dialog").open();
