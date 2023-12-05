@@ -189,7 +189,12 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
                 t = pslist[p];
                 if(playing11List[t]!=null){
                     player=playing11List[t];
-                    ps = ps+player.commonName+', ';
+                    if(player.commonName!=null && player.commonName!="" && player.commonName!=undefined){
+                        ps = ps+player.commonName+', ';
+                    }
+                    else{
+                        ps = ps+player.name+', ';
+                    }
                 }
             }
             return [team,ps];

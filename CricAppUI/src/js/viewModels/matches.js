@@ -206,6 +206,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                   value: this.matchId,
                   date: this.date,
                   enddate: this.enddate,
+                  format: this.matchType,
                   name: this.name,
                   venue: this.venue,
                   tosswinner: this.tossWonTeam.name,
@@ -246,6 +247,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             headerClassName: "oj-sm-only-hide",
             className: "oj-sm-only-hide",
             resizable: "enabled",
+            sortable:"disabled"
           },
           {
             id:"venueColumn",
@@ -254,6 +256,16 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             headerClassName: "oj-sm-only-hide",
             className: "oj-sm-only-hide",
             resizable: "enabled",
+            sortable:"disabled"
+          },
+          {
+            id:"format",
+            headerText: "Format", 
+            field: "format",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "disabled",
+            sortable:"disabled"
           },
           {
             id:"resultColumn",
@@ -262,6 +274,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             headerClassName: "oj-sm-only-hide",
             className: "oj-sm-only-hide",
             resizable: "enabled",
+            sortable:"disabled"
           },
           {
             id:"momColumn",
@@ -270,19 +283,22 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             headerClassName: "oj-sm-only-hide",
             className: "oj-sm-only-hide",
             resizable: "enabled",
+            sortable:"disabled"
           },
           {
             id:"actionsColumn",
             headerText:"Actions",
             field:"value",
-            template:"actionsTemplate"
+            template:"actionsTemplate",
+            sortable:"disabled"
           }
       ];
 
       self.battingScorecardsTableColumns = [
         {
           id:"batter",
-          headerText: "batter", 
+          headerText: "batter",
+          headerTemplate:'batterHeadingTemplate', 
           field: "batterName",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",
@@ -333,6 +349,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         {
           id:"bowler",
           headerText: "bowler", 
+          headerTemplate:'bowlerHeadingTemplate', 
           field: "bowlerName",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",

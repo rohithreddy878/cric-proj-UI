@@ -26,7 +26,6 @@
     </oj-select-single>
     <h6><oj-bind-text value="[[selectedLeagueEventVal.name]]"></oj-bind-text></h6>
 
-    </h3>
   </div>
 
   <div id="matches-table-div" class="oj-flex oj-sm-12">
@@ -104,16 +103,32 @@
                                 columns="{{battingScorecardsTableColumns}}"
                                 class="oj-sm-padding-1x oj-sm-12"
                                 columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: #b2d0f6; border-radius: 3px;">
+                                columns-default.header-style="background-color: darkgrey; border-radius: 3px;">
+                        
+                            <template slot="batterHeadingTemplate" data-oj-as="cell">
+                                <span class="oj-flex">
+                                    <img src="css/images/bat.png" width="26"
+                                                    height="28"/>
+                                    <p>batter</p>
+                                </span>
+                            </template>
                       </oj-table>
+                      <br>
                       <oj-table data="[[item.data.bowlersDP]]"
                                 columns="{{bowlingScorecardsTableColumns}}"
                                 class="oj-sm-padding-1x oj-sm-12"
                                 columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: #b2d0f6; border-radius: 3px;">
-
+                                columns-default.header-style="background-color: darkgrey; border-radius: 3px;">
+                            <template slot="bowlerHeadingTemplate" data-oj-as="cell">
+                                <span class="oj-flex">
+                                    <img src="css/images/ball.png" width="25"
+                                                    height="25"/>
+                                    <p>bowler</p>
+                                </span>
+                            </template>
                       </oj-table>
                     </oj-c-list-item-layout>
+                    <br>
                   </li>
                 </template>            
                 <template slot="noData">
