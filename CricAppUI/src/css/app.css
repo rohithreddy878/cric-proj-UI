@@ -120,7 +120,7 @@ li{
 
 #details-dialog{
   height: auto;
-  width: 800px;
+  width: 1200px;
   min-width: 200px;
   max-width: 100vw - 3rem;
   max-height: 100vh - 3rem;
@@ -134,4 +134,31 @@ li{
   background-color: #061931;
   color: #ffffff;
   border-radius: 8px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+.pagination li {
+  margin: 0 5px;
+}
+.pagination li a {
+  text-decoration: none;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer; /* Add cursor style */
+}
+.pagination li.active a {
+  background-color: #061931;
+  color: #fff;
+  border: 1px solid #061931;
+}
+ul#matches-pagination li a.active-page {
+  background-color: #061931;
+  color: white;
+  border: 1px solid #061931;
 }

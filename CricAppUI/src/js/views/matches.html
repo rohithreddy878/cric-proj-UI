@@ -24,7 +24,7 @@
                       value="[[selectedLeagueEventVal]]"
                       on-value-changed="[[onLeagueEventSelectionChange]]">
     </oj-select-single>
-    <h6><oj-bind-text value="[[selectedLeagueEventVal.name]]"></oj-bind-text></h6>
+    <h6><oj-bind-text value="[[matchesTableTitle]]"></oj-bind-text></h6>
 
   </div>
 
@@ -55,6 +55,14 @@
                 </div>
               </template>
     </oj-table>
+  </div>
+
+  <div id="matches-table-paging-div" class="oj-flex oj-sm-12" style="display: none;">
+    <ul class="pagination" id="matches-pagination">
+      <li><a href="#matches-table-div">Previous</a></li>
+      <!-- Page numbers will be generated dynamically here -->
+      <li><a href="#matches-table-div">Next</a></li>
+    </ul>
   </div>
 
   <div id="details-dialog-div">

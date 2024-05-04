@@ -200,6 +200,24 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
             return [team,ps];
         }
 
+        self.shortenMatchName = function(longName, team1, team2){
+                // Extracting abbreviations
+            var t1Abbr = team1.displayName;
+            var t2Abbr = team2.displayName;
+    
+            var shortName = longName.replace(team1.name, t1Abbr).replace(team2.name, t2Abbr);
+    
+            return shortName;
+        }
+
+        self.getEventStageDisplay = function(eventStage){
+                if (/^\d+$/.test(eventStage)) {
+                    return 'M' + eventStage;
+                } else {
+                    return eventStage;
+                }
+        }
+
     }
     return new CommonUtils();
 });
