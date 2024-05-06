@@ -68,25 +68,60 @@
   <div id="details-dialog-div">
     <oj-dialog id="details-dialog" dialog-title="Match Details" cancel-behavior="icon">
       <div slot="body">
-        <div id="playing11s-div">
-          <oj-collapsible id="playing11s-collapsible" expanded="true">
-            <span slot='header'>
-               <h6>Playing 11</h6>
-            </span>
-            <div class="oj-sm-padding-5x-start"> 
-              <p>
-                <b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b>
-                <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
-              </p>
-              <p>
-                <b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b>
-                <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
-              </p>
+        <oj-defer>
+          <!-- <div class="oj-flex oj-sm-flex-direction-column"> -->
+          <oj-form-layout direction="row" max-columns="2">
+            <div class="oj-flex">
+              <div id="matchFacts-div">
+                <oj-collapsible id="matchFacts-collapsible" expanded="true" disabled="true">
+                  <span slot='header'>
+                     <h6>Match Facts</h6>
+                  </span>
+                  <div class="oj-sm-padding-5x-start"> 
+                    <p><b>Match:</b> <oj-bind-text value="[[currMatch().match.name]]"></oj-bind-text></p>
+                    <p><b>Date:</b> <oj-bind-text value="[[currMatch().match.date]]"></oj-bind-text></p>
+                    <p><b>Venue:</b> <oj-bind-text value="[[currMatch().match.venue]]"></oj-bind-text></p>
+                    <p><b>Toss:</b> 
+                      <oj-bind-text value="[[currMatch().match.tossWonTeam.displayName]]"></oj-bind-text>
+                      <oj-bind-text value=" won the toss and chose to "></oj-bind-text>
+                      <oj-bind-text value="[[currMatch().match.tossWinnerChoice]]"></oj-bind-text>
+                    </p>
+                    <p><b>Result:</b>
+                      <oj-bind-text value="[[currMatch().match.matchOutcome.winner.displayName]]"></oj-bind-text>
+                      <oj-bind-text value=" "></oj-bind-text>
+                      <oj-bind-text value="[[currMatch().match.matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
+                    </p>
+                  </div>
+                </oj-collapsible> 
+              </div>
             </div>
-          </oj-collapsible>
-          
-        </div>
-        <div id="scorecards-div" class="oj-flex oj-sm-12">
+            <div class="oj-flex">
+              <div id="playing11s-div">
+                <oj-collapsible id="playing11s-collapsible" expanded="true" disabled="true">
+                  <span slot='header'>
+                     <h6>Playing 11</h6>
+                  </span>
+                  <div class="oj-sm-padding-5x-start"> 
+                    <div class="oj-panel">
+                      <p>
+                        <b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b>
+                        <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
+                      </p>
+                    </div>
+                    <br>
+                    <div class="oj-panel"
+                      <p>
+                        <b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b>
+                        <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
+                      </p>
+                    </div>
+                  </div>
+                </oj-collapsible> 
+              </div>
+            </div>
+          </oj-form-layout>
+
+          <div id="scorecards-div" class="oj-flex oj-sm-12">
             <oj-collapsible id="scorecards-collapsible" expanded="true">
               <span slot='header'>
                 <h6>Scorecard</h6>
@@ -104,34 +139,39 @@
 
                         </div>
                         <div class="oj-sm-2 oj-flex-bar-end">
-                          <p><oj-bind-text value="[[item.data.score]]"></oj-bind-text></p>
+                          <oj-bind-text value="[[item.data.score]]"></oj-bind-text>
                         </div>
                       </div>
                       <oj-table data="[[item.data.battersDP]]"
                                 columns="{{battingScorecardsTableColumns}}"
                                 class="oj-sm-padding-1x oj-sm-12"
                                 columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: darkgrey; border-radius: 3px;">
+                                columns-default.header-style="background-color: lightgray; border-radius: 0px;">
                         
                             <template slot="batterHeadingTemplate" data-oj-as="cell">
                                 <span class="oj-flex">
-                                    <img src="css/images/bat.png" width="26"
-                                                    height="28"/>
-                                    <p>batter</p>
+                                    <img src="css/images/bat.png" width="22"
+                                                    height="24"/>
+                                    <p>&nbsp;batter</p>
                                 </span>
                             </template>
+                            <template slot="batterNameTemplate" data-oj-as="cell">
+                              <span class="oj-flex">
+                                <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+                              </span>
+                          </template>
                       </oj-table>
                       <br>
                       <oj-table data="[[item.data.bowlersDP]]"
                                 columns="{{bowlingScorecardsTableColumns}}"
                                 class="oj-sm-padding-1x oj-sm-12"
                                 columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: darkgrey; border-radius: 3px;">
+                                columns-default.header-style="background-color: lightgray; border-radius: 0px;">
                             <template slot="bowlerHeadingTemplate" data-oj-as="cell">
                                 <span class="oj-flex">
-                                    <img src="css/images/ball.png" width="25"
-                                                    height="25"/>
-                                    <p>bowler</p>
+                                    <img src="css/images/ball.png" width="22"
+                                                    height="22"/>
+                                    <p>&#160;bowler</p>
                                 </span>
                             </template>
                       </oj-table>
@@ -147,7 +187,8 @@
                 </template>
               </oj-c-list-view>
             </oj-collapsible>
-        </div>  
+          </div>  
+        </oj-defer>
       </div>
       <div slot="header">
         <h5><oj-bind-text value=[[currMatchName]]></oj-bind-text> </h5>

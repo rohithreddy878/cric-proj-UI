@@ -218,6 +218,32 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
                 }
         }
 
+        self.formulateOutStringForBatter = function(out,bowler,fielder1,fielder2,kind){
+            // out types: ["caught","bowled","lbw","run out","stumped","caught and bowled",
+            //             "retired out","retired hurt","hit wicket","obstructing the field"]
+            outString = "";
+            if(!out) outString = "not out";  
+            else{
+                if(kind == "lbw") outString = "lbw b "+  bowler;
+                else if(kind == "caught") outString = "c "+fielder1 +" b "+  bowler;
+                else if(kind == "bowled") outString = "b "+  bowler;
+                else if(kind == "stumped") outString = "st "+fielder1 +" b "+  bowler;
+                else if(kind == "caught and bowled") outString = "c&b "+  bowler;
+                else if(kind == "retired out") outString = "retd out";
+                else if(kind == "retired hurt") outString = "retd hurt";
+                else if(kind == "hit wicket") outString = "hit wckt";
+                else if(kind == "obstructing the field") outString = "obs";
+                else if(kind == "run out") {
+                    outString = "run out (" +fielder1;
+                    if(fielder2!=null && fielder2!="") outString = outString+"/"+fielder2;
+                    outString = outString + ")"
+                }
+
+            }
+            return outString;
+
+        }
+
     }
     return new CommonUtils();
 });

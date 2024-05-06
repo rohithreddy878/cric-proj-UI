@@ -12,8 +12,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         '../utils/AusTourofIndia','ojs/ojarraydataprovider',"ojs/ojpagingdataproviderview",
         'oj-st-scroll-to-top/loader',
         'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible',"oj-c/button",
-        'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout',
-        "ojs/ojpagingcontrol"],
+        'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout','ojs/ojformlayout',
+        "ojs/ojpagingcontrol",'ojs/ojdefer'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,
           ArrayDataProvider,PagingDataProviderView) {
     function MatchesViewModel() {
@@ -28,8 +28,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.totalNoOfPagesMatchesTable = ko.observable(0);
 
-      self.selectedSeasonVal = ko.observable('2023');
-      self.selectedLeagueEventVal = ko.observable();
+      self.selectedSeasonVal = ko.observable('2023');//defaulting to 2023 on first load
+      self.selectedLeagueEventVal = ko.observable();  //defaulting to IPL-2023 on first load
 
       self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
 
@@ -60,7 +60,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.fetchMatchScorecards = function(matchId){
         var scorecards = null;
-        var getMatchScorecardsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/scorecards?matchId="+matchId;
+        var getMatchScorecardsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "scorecards/"+matchId;
         console.log("fetching match Scorecards with URL: ", getMatchScorecardsUrl);
         CommonUtils.ajaxCall('GET',getMatchScorecardsUrl,true,"","json","",
           //success call back
@@ -75,7 +75,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           (xhr, res) => { 
             //console.log("inside complete callback of get match details",res);
             if (res.status == 200){
-              var data = res.responseJSON;
+              console.log("this is the res object: ",res)
+              var data = res.responseJSON.data;
               scorecards=data;
             }
           }
@@ -325,6 +326,15 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           headerText: "batter",
           headerTemplate:'batterHeadingTemplate', 
           field: "batterName",
+          template:"batterNameTemplate",
+          headerClassName: "oj-sm-only-hide",
+          className: "oj-sm-only-hide",
+          resizable: "enabled",
+        },
+        {
+          id:"outStatus",
+          headerText: "",
+          field: "outStatusString",
           headerClassName: "oj-sm-only-hide",
           className: "oj-sm-only-hide",
           resizable: "enabled",
@@ -454,6 +464,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         var matchDetails = self.fetchMatchDetails(mId);
         var mt = matchDetails.match;
         self.currMatch(matchDetails);
+        console.log(self.currMatch());
         self.currMatchName(mt.name);
         var pList = matchDetails.playing11List;
         ar1 = CommonUtils.formPlaying11Para(pList[0]);
@@ -467,6 +478,25 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         var scorecards = self.fetchMatchScorecards(mId);
         if(scorecards[0].runs!=0 || scorecards[1].runs!=0){
           scorecards.forEach(inn => {
+            battersCards = []
+            inn.batterScoresList.forEach(br =>{ 
+              bCard = {
+                'batterId': br.batterId,
+                'batterName':br.batterName, 
+                'battingPosition': br.battingPosition,
+                'runs': br.runs,
+                'balls': br.balls,
+                'fours': br.fours,
+                'sixes': br.sixes,
+                'strikeRate': br.strikeRate,
+                'outStatusString': CommonUtils.formulateOutStringForBatter(br.out,
+                                                      br.wicketBowlerName,
+                                                      br.wicketFielder1Name,
+                                                      br.wicketFielder2Name,
+                                                      br.wicketKind)
+              }
+              battersCards.push(bCard);
+            });
             innings = {
               "extras": inn.extras,
               "index": inn.index,
@@ -477,7 +507,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
               "runs": inn.runs,
               "wickets": inn.wickets,
               "score":inn.runs+"-"+inn.wickets+"("+inn.overs+" Ov)",
-              "battersDP": new ArrayDataProvider(inn.batterScoresList, { keyAttributes: "batterId" }),
+              "battersDP": new ArrayDataProvider(battersCards, { keyAttributes: "batterId" }),
               "bowlersDP": new ArrayDataProvider(inn.bowlerScoresList, { keyAttributes: "bowlerId" }),
 
             };
@@ -553,6 +583,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       this.transitionCompleted = () => {
         // Implement if needed
+        self.selectedLeagueEventVal(14);
       };
     }
 
