@@ -5,15 +5,18 @@
  * as shown at https://oss.oracle.com/licenses/upl/
  * @ignore
  */
+
+
 /*
  * Your incidents ViewModel code goes here
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
-        '../utils/AusTourofIndia','ojs/ojarraydataprovider',"ojs/ojpagingdataproviderview",
+        '../utils/AusTourofIndia','ojs/ojarraydataprovider','ojs/ojpagingdataproviderview',
         'oj-st-scroll-to-top/loader',
-        'ojs/ojselectsingle', "ojs/ojtable",'ojs/ojdialog','ojs/ojcollapsible',"oj-c/button",
+        'ojs/ojselectsingle', 'ojs/ojtable','ojs/ojdialog','ojs/ojcollapsible','oj-c/button',
         'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout','ojs/ojformlayout',
-        "ojs/ojpagingcontrol",'ojs/ojdefer'],
+        'ojs/ojpagingcontrol','ojs/ojdefer','ojs/ojnavigationlist','ojs/ojchart','ojs/ojbutton',
+        ],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,
           ArrayDataProvider,PagingDataProviderView) {
     function MatchesViewModel() {
@@ -32,220 +35,6 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.selectedLeagueEventVal = ko.observable();  //defaulting to IPL-2023 on first load
 
       self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
-
-      self.fetchMatchDetails = function(matchId){
-        var match = null;
-        var getMatchDetailsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/matchDetails?matchId="+matchId;
-        console.log("fetching match details with URL: ", getMatchDetailsUrl);
-        CommonUtils.ajaxCall('GET',getMatchDetailsUrl,true,"","json","",
-          //success call back
-          function(data){
-            console.log("successful to get match details..");
-          },
-          //failure call back
-          function(data){
-            console.log("failed to to get match details");
-          },
-          //complete call back
-          (xhr, res) => { 
-            //console.log("inside complete callback of get match details",res);
-            if (res.status == 200){
-              var data = res.responseJSON;
-              match=data;
-            }
-          }
-        );
-        return match;
-      }
-
-      self.fetchMatchScorecards = function(matchId){
-        var scorecards = null;
-        var getMatchScorecardsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "scorecards/"+matchId;
-        console.log("fetching match Scorecards with URL: ", getMatchScorecardsUrl);
-        CommonUtils.ajaxCall('GET',getMatchScorecardsUrl,true,"","json","",
-          //success call back
-          function(data){
-            console.log("successful to get match Scorecards..");
-          },
-          //failure call back
-          function(data){
-            console.log("failed to to get match Scorecards");
-          },
-          //complete call back
-          (xhr, res) => { 
-            //console.log("inside complete callback of get match details",res);
-            if (res.status == 200){
-              console.log("this is the res object: ",res)
-              var data = res.responseJSON.data;
-              scorecards=data;
-            }
-          }
-        );
-        return scorecards;
-      }
-
-      self.getLeagueEventSeasons = function(){
-        var seasons = []
-        var getLeagueEventSeasonsUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/seasons";
-        console.log("fetching all League Event Seasons, ", getLeagueEventSeasonsUrl);
-        CommonUtils.ajaxCall('GET',getLeagueEventSeasonsUrl,true,"","json","",
-          //success call back
-          function(data){
-            console.log("successful to all League Event Seasons..");
-            //DataUtils.favouritePlayersList(data);
-          },
-          //failure call back
-          function(data){
-            console.log("failed to get all League Event Seasons");
-          },
-          //complete call back
-          (xhr, res) => { 
-            //console.log("inside complete callback of get all League Event Seasons",res);
-            if (res.status == 200){
-              var data = res.responseJSON;
-              $.each(data, function () {
-                seasons.push({
-                    value: this
-                })
-              });
-              self.seasonListDP(new ArrayDataProvider(seasons, { keyAttributes: "value", }));
-            }
-          }
-        );
-      }
-
-      //self.leagueEvents = ko.observableArray([]);
-      self.leagueEventsListDP = ko.observable([]);//new ArrayDataProvider(self.leagueEvents(), { keyAttributes: "value" });
-
-      self.onSeasonSelectionChange = function(event){
-        let pv = event.detail.previousValue;
-        let v = event.detail.value;
-        //console.log(pv, v,(pv==v));
-        if(v==pv){
-          //self.leagueEventsListDP(new ArrayDataProvider(self.leagueEvents, { keyAttributes: "value" }));
-        }
-        else if(v ==null || v==""){
-          self.leagueEvents = [];
-        }
-        else{
-          self.getLeagueEventsForSeason(v);
-        }
-      }
-
-      self.getLeagueEventsForSeason = function(season){
-        var events = []
-        var getLeagueEventsForSeasonUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/events?season="+season;
-        console.log("fetching all League Events for a Season, ", getLeagueEventsForSeasonUrl);
-        CommonUtils.ajaxCall('GET',getLeagueEventsForSeasonUrl,true,"","json","",
-          //success call back
-          function(data){
-            console.log("successful to get all League Events for Season..");
-          },
-          //failure call back
-          function(data){
-            console.log("failed to get all League Events for Season");
-          },
-          //complete call back
-          (xhr, res) => { 
-            //console.log("inside complete callback of get all League Events for Season",res);
-            if (res.status == 200){
-              var data = res.responseJSON;
-              $.each(data, function () {
-                events.push({
-                    value: this.leagueEventId,
-                    name: this.name,
-                    season: this.season,
-                    matchType: this.matchType,
-                    league: this.league.name,
-                    format: this.league.format
-                })
-              });
-              //self.leagueEvents =events;
-              self.leagueEventsListDP(new ArrayDataProvider(events, { keyAttributes: "value" }));
-              //return events;
-            }
-          }
-        );
-      }
-
-      self.matchesTableTitle = ko.observable(" ");
-      self.matchesArray = []
-      self.matchesListDP =  ko.observable(new ArrayDataProvider(self.matchesArray, { keyAttributes: "value" }));
-
-      self.onLeagueEventSelectionChange = function(event){
-        let pv = event.detail.previousValue;
-        let v = event.detail.value;
-        if(v==pv){
-          //do nothing
-        }
-        else if(v ==null || v==""){
-          self.matchesArray = [];
-          self.matchesTableTitle(" ");
-        }
-        else{
-          self.selectedLeagueEventVal(v);
-          self.getMatchesForLeagueEvent(le=v,pageNo=self.currentPage());
-          self.matchesTableTitle("Indian Premier League"); //UPDATE DYNAMICALLY LATER 
-          self.addPagingControl();
-        }
-
-      }
-
-      self.currentPage = ko.observable(1);
-      self.currentPageSize = Constants.MATCHES_TABLE_PAGESIZE;
-
-      self.getMatchesForLeagueEvent = function(le,pageNo){
-        var matches = []
-        var getMatchesForLeagueEventUrl = Constants.SERVICES_CONTEXT_PATH + "matches?leagueEvent="+le+"&pageNo="+pageNo+"&pageSize="+self.currentPageSize;
-        console.log("fetching all matches for League Event, ", getMatchesForLeagueEventUrl);
-        CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
-          //success call back
-          function(data){
-            //console.log("successful to get matches for League Event..");
-          },
-          //failure call back
-          function(data){
-            //console.log("failed to get matches for League Event");
-          },
-          //complete call back
-          (xhr, res) => { 
-            //console.log(res.status);
-            if (res.status == 200){
-              var data = res.responseJSON.matchesList;
-              $.each(data, function () {
-                matches.push({
-                  stage: CommonUtils.getEventStageDisplay(this.eventStage),
-                  value: this.matchId,
-                  date: this.date,
-                  enddate: this.enddate,
-                  format: this.matchType,
-                  name: CommonUtils.shortenMatchName(this.name,this.team1,this.team2),
-                  venue: this.venue,
-                  tosswinner: this.tossWonTeam.name,
-                  tosschoice: this.tossWonTeam.tossWinnerChoice,
-                  result: this.matchOutcome.winner!=null?
-                            this.matchOutcome.winner.displayName + " " +  this.matchOutcome.outcome:
-                            this.matchOutcome.outcome,
-                  mom:    this.matchOutcome.manOfTheMatch!=null?
-                          (this.matchOutcome.manOfTheMatch.commonName!=null? 
-                                  this.matchOutcome.manOfTheMatch.commonName: 
-                                  this.matchOutcome.manOfTheMatch.name):
-                          "--",
-                  //playing111:this.playing11List[0],
-                  //playing112:this.playing11List[1],
-                })
-              });
-              self.matchesArray = matches;
-              //self.matchesListDP(new PagingDataProviderView(new ArrayDataProvider(matches, { keyAttributes: "value" })));
-              self.matchesListDP(new ArrayDataProvider(matches, { keyAttributes: "value" }));
-              var tr = res.responseJSON.totalResults;
-              var t = Math.ceil(tr / Constants.MATCHES_TABLE_PAGESIZE);
-              console.log("tr: ",tr, "t: ",t);
-              self.totalNoOfPagesMatchesTable(t);
-            }
-          }
-        );
-      }
 
 
       self.matchesTableColumns = [
@@ -275,15 +64,15 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             resizable: "disabled",
             sortable:"disabled"
           },
-          {
-            id:"venueColumn",
-            headerText: "Venue", 
-            field: "venue",
-            headerClassName: "oj-sm-only-hide",
-            className: "oj-sm-only-hide",
-            resizable: "enabled",
-            sortable:"disabled"
-          },
+          // {
+          //   id:"venueColumn",
+          //   headerText: "Venue", 
+          //   field: "venue",
+          //   headerClassName: "oj-sm-only-hide",
+          //   className: "oj-sm-only-hide",
+          //   resizable: "enabled",
+          //   sortable:"disabled"
+          // },
           {
             id:"format",
             headerText: "Format", 
@@ -452,6 +241,198 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.currInnings = ko.observableArray(new Array());
       self.currInningsDP = new ArrayDataProvider(self.currInnings, {keyAttributes: 'inningsId'});
 
+      //self.leagueEvents = ko.observableArray([]);
+      self.leagueEventsListDP = ko.observable([]);//new ArrayDataProvider(self.leagueEvents(), { keyAttributes: "value" });
+
+      self.matchesTableTitle = ko.observable(" ");
+      self.matchesArray = []
+      self.matchesListDP =  ko.observable(new ArrayDataProvider(self.matchesArray, { keyAttributes: "value" }));
+
+      self.currentPage = ko.observable();
+      self.currentPageSize = Constants.MATCHES_TABLE_PAGESIZE;
+
+      self.matchDetailsDialogTabsData = [
+        { name: 'Scorecard', id: 'scorecard', icons: 'oj-ux-ico-artifact-audit-file' },
+        { name: 'Visualize', id: 'visualize', icons: 'oj-ux-ico-chart-bar-stacked-vertical' },
+      ];
+      self.matchDetailsDialogTabsDP = new ArrayDataProvider(self.matchDetailsDialogTabsData, { keyAttributes: 'id' });
+      self.matchDetailsDialogSelectedTab = ko.observable('scorecard');
+
+
+      self.fetchMatchDetails = function(matchId){
+        var match = null;
+        var getMatchDetailsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/matchDetails?matchId="+matchId;
+        //console.log("fetching match details with URL: ", getMatchDetailsUrl);
+        CommonUtils.ajaxCall('GET',getMatchDetailsUrl,true,"","json","",
+          function(data){},    //success call back
+          function(data){},    //failure call back
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get match details",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              match=data;
+            }
+          }
+        );
+        return match;
+      }
+
+      self.fetchMatchScorecards = function(matchId){
+        var scorecards = null;
+        var getMatchScorecardsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "scorecards/"+matchId;
+        //console.log("fetching match Scorecards with URL: ", getMatchScorecardsUrl);
+        CommonUtils.ajaxCall('GET',getMatchScorecardsUrl,true,"","json","",
+          function(data){},          //success call back
+          function(data){},           //failure call back
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get match details",res);
+            if (res.status == 200){
+              //console.log("this is the res object: ",res)
+              var data = res.responseJSON.data;
+              scorecards=data;
+            }
+          }
+        );
+        return scorecards;
+      }
+
+      self.getLeagueEventSeasons = function(){
+        var seasons = []
+        var getLeagueEventSeasonsUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/seasons";
+        //console.log("fetching all League Event Seasons, ", getLeagueEventSeasonsUrl);
+        CommonUtils.ajaxCall('GET',getLeagueEventSeasonsUrl,true,"","json","",
+          function(data){},          //success call back
+          function(data){},          //failure call back
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get all League Event Seasons",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              $.each(data, function () {
+                seasons.push({
+                    value: this
+                })
+              });
+              self.seasonListDP(new ArrayDataProvider(seasons, { keyAttributes: "value", }));
+            }
+          }
+        );
+      }
+
+
+      self.onSeasonSelectionChange = function(event){
+        let pv = event.detail.previousValue;
+        let v = event.detail.value;
+        //console.log(pv, v,(pv==v));
+        if(v==pv){
+          //self.leagueEventsListDP(new ArrayDataProvider(self.leagueEvents, { keyAttributes: "value" }));
+        }
+        else if(v ==null || v==""){
+          self.leagueEvents = [];
+        }
+        else{
+          self.getLeagueEventsForSeason(v);
+        }
+      }
+
+      self.getLeagueEventsForSeason = function(season){
+        var events = []
+        var getLeagueEventsForSeasonUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/events?season="+season;
+        //console.log("fetching all League Events for a Season, ", getLeagueEventsForSeasonUrl);
+        CommonUtils.ajaxCall('GET',getLeagueEventsForSeasonUrl,true,"","json","",
+          function(data){}, //success call back
+          function(data){},  //failure call back
+          //complete call back
+          (xhr, res) => { 
+            //console.log("inside complete callback of get all League Events for Season",res);
+            if (res.status == 200){
+              var data = res.responseJSON;
+              $.each(data, function () {
+                events.push({
+                    value: this.leagueEventId,
+                    name: this.name,
+                    season: this.season,
+                    matchType: this.matchType,
+                    league: this.league.name,
+                    format: this.league.format
+                })
+              });
+              //self.leagueEvents =events;
+              self.leagueEventsListDP(new ArrayDataProvider(events, { keyAttributes: "value" }));
+              //return events;
+            }
+          }
+        );
+      }
+
+      self.onLeagueEventSelectionChange = function(event){
+        let pv = event.detail.previousValue;
+        let v = event.detail.value;
+        if(v==pv){
+          //do nothing
+        }
+        else if(v ==null || v==""){
+          self.matchesArray = [];
+          self.matchesTableTitle(" ");
+        }
+        else{
+          self.selectedLeagueEventVal(v);
+          self.getMatchesForLeagueEvent(le=v,pageNo=self.currentPage());
+          self.matchesTableTitle("Indian Premier League"); //UPDATE DYNAMICALLY LATER 
+          self.addPagingControl();
+        }
+
+      }
+
+      self.getMatchesForLeagueEvent = function(le,pageNo){
+        var matches = []
+        var getMatchesForLeagueEventUrl = Constants.SERVICES_CONTEXT_PATH + "matches?leagueEvent="+le+"&pageNo="+pageNo+"&pageSize="+self.currentPageSize;
+        //console.log("fetching all matches for League Event, ", getMatchesForLeagueEventUrl);
+        CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
+          function(data){},   //success call back
+          function(data){},  //failure call back
+          //complete call back
+          (xhr, res) => { 
+            //console.log(res.status);
+            if (res.status == 200){
+              var data = res.responseJSON.matchesList;
+              $.each(data, function () {
+                matches.push({
+                  stage: CommonUtils.getEventStageDisplay(this.eventStage),
+                  value: this.matchId,
+                  date: this.date,
+                  enddate: this.enddate,
+                  format: this.matchType,
+                  name: CommonUtils.shortenMatchName(this.name,this.team1,this.team2),
+                  venue: this.venue,
+                  tosswinner: this.tossWonTeam.name,
+                  tosschoice: this.tossWonTeam.tossWinnerChoice,
+                  result: this.matchOutcome.winner!=null?
+                            this.matchOutcome.winner.displayName + " " +  this.matchOutcome.outcome.replace('Win', 'won'):
+                            this.matchOutcome.outcome,
+                  mom:    this.matchOutcome.manOfTheMatch!=null?
+                          (this.matchOutcome.manOfTheMatch.commonName!=null? 
+                                  this.matchOutcome.manOfTheMatch.commonName: 
+                                  this.matchOutcome.manOfTheMatch.name):
+                          "--",
+                  //playing111:this.playing11List[0],
+                  //playing112:this.playing11List[1],
+                })
+              });
+              self.matchesArray = matches;
+              //self.matchesListDP(new PagingDataProviderView(new ArrayDataProvider(matches, { keyAttributes: "value" })));
+              self.matchesListDP(new ArrayDataProvider(matches, { keyAttributes: "value" }));
+              var tr = res.responseJSON.totalResults;
+              var t = Math.ceil(tr / Constants.MATCHES_TABLE_PAGESIZE);
+              console.log("tr: ",tr, "t: ",t);
+              self.totalNoOfPagesMatchesTable(t);
+            }
+          }
+        );
+      }
+
 
       self.onOpenMatchDetailsClick = function(data, context){
         //console.log(context.data);
@@ -464,7 +445,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         var matchDetails = self.fetchMatchDetails(mId);
         var mt = matchDetails.match;
         self.currMatch(matchDetails);
-        console.log(self.currMatch());
+        //console.log(self.currMatch());
         self.currMatchName(mt.name);
         var pList = matchDetails.playing11List;
         ar1 = CommonUtils.formPlaying11Para(pList[0]);
@@ -476,6 +457,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
         //fetch scorecard using self.currMatchId:
         var scorecards = self.fetchMatchScorecards(mId);
+        self.currInnings([]);
         if(scorecards[0].runs!=0 || scorecards[1].runs!=0){
           scorecards.forEach(inn => {
             battersCards = []
@@ -515,12 +497,12 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           });
         }
         document.querySelector("#details-dialog").open();
+        self.matchDetailsDialogSelectedTab('scorecard')
       }
 
       self.addPagingControl = function(){
         document.getElementById('matches-table-paging-div').style.display = 'block';
         var totalPages = self.totalNoOfPagesMatchesTable();
-        console.log("calling addPagingControl with total pages: ", totalPages);
         var pagination = document.getElementById('matches-pagination');
         // Generate page number links dynamically
         for (var i = 1; i <= totalPages; i++) {
@@ -536,11 +518,11 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
         // Add click event listener to the pagination element
         pagination.addEventListener('click', function(event) {
-          
+          console.log("event: ",event);
             // Check if the clicked element is a page number link
             if (event.target.tagName === 'A'){
 
-              if(event.target.textContent !== 'Previous' && event.target.textContent !== 'Next') {
+              if(event.target.id !== 'matches-tables-prev-button' && event.target.id !== 'matches-tables-next-button') {
                 var pageLinks = pagination.getElementsByTagName('a');
                 for (var i = 0; i < pageLinks.length; i++) {
                     pageLinks[i].classList.remove('active-page');
@@ -558,11 +540,10 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 var curr = Number(self.currentPage());
                 var pageLinks = pagination.getElementsByTagName('a');
                 pageLinks[curr].classList.remove('active-page');
-                console.log('Clicked on:', event.target.textContent);
-                if(event.target.textContent == 'Previous'){
+                if(event.target.id == 'matches-tables-prev-button'){
                   curr = curr-1;
                 }
-                else if(event.target.textContent == 'Next'){
+                else if(event.target.id == 'matches-tables-next-button'){
                   curr = curr+1;
                 }
                 pageLinks[curr].classList.add('active-page');
@@ -573,6 +554,96 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         });
       }
 
+      self.currentPage.subscribe(function(newValue) {
+        //console.log('Current page changed to:', newValue);
+        previousAnchorTag = document.getElementById('matches-tables-prev-li');
+        if(newValue==1){
+          //previousAnchorTag.classList.add('disabled-paging-button');
+          previousAnchorTag.style.display='None';
+        }
+        else{
+          //previousAnchorTag.classList.remove('disabled-paging-button');
+          previousAnchorTag.style.display='block';
+        }
+        nextAnchorTag = document.getElementById('matches-tables-next-li');
+        if(newValue==self.totalNoOfPagesMatchesTable()){
+          nextAnchorTag.style.display='None';
+        }
+        else{
+          nextAnchorTag.style.display='block';
+        }
+        
+      });
+
+      self.inningsSelectionOptions = [];
+      self.selectedInnings = ko.observable("");
+      self.selectedInningsTeamName = ko.observable("");
+
+      //self.batScoreContribsData = [];
+      self.batScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+      self.batImpactsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+
+      self.fillVisualizationDataArrays = function(inningsIndex){
+        //console.log("in fillVisualizationDataArrays for innings: ", inningsIndex)
+        igs = self.currInnings()[inningsIndex-1];
+        self.selectedInningsTeamName(igs["name"]);
+        //BATTING 
+        bats = igs["battersDP"]["data"];
+        //1. batScoreContribsData 
+        batScoreContribsData = [];
+        for (var k = 0; k < bats.length; k++) {
+          //console.log("batter: ",k,": ",bats[k])
+          if(bats[k]["runs"]>0){
+            batScoreContribsData.push({
+                "id": k,
+                "name": bats[k]["batterName"],
+                "runs": bats[k]["runs"],
+                "balls":bats[k]["balls"]
+            });
+          }
+        }
+        self.batScoreContribsDP(new ArrayDataProvider(batScoreContribsData,{keyAttributes:'id'}));
+        
+        //2. batting impact 
+        //IMPACT_SCORE = BATTER_RUNS*((BATTER_RUNS/TOTAL_RUNS)/(BATTER_BALLS/TOTAL_BALLS))
+        batImpactsData = [];
+        for (var k = 0; k < bats.length; k++) {
+          if(bats[k]["runs"]>0 && igs["overs"]!=0 && igs["runs"]!=0){
+            sc_ratio = bats[k]["runs"]/igs["runs"];
+            balls_ratio = bats[k]["balls"]/(igs["overs"]*6);
+            imp_sc = bats[k]["runs"] * (sc_ratio/balls_ratio);
+            imp_sc = Math.round(imp_sc * 100) / 100;
+            batImpactsData.push({
+                "id": k,
+                "name": bats[k]["batterName"],
+                "score": imp_sc,
+            });
+          }
+        }
+        self.batImpactsDP(new ArrayDataProvider(batImpactsData,{keyAttributes:'id'}));
+        
+      }
+
+      self.matchDetailsDialogSelectedTab.subscribe(function(newValue) {
+        //console.log(newValue,":    ",self.inningsSelectionOptions)
+        if(newValue == 'visualize'){
+          num_innings=self.currInnings().length
+          innSelects = new Array(num_innings);
+          for(var i=0; i<num_innings; i++){
+            igs = self.currInnings()[i];
+            // label: ("Innings "+ String(igs["index"])+" - "+igs["name"])
+            innSelects[i] = { id: ("innings"+String(i+1)), label: ("Innings "+ String(igs["index"])) }
+          }
+          self.inningsSelectionOptions = innSelects;
+          self.selectedInnings("innings1");
+        }   
+      });
+      self.selectedInnings.subscribe(function(newValue) {
+        t = parseInt(newValue[newValue.length - 1]);
+        self.fillVisualizationDataArrays(t);
+          
+      });
+
       //on start
       self.getLeagueEventSeasons();
       self.leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
@@ -582,8 +653,9 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       };
 
       this.transitionCompleted = () => {
-        // Implement if needed
+        // Initial variable allocations
         self.selectedLeagueEventVal(14);
+        self.currentPage(1);
       };
     }
 

@@ -17,33 +17,34 @@
 
   </div>
 
-  <div id="leagues-div" class="oj-flex oj-sm-4 oj-flex-bar">
+  <div id="leagues-div" class="oj-flex oj-sm-4 oj-flex-bar oj-sm-padding-5x-start">
     <oj-select-single data="[[leagueEventsListDP]]" 
                       item-text="name" 
                       label-hint="League"
                       value="[[selectedLeagueEventVal]]"
                       on-value-changed="[[onLeagueEventSelectionChange]]">
     </oj-select-single>
-    <h6><oj-bind-text value="[[matchesTableTitle]]"></oj-bind-text></h6>
+    <h6><oj-bind-text value="[[matchesTableTitle() + ' '+ selectedSeasonVal()]]"></oj-bind-text></h6>
 
   </div>
 
-  <div id="matches-table-div" class="oj-flex oj-sm-12">
+  <div id="matches-table-div" class="oj-flex oj-sm-12 oj-sm-padding-10x-horizontal">
     <oj-table id="matches-table"
               data="[[matchesListDP]]"
-              layout="fixed"
+              layout="contents"
               dnd='{"reorder": {"columns": "enabled"}}'
               columns="{{matchesTableColumns}}"
-              class="oj-sm-padding-3x">
+              class="oj-sm-padding-3x"
+              style="width: -webkit-fill-available">
               <template id="actionsTemplate" slot="actionsTemplate" data-oj-as="cell">
                 <div class="oj-flex-item oj-sm-align-self-center">
                     <oj-toolbar>
                       <oj-c-button class="oj-button-sm"
                                  display='icons'
                                  chroming="borderless"
+                                 label="Details"
                                  on-oj-action="[[onOpenMatchDetailsClick]]">
-                          <span class="oj-ux-ico-information" slot='startIcon'></span>
-                              Details 
+                          <span class="oj-ux-ico-information" slot='startIcon'></span>                               
                       </oj-c-button>
                     </oj-toolbar>    
                 </div>
@@ -59,9 +60,14 @@
 
   <div id="matches-table-paging-div" class="oj-flex oj-sm-12" style="display: none;">
     <ul class="pagination" id="matches-pagination">
-      <li><a href="#matches-table-div">Previous</a></li>
+      <li id="matches-tables-prev-li"><a id="matches-tables-prev-button" href="#matches-table-div">
+        <span class="oj-ux-ico-back"></span>
+        Previous
+      </a></li>
       <!-- Page numbers will be generated dynamically here -->
-      <li><a href="#matches-table-div">Next</a></li>
+      <li id="matches-tables-next-li"><a id="matches-tables-next-button" href="#matches-table-div">
+        <span class="oj-ux-ico-forward-next"></span>Next
+      </a></li>
     </ul>
   </div>
 
@@ -69,129 +75,212 @@
     <oj-dialog id="details-dialog" dialog-title="Match Details" cancel-behavior="icon">
       <div slot="body">
         <oj-defer>
-          <!-- <div class="oj-flex oj-sm-flex-direction-column"> -->
-          <oj-form-layout direction="row" max-columns="2">
-            <div class="oj-flex">
-              <div id="matchFacts-div">
-                <oj-collapsible id="matchFacts-collapsible" expanded="true" disabled="true">
-                  <span slot='header'>
-                     <h6>Match Facts</h6>
-                  </span>
-                  <div class="oj-sm-padding-5x-start"> 
-                    <p><b>Match:</b> <oj-bind-text value="[[currMatch().match.name]]"></oj-bind-text></p>
-                    <p><b>Date:</b> <oj-bind-text value="[[currMatch().match.date]]"></oj-bind-text></p>
-                    <p><b>Venue:</b> <oj-bind-text value="[[currMatch().match.venue]]"></oj-bind-text></p>
-                    <p><b>Toss:</b> 
-                      <oj-bind-text value="[[currMatch().match.tossWonTeam.displayName]]"></oj-bind-text>
-                      <oj-bind-text value=" won the toss and chose to "></oj-bind-text>
-                      <oj-bind-text value="[[currMatch().match.tossWinnerChoice]]"></oj-bind-text>
-                    </p>
-                    <p><b>Result:</b>
-                      <oj-bind-text value="[[currMatch().match.matchOutcome.winner.displayName]]"></oj-bind-text>
-                      <oj-bind-text value=" "></oj-bind-text>
-                      <oj-bind-text value="[[currMatch().match.matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
-                    </p>
-                  </div>
-                </oj-collapsible> 
-              </div>
-            </div>
-            <div class="oj-flex">
-              <div id="playing11s-div">
-                <oj-collapsible id="playing11s-collapsible" expanded="true" disabled="true">
-                  <span slot='header'>
-                     <h6>Playing 11</h6>
-                  </span>
-                  <div class="oj-sm-padding-5x-start"> 
-                    <div class="oj-panel">
-                      <p>
-                        <b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b>
-                        <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
+          <oj-bind-if test="[[matchDetailsDialogSelectedTab() === 'scorecard']]">
+            <oj-form-layout direction="row" max-columns="2">
+              <div class="oj-flex">
+                <div id="matchFacts-div">
+                  <oj-collapsible id="matchFacts-collapsible" expanded="true" disabled="true">
+                    <span slot='header'>
+                       <h6>Match Facts</h6>
+                    </span>
+                    <div class="oj-sm-padding-5x-start"> 
+                      <p><b>Match:</b> <oj-bind-text value="[[currMatch().match.name]]"></oj-bind-text></p>
+                      <p><b>Date:</b> <oj-bind-text value="[[currMatch().match.date]]"></oj-bind-text></p>
+                      <p><b>Venue:</b> <oj-bind-text value="[[currMatch().match.venue]]"></oj-bind-text></p>
+                      <p><b>Toss:</b> 
+                        <oj-bind-text value="[[currMatch().match.tossWonTeam.displayName]]"></oj-bind-text>
+                        <oj-bind-text value=" won the toss and chose to "></oj-bind-text>
+                        <oj-bind-text value="[[currMatch().match.tossWinnerChoice]]"></oj-bind-text>
+                      </p>
+                      <p><b>Result:</b>
+                        <oj-bind-text value="[[currMatch().match.matchOutcome.winner.displayName]]"></oj-bind-text>
+                        <oj-bind-text value=" "></oj-bind-text>
+                        <oj-bind-text value="[[currMatch().match.matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
                       </p>
                     </div>
-                    <br>
-                    <div class="oj-panel"
-                      <p>
-                        <b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b>
-                        <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
-                      </p>
-                    </div>
-                  </div>
-                </oj-collapsible> 
+                  </oj-collapsible> 
+                </div>
               </div>
-            </div>
-          </oj-form-layout>
-
-          <div id="scorecards-div" class="oj-flex oj-sm-12">
-            <oj-collapsible id="scorecards-collapsible" expanded="true">
-              <span slot='header'>
-                <h6>Scorecard</h6>
-              </span>
-              <oj-c-list-view id="innings-list" class="oj-sm-padding-2x-vertical"
-                            data="[[currInningsDP]]"
-                            gridlines.item="hidden">
-                <template slot="itemTemplate" data-oj-as="item">
-                  <li>
-                    <!-- each item is one innings -->
-                    <oj-c-list-item-layout> 
-                      <div id="innings-heading-div" class="oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar  scores-header oj-sm-align-items-center">
-                        <div class="oj-sm-4 oj-flex-bar-start">
-                          <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-
+              <div class="oj-flex">
+                <div id="playing11s-div">
+                  <oj-collapsible id="playing11s-collapsible" expanded="true" disabled="true">
+                    <span slot='header'>
+                       <h6>Playing 11</h6>
+                    </span>
+                    <div class="oj-sm-padding-5x-start"> 
+                      <div class="oj-panel">
+                        <p>
+                          <b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b>
+                          <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
+                        </p>
+                      </div>
+                      <br>
+                      <div class="oj-panel"
+                        <p>
+                          <b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b>
+                          <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
+                        </p>
+                      </div>
+                    </div>
+                  </oj-collapsible> 
+                </div>
+              </div>
+            </oj-form-layout>
+  
+            <div id="scorecards-div" class="oj-flex oj-sm-12">
+              <oj-collapsible id="scorecards-collapsible" expanded="true">
+                <span slot='header'>
+                  <h6>Scorecard</h6>
+                </span>
+                <oj-c-list-view id="innings-list" class="oj-sm-padding-2x-vertical"
+                              data="[[currInningsDP]]"
+                              gridlines.item="hidden">
+                  <template slot="itemTemplate" data-oj-as="item">
+                    <li>
+                      <!-- each item is one innings -->
+                      <oj-c-list-item-layout> 
+                        <div id="innings-heading-div" class="oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar  scores-header oj-sm-align-items-center">
+                          <div class="oj-sm-4 oj-flex-bar-start">
+                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+  
+                          </div>
+                          <div class="oj-sm-2 oj-flex-bar-end">
+                            <oj-bind-text value="[[item.data.score]]"></oj-bind-text>
+                          </div>
                         </div>
-                        <div class="oj-sm-2 oj-flex-bar-end">
-                          <oj-bind-text value="[[item.data.score]]"></oj-bind-text>
+                        <oj-table data="[[item.data.battersDP]]"
+                                  columns="{{battingScorecardsTableColumns}}"
+                                  class="oj-sm-padding-1x oj-sm-12"
+                                  columns-default.sortable="disabled"
+                                  columns-default.header-style="background-color: lightgray; border-radius: 0px;">
+                          
+                              <template slot="batterHeadingTemplate" data-oj-as="cell">
+                                  <span class="oj-flex">
+                                      <img src="css/images/bat.png" width="22"
+                                                      height="24"/>
+                                      <p>&nbsp;batter</p>
+                                  </span>
+                              </template>
+                              <template slot="batterNameTemplate" data-oj-as="cell">
+                                <span class="oj-flex">
+                                  <oj-bind-text value="[[cell.data]]"></oj-bind-text>
+                                </span>
+                            </template>
+                        </oj-table>
+                        <br>
+                        <oj-table data="[[item.data.bowlersDP]]"
+                                  columns="{{bowlingScorecardsTableColumns}}"
+                                  class="oj-sm-padding-1x oj-sm-12"
+                                  columns-default.sortable="disabled"
+                                  columns-default.header-style="background-color: lightgray; border-radius: 0px;">
+                              <template slot="bowlerHeadingTemplate" data-oj-as="cell">
+                                  <span class="oj-flex">
+                                      <img src="css/images/ball.png" width="22"
+                                                      height="22"/>
+                                      <p>&#160;bowler</p>
+                                  </span>
+                              </template>
+                        </oj-table>
+                      </oj-c-list-item-layout>
+                      <br>
+                    </li>
+                  </template>            
+                  <template slot="noData">
+                    <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
+                      <span class="oj-sm-padding-2x oj-typography-body-xl">Scores unavailable for this match.</span>
+                  
+                    </div>
+                  </template>
+                </oj-c-list-view>
+              </oj-collapsible>
+            </div> 
+          </oj-bind-if>
+
+          <oj-bind-if test="[[matchDetailsDialogSelectedTab() === 'visualize']]">
+            <div class="oj-flex-bar oj-sm-padding-5x-horizontal oj-sm-padding-3x-top "> 
+              <div class=" oj-flex-bar-start">
+                <h6><oj-bind-text value="[[selectedInningsTeamName]]"></oj-bind-text></h6>
+              </div> 
+              <div class="oj-flex-bar-end">
+                <oj-buttonset-one id="innings-set" value="{{selectedInnings}}">
+                <oj-bind-for-each data="[[inningsSelectionOptions]]">
+                  <template>
+                    <oj-option value="[[$current.data.id]]">
+                      <span>
+                        <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                      </span>
+                    </oj-option>
+                  </template>
+                </oj-bind-for-each>
+                </oj-buttonset-one>
+              </div>
+            </div>  
+            <div class="oj-flex oj-sm-padding-5x-horizontal">
+              <div class="oj-sm-padding-2x-bottom"><b>Batting</b></div>
+              <div class="oj-flex oj-sm-12" id="batting-charts-div">
+                <!-- batting - score contributions pie chart -->
+                <div class="oj-panel oj-sm-5"> 
+                  <div class="chart-title">Batsmen Contributions to Total Score</div>
+                  <oj-chart class="scores-chart" type="pie" data="[[batScoreContribsDP]]" 
+                            legend.position="end" animation-on-display="auto">
+                    <template slot="itemTemplate" data-oj-as="item">
+                      <oj-chart-item value="[[item.data.runs]]" 
+                                    group-id="[[ [item.data.group] ]]"
+                                    series-id="[[item.data.name]]">
+                      </oj-chart-item>
+                    </template>
+                    <template slot="tooltipTemplate">
+                      <div class="oj-flex">
+                        <div class="oj-flex-item">
+                          <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
+                          <br />
+                          <span><i><oj-bind-text value="[['Runs:'+ $current.itemData.runs]]"></oj-bind-text></i></span>
+                          <br />
+                          <span><i><oj-bind-text value="[['Balls:'+ $current.itemData.balls]]"></oj-bind-text></i></span>
                         </div>
                       </div>
-                      <oj-table data="[[item.data.battersDP]]"
-                                columns="{{battingScorecardsTableColumns}}"
-                                class="oj-sm-padding-1x oj-sm-12"
-                                columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: lightgray; border-radius: 0px;">
-                        
-                            <template slot="batterHeadingTemplate" data-oj-as="cell">
-                                <span class="oj-flex">
-                                    <img src="css/images/bat.png" width="22"
-                                                    height="24"/>
-                                    <p>&nbsp;batter</p>
-                                </span>
-                            </template>
-                            <template slot="batterNameTemplate" data-oj-as="cell">
-                              <span class="oj-flex">
-                                <oj-bind-text value="[[cell.data]]"></oj-bind-text>
-                              </span>
-                          </template>
-                      </oj-table>
-                      <br>
-                      <oj-table data="[[item.data.bowlersDP]]"
-                                columns="{{bowlingScorecardsTableColumns}}"
-                                class="oj-sm-padding-1x oj-sm-12"
-                                columns-default.sortable="disabled"
-                                columns-default.header-style="background-color: lightgray; border-radius: 0px;">
-                            <template slot="bowlerHeadingTemplate" data-oj-as="cell">
-                                <span class="oj-flex">
-                                    <img src="css/images/ball.png" width="22"
-                                                    height="22"/>
-                                    <p>&#160;bowler</p>
-                                </span>
-                            </template>
-                      </oj-table>
-                    </oj-c-list-item-layout>
-                    <br>
-                  </li>
-                </template>            
-                <template slot="noData">
-                  <div class="oj-flex oj-sm-flex-direction-column oj-sm-width-full">
-                    <span class="oj-sm-padding-2x oj-typography-body-xl">Scores unavailable for this match.</span>
-                
-                  </div>
-                </template>
-              </oj-c-list-view>
-            </oj-collapsible>
-          </div>  
+                    </template>
+                  </oj-chart>
+                </div>
+                <div class="oj-sm-1"></div>
+                <div class="oj-panel oj-sm-5"> 
+                  <div class="chart-title">Batsmen Impact Score</div>
+                  <oj-chart class="scores-chart" type="pie" data="[[batImpactsDP]]" 
+                            legend.position="end" animation-on-display="auto">
+                    <template slot="itemTemplate" data-oj-as="item">
+                      <oj-chart-item value="[[item.data.score]]" 
+                                    group-id="[[ [item.data.group] ]]"
+                                    series-id="[[item.data.name]]">
+                      </oj-chart-item>
+                    </template>
+                    <template slot="tooltipTemplate">
+                      <div class="oj-flex">
+                        <div class="oj-flex-item">
+                          <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
+                          <br />
+                          <span><i><oj-bind-text value="[['Impact:'+ $current.itemData.score]]"></oj-bind-text></i></span>
+                        </div>
+                      </div>
+                    </template>
+                  </oj-chart>
+                </div>
+              </div>
+            </div>
+          </oj-bind-if>
+
+ 
         </oj-defer>
       </div>
       <div slot="header">
         <h5><oj-bind-text value=[[currMatchName]]></oj-bind-text> </h5>
+        <oj-tab-bar selection="{{matchDetailsDialogSelectedTab}}" data="[[matchDetailsDialogTabsDP]]" edge="top" display="all" layout="stretch">
+          <template slot="itemTemplate" data-oj-as="item">
+            <li> <a href="#">
+                <span :class="[['oj-tabbar-item-icon ' + item.data.icons]]"></span>
+                <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+            </a> </li>
+          </template>
+        </oj-tab-bar>
       </div>
     </oj-dialog>
 

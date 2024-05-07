@@ -119,12 +119,27 @@ li{
 }
 
 #details-dialog{
-  height: auto;
+  /* height: auto; */
   width: 1200px;
-  min-width: 200px;
-  max-width: 100vw - 3rem;
-  max-height: 100vh - 3rem;
+  min-width: 1200px;
+  max-width: 100vw - 2rem;
+  height: 650px;
+  min-height: 650px;
+  max-height: 100vh - 2rem;
 }
+
+.chart-title{
+  font-style: italic;
+  font-family: serif;
+  font-weight: bold;  
+  text-align: center;
+}
+
+.scores-chart {
+  height: 336px;
+}
+
+
 
 .scores-table-header{
   background-color: #b2d0f6;
@@ -162,4 +177,10 @@ ul#matches-pagination li a.active-page {
   background-color: #061931;
   color: white;
   border: 1px solid #061931;
+  pointer-events: none;
+}
+
+.disabled-paging-button {
+  pointer-events: none; /* Disable pointer events */
+  color: gray; /* Change text color to indicate it's disabled */
 }
