@@ -39,10 +39,14 @@
   },
   "events": {
     "cardClick": {
-      "description": "Triggered when a card is clicked and contains the player name of the clicked card.",
+      "description": "Triggered when a card is clicked and contains the player name and id of the clicked card.",
       "bubbles": true,
       "detail": {
         "value": {
+          "description": "The (player)id of the card.",
+          "type": "number"
+        },
+        "name": {
           "description": "The (player)name of the card.",
           "type": "string"
         }

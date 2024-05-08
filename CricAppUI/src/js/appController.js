@@ -43,7 +43,8 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
         { path: 'dashboard', detail: { label: 'Dashboard' } },
         { path: 'players', detail: { label: 'Players'} },
         { path: 'matches', detail: { label: 'Matches' } },
-        { path: 'analyses', detail: { label: 'Analize' } }
+        { path: 'analyses', detail: { label: 'Analize' } },
+        { path: 'playerDetails', detail: { label: 'PlayerDetails' } },
       ];
       // Router setup
       let router = new CoreRouter(navData, {

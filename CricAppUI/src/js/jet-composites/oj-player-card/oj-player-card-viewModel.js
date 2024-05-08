@@ -29,7 +29,6 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
         self.properties = context.properties;
         var tileContainer;
 
-        self.isNotAdmin = ko.observable(true);
         var props = [
           // { "key":  "Name",
           //   "value": self.properties.playerFullName },
@@ -50,21 +49,21 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
           if (event.type === 'click' || (event.type === 'keypress' && event.keyCode === 13)) {
             var params = {
               'bubbles': true,
-              'detail': { 'value': context.properties.playerName }
+              'detail': { 'value': self.properties.playerId, 'name': self.properties.playerName  }
             };
             element.dispatchEvent(new CustomEvent('cardClick', params));
           }
         };
         
         function addListener() {
-          //tileContainer.addEventListener('click', self.clickTile);
+          tileContainer.addEventListener('click', self.cardClick);
         };
 
         //Once all startup and async activities have finished, relocate if there are any async activities
         self.busyResolve();
 
         self.connected = function(){
-          //tileContainer = element.querySelector('.player-card-app-name-div');
+          tileContainer = element.querySelector('.player-card');
           addListener();
         }
 

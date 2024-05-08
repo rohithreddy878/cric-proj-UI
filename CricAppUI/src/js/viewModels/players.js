@@ -98,8 +98,13 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         }
       });
 
-      self.viewPlayerClick = function(){
-  
+
+      self.viewPlayerClick = function(event){
+        let params = {
+          playerName: event.detail.name,
+          playerId: event.detail.value,
+        }
+        CommonUtils.changeRoute(routerArgs, "playerDetails", params);
       }
 
       /**
@@ -107,6 +112,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
        */
       this.disconnected = () => {
         // Implement if needed
+        
       };
 
       /**
