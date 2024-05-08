@@ -31,10 +31,11 @@ define(['knockout','jquery','./Constants' ,'ojL10n!./resources/nls/oj-player-car
 
         self.isNotAdmin = ko.observable(true);
         var props = [
-          { "key":  "Name",
-            "value": self.properties.playerFullName },
+          // { "key":  "Name",
+          //   "value": self.properties.playerFullName },
           { "key":  "Role",
-            "value": self.properties.playerRole },
+            "value": (self.properties.playerRole!="" && self.properties.playerRole!=null)?
+                        self.properties.playerRole:"--" },
           { "key":  "Country",
             "value": self.properties.country },
           { "key":  "Batting",

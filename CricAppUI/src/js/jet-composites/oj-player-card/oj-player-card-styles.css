@@ -6,7 +6,7 @@ oj-player-card:not(.oj-complete){
 .player-card{
   box-sizing: border-box;
   width: 304px;
-  height: 346px;
+  height: 286px;
   padding-left: 2px;
   padding-right: 2px;
   padding-top: 1rem;

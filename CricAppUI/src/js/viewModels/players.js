@@ -10,7 +10,7 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         '../utils/DataUtils','ojs/ojarraydataprovider',
-        'oj-st-scroll-to-top/loader','oj-player-card/loader',
+        'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext',
         'ojs/ojlistview','ojs/ojinputsearch'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayersViewModel(routerArgs) {
@@ -22,20 +22,13 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         // Implement further logic if needed
       };
 
-      self.playerSearcVal = ko.observable("");
-      self.searchPlayers = function(){
-        console.log(self.playerSearcVal());
-      }
-
-      self.playersToDisplay = ko.observable(new ArrayDataProvider([], {keyAttributes: "playerId"}));
-
-      self.viewPlayerClick = function(){
-  
-      }
       self.favPlayers = ko.observable();
+      self.playersToDisplay = ko.observable(new ArrayDataProvider([], {keyAttributes: "playerId"}));
+      self.showResults = ko.observable(false);
+      self.playerSearchVal = ko.observable("");
+
       self.fetchFavouritePlayers = function(){
         var getFavouritePlayersUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "favourites/players";
-        console.log("fetching Favourite Players details, ", getFavouritePlayersUrl);
         var favs = [];
         CommonUtils.ajaxCall('GET',getFavouritePlayersUrl,true,"","json","",
           function(data){},    //success call back
@@ -66,9 +59,48 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           }
         );
       }
-      self.fetchFavouritePlayers();
-      //self.favPlayers = ko.observable(DataUtils.favouritePlayersList());
-      console.log(DataUtils.favouritePlayersList());
+
+      self.searchAndDisplayPlayers = function(){
+        searchString = self.playerSearchVal();
+        var getsearchPlayersForDisplayUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "search/players/"+searchString;
+        var players = [];
+        CommonUtils.ajaxCall('GET',getsearchPlayersForDisplayUrl,true,"","json","",
+          function(data){},    //success call back
+          function(data){},    //failure call back
+          //complete call back
+          (xhr, res) => { 
+            if (res.status == 200){
+              var data = res.responseJSON.data;
+              $.each(data, function () {
+                players.push({
+                  playerName: this.commonName==null?this.name:this.commonName,
+                  playerId: this.playerId,
+                  playerRole: this.role,
+                  playerFullName: this.name,
+                  battingStyle: this.batStyle,
+                  bowlingStyle: this.bowlStyle,
+                  country: this.country
+                })
+              });
+            }
+            self.playersToDisplay(new ArrayDataProvider(players, {keyAttributes: "playerId",}));
+          }
+        );
+      }
+
+      self.playerSearchVal.subscribe(function(newValue) {
+        //console.log(newValue,":    ",self.inningsSelectionOptions)
+        if(newValue != "" && newValue != null){
+          self.showResults(true);
+        }   
+        else if(newValue == "" || newValue == null){
+          self.showResults(false);
+        }
+      });
+
+      self.viewPlayerClick = function(){
+  
+      }
 
       /**
        * Optional ViewModel method invoked after the View is disconnected from the DOM.
@@ -83,6 +115,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
        */
       this.transitionCompleted = () => {
         // Implement if needed
+        self.fetchFavouritePlayers();
       };
 
 

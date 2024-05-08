@@ -1,46 +1,88 @@
  <div id="players-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
     <div id="player-search-div" class="oj-sm-padding-5x-start">
-      <oj-input-search id="search1" class="oj-form-control-max-width-md"
-                       value="{{playerSearcVal}}"
-                       on-oj-value-action="[[searchPlayers]]"
-                       placeholder="Search...">
+      <oj-input-text id="search1" class="oj-form-control-max-width-md"
+                    value="{{playerSearchVal}}"
+                    on-value-changed="[[searchAndDisplayPlayers]]"
+                    placeholder="Search..."
+                    clear-icon="conditional">
+            <span class="oj-ux-ico-search oj-text-field-start-end-icon" slot="start">
       </oj-input-search>
   </div>
     </div>
-  <div id="fav-players-div">  
-    <div id="fav-player-heaing-div">
-      <h3 class="oj-sm-padding-5x-start tab-header">Favourites</h3>
-    </div>
-        <div id="fav-results-div">
-          <oj-list-view id="listView-players"  
-                      data="[[favPlayers]]" 
-                      display="card"
-                      style="min-height: inherit;"
-                      class="oj-flex oj-flex-item oj-listview-item-layout"> 
-                <template slot="itemTemplate"> 
-                  <li>
-                    <oj-player-card player-id="[[$current.data.playerId]]"
-                                    player-name="[[$current.data.playerName]]"
-                                    player-full-name="[[$current.data.playerFullName]]"
-                                    player-role="[[$current.data.playerRole]]"
-                                    country="[[$current.data.country]]"
-                                    batting-style="[[$current.data.battingStyle]]"
-                                    bowling-style="[[$current.data.bowlingStyle]]"
-                                    on-card-click="{{viewPlayerClick}}">
-                    </oj-player-card>
-                  </li>   
-                </template>   
-                <template slot="noData">
-                  <div class="oj-flex oj-sm-12 ">
-                    <div class="oj-sm-3"></div>
-                    <div class="oj-sm-6 welcome-dialog" style="background-color: white; height: 375px;">
+
+  <oj-bind-if test="[[showResults() == false]]">
+    <div id="fav-players-div">  
+      <div id="fav-player-heaing-div">
+        <h3 class="oj-sm-padding-8x-start tab-header">Favourites</h3>
+      </div>
+          <div id="fav-results-div">
+            <oj-list-view id="listView-players"  
+                        data="[[favPlayers]]" 
+                        display="card"
+                        style="min-height: inherit;"
+                        class="oj-flex oj-flex-item oj-listview-item-layout"> 
+                  <template slot="itemTemplate"> 
+                    <li>
+                      <oj-player-card player-id="[[$current.data.playerId]]"
+                                      player-name="[[$current.data.playerName]]"
+                                      player-full-name="[[$current.data.playerFullName]]"
+                                      player-role="[[$current.data.playerRole]]"
+                                      country="[[$current.data.country]]"
+                                      batting-style="[[$current.data.battingStyle]]"
+                                      bowling-style="[[$current.data.bowlingStyle]]"
+                                      on-card-click="{{viewPlayerClick}}">
+                      </oj-player-card>
+                    </li>   
+                  </template>   
+                  <template slot="noData">
+                    <div class="oj-flex oj-sm-12 ">
+                      <div class="oj-sm-3"></div>
+                      <div class="oj-sm-6 welcome-dialog" style="background-color: white; height: 375px;">
+                      </div>
+                      <div class="oj-sm-3"></div>
                     </div>
-                    <div class="oj-sm-3"></div>
-                  </div>
-                </template>   
-          </oj-list-view>
-        </div>
-  </div>      
+                  </template>   
+            </oj-list-view>
+          </div>
+    </div>
+  </oj-bind-if>
+
+  <oj-bind-if test="[[showResults()]]">
+    <div id="searched-players-div">  
+      <div id="searched-player-heaing-div">
+        <h3 class="oj-sm-padding-8x-start tab-header">Search Results</h3>
+      </div>
+          <div id="searched-results-div">
+            <oj-list-view id="listView-players"  
+                        data="[[playersToDisplay]]" 
+                        display="card"
+                        style="min-height: inherit;"
+                        class="oj-flex oj-flex-item oj-listview-item-layout"> 
+                  <template slot="itemTemplate"> 
+                    <li>
+                      <oj-player-card player-id="[[$current.data.playerId]]"
+                                      player-name="[[$current.data.playerName]]"
+                                      player-full-name="[[$current.data.playerFullName]]"
+                                      player-role="[[$current.data.playerRole]]"
+                                      country="[[$current.data.country]]"
+                                      batting-style="[[$current.data.battingStyle]]"
+                                      bowling-style="[[$current.data.bowlingStyle]]"
+                                      on-card-click="{{viewPlayerClick}}">
+                      </oj-player-card>
+                    </li>   
+                  </template>   
+                  <template slot="noData">
+                    <div class="oj-flex oj-sm-12 ">
+                      <div class="oj-sm-3"></div>
+                      <div class="oj-sm-6 welcome-dialog" style="background-color: white; height: 375px;">
+                      </div>
+                      <div class="oj-sm-3"></div>
+                    </div>
+                  </template>   
+            </oj-list-view>
+          </div>
+    </div>
+  </oj-bind-if>
 
   <oj-st-scroll-to-top></oj-st-scroll-to-top>
 </div> 
