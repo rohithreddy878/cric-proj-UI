@@ -197,6 +197,10 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
                     }
                 }
             }
+            let lastIndex = ps.lastIndexOf(",");
+            if (lastIndex !== -1) {
+                ps = ps.substring(0, lastIndex) + ps.substring(lastIndex + 1);
+            }
             return [team,ps];
         }
 

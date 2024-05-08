@@ -63,16 +63,16 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             className: "oj-sm-only-hide",
             resizable: "disabled",
             sortable:"disabled"
+          }, /**
+          {
+            id:"venueColumn",
+            headerText: "Venue", 
+            field: "venue",
+            headerClassName: "oj-sm-only-hide",
+            className: "oj-sm-only-hide",
+            resizable: "enabled",
+            sortable:"disabled"
           },
-          // {
-          //   id:"venueColumn",
-          //   headerText: "Venue", 
-          //   field: "venue",
-          //   headerClassName: "oj-sm-only-hide",
-          //   className: "oj-sm-only-hide",
-          //   resizable: "enabled",
-          //   sortable:"disabled"
-          // },
           {
             id:"format",
             headerText: "Format", 
@@ -81,7 +81,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             className: "oj-sm-only-hide",
             resizable: "disabled",
             sortable:"disabled"
-          },
+          }, */
           {
             id:"resultColumn",
             headerText: "Result", 
