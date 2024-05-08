@@ -140,7 +140,8 @@ li{
 }
 
 h1.about-header {
-  font-family: "montserrat-regular", sans-serif;
+  /* font-family:   "montserrat-regular", sans-serif; */
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif  ;
   font-style: oblique;
   color: #31B6C7;
   position: relative;
@@ -150,7 +151,7 @@ h1.about-header {
 
 h1.about-cricket-header{
   line-height: 1.324;
-  font-size: 2.8rem;
+  font-size: 3.2rem;
 }
 
 h1.about-numbers-header{
@@ -178,8 +179,8 @@ h1.about-header::before {
 }
 
 p.describe {
-  font-family: "muli-light", sans-serif;
-  font-size: 1.3rem;
+  font-family:Verdana, Geneva, Tahoma, sans-serif ;
+  font-size: 1.2rem;
   line-height: 1.857;
   color: #838383;
   margin-bottom: 0.5rem;

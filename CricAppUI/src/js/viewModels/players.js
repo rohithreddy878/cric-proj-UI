@@ -24,7 +24,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.playerSearcVal = ko.observable("");
       self.searchPlayers = function(){
-
+        console.log(self.playerSearcVal());
       }
 
       self.playersToDisplay = ko.observable(new ArrayDataProvider([], {keyAttributes: "playerId"}));
@@ -34,24 +34,17 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       }
       self.favPlayers = ko.observable();
       self.fetchFavouritePlayers = function(){
-        var getFavouritePlayersUrl = Constants.SERVICES_CONTEXT_PATH + "players/favourites";
+        var getFavouritePlayersUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "favourites/players";
         console.log("fetching Favourite Players details, ", getFavouritePlayersUrl);
         var favs = [];
         CommonUtils.ajaxCall('GET',getFavouritePlayersUrl,true,"","json","",
-          //success call back
-          function(data){
-            console.log("successful to fetch Favourite Players..");
-            //DataUtils.favouritePlayersList(data);
-          },
-          //failure call back
-          function(data){
-            console.log("failed to get Players Details");
-          },
+          function(data){},    //success call back
+          function(data){},    //failure call back
           //complete call back
           (xhr, res) => { 
             //console.log("inside complete callback",res);
             if (res.status == 200){
-              var data = res.responseJSON;
+              var data = res.responseJSON.data;
               $.each(data, function () {
                 favs.push({
                     playerName: this.commonName==null?this.name:this.commonName,
