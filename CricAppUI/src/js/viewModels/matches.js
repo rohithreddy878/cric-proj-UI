@@ -435,8 +435,15 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
 
       self.onOpenMatchDetailsClick = function(data, context){
-        //console.log(context.data);
         let mId = context.data;
+        if(self.currMatch()){
+          if(self.currMatch().match.matchId == mId){
+            //console.log("clicking on same match: ",self.currMatch().match.matchId ,"--",mId);
+            document.querySelector("#details-dialog").open();
+            self.matchDetailsDialogSelectedTab('scorecard')
+            return;
+          }
+        }
         self.matchesArray.forEach(m=>{
           if(m["value"]==mId){
             self.currMatchId(m.matchId);
@@ -484,13 +491,15 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
               "index": inn.index,
               "inningsId": inn.inningsId,
               "matchId": inn.matchId,
-              "name": inn.name,
+              "teamName": inn.teamName,
               "overs": inn.overs,
               "runs": inn.runs,
               "wickets": inn.wickets,
+              "teamDisplayName":inn.teamDisplayName,
               "score":inn.runs+"-"+inn.wickets+"("+inn.overs+" Ov)",
               "battersDP": new ArrayDataProvider(battersCards, { keyAttributes: "batterId" }),
               "bowlersDP": new ArrayDataProvider(inn.bowlerScoresList, { keyAttributes: "bowlerId" }),
+
 
             };
             self.currInnings.push(innings);
@@ -577,17 +586,19 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.inningsSelectionOptions = [];
       self.selectedInnings = ko.observable("");
-      self.selectedInningsTeamName = ko.observable("");
+      self.selectedInningsTitle = ko.observable("");
 
       //self.batScoreContribsData = [];
       self.batScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
       self.batImpactsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+      self.bowlScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
 
       self.fillVisualizationDataArrays = function(inningsIndex){
         //console.log("in fillVisualizationDataArrays for innings: ", inningsIndex)
         igs = self.currInnings()[inningsIndex-1];
-        self.selectedInningsTeamName(igs["name"]);
-        //BATTING 
+        score = igs.runs+"-"+igs.wickets+"("+igs.overs+" Ov)"
+        self.selectedInningsTitle("Innings "+inningsIndex+", "+igs.teamDisplayName+" : "+score);
+        //BATTING runs scored
         bats = igs["battersDP"]["data"];
         //1. batScoreContribsData 
         batScoreContribsData = [];
@@ -622,6 +633,21 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         }
         self.batImpactsDP(new ArrayDataProvider(batImpactsData,{keyAttributes:'id'}));
         
+        //3. Bowling - runs conceded
+        bowls = igs["bowlersDP"]["data"];
+        bowlsConcededData = [];
+        for (var k = 0; k < bowls.length; k++) {
+          if(bowls[k]["balls"]>0){
+            bowlsConcededData.push({
+                "id": k,
+                "name": bowls[k]["bowlerName"],
+                "runs": bowls[k]["runs"],
+                "balls":bowls[k]["balls"]
+            });
+          }
+        }
+        self.bowlScoreContribsDP(new ArrayDataProvider(bowlsConcededData,{keyAttributes:'id'}));
+        
       }
 
       self.matchDetailsDialogSelectedTab.subscribe(function(newValue) {
@@ -631,8 +657,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           innSelects = new Array(num_innings);
           for(var i=0; i<num_innings; i++){
             igs = self.currInnings()[i];
-            // label: ("Innings "+ String(igs["index"])+" - "+igs["name"])
-            innSelects[i] = { id: ("innings"+String(i+1)), label: ("Innings "+ String(igs["index"])) }
+            // label: ("Innings "+ String(igs["index"])+" - "+igs.team.displayName)
+            innSelects[i] = { id: ("innings"+String(i+1)), label: ("Innings "+ String(igs.index)+" - "+igs.teamDisplayName) }
           }
           self.inningsSelectionOptions = innSelects;
           self.selectedInnings("innings1");

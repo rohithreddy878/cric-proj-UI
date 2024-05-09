@@ -28,6 +28,11 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.currentPlayerName = ko.observable("");
       self.currentPlayerInfo = ko.observable({});
 
+      self.hasBatted = ko.observable(false);
+      self.hasBowled = ko.observable(false);
+      self.noOfDelsBatted = ko.observable(0);
+      self.noOfDelsBowled = ko.observable(0);
+
     /********************** logic to extract module params *************************/
       
       try{
@@ -61,6 +66,36 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
               self.currentPlayerInfo(data);
             }
           }
+        );
+        var updatePlayerHasBattedUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "players/"+self.currentPlayerId()+"/playedAs/"+"batter";
+        CommonUtils.ajaxCall('GET',updatePlayerHasBattedUrl,true,"","json","",
+            function(data){},    //success call back
+            function(data){},    //failure call back
+            //complete call back
+            (xhr, res) => { 
+                if (res.status == 200){
+                    var data = res.responseJSON.data;
+                    if(data.count>0){
+                        self.hasBatted(true);
+                        self.noOfDelsBatted(data.count);
+                    }
+                }
+            }
+        );
+        var updatePlayerHasBowledUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "players/"+self.currentPlayerId()+"/playedAs/"+"bowler";
+        CommonUtils.ajaxCall('GET',updatePlayerHasBowledUrl,true,"","json","",
+            function(data){},    //success call back
+            function(data){},    //failure call back
+            //complete call back
+            (xhr, res) => { 
+                if (res.status == 200){
+                    var data = res.responseJSON.data;
+                    if(data.count>0){
+                        self.hasBowled(true);
+                        self.noOfDelsBowled(data.count);
+                    }
+                }
+            }
         );
       }
 

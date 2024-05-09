@@ -108,14 +108,14 @@
                        <h6>Playing 11</h6>
                     </span>
                     <div class="oj-sm-padding-5x-start"> 
-                      <div class="oj-panel">
+                      <div class="oj-panel  oj-panel-shadow-lg">
                         <p>
                           <i><b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b></i>
                           <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
                         </p>
                       </div>
                       <br>
-                      <div class="oj-panel"
+                      <div class="oj-panel  oj-panel-shadow-lg"
                         <p>
                           <i><b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b></i>
                           <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
@@ -141,7 +141,7 @@
                       <oj-c-list-item-layout> 
                         <div id="innings-heading-div" class="oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar  scores-header oj-sm-align-items-center">
                           <div class="oj-sm-4 oj-flex-bar-start">
-                            <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                            <oj-bind-text value="[[item.data.teamName]]"></oj-bind-text>
   
                           </div>
                           <div class="oj-sm-2 oj-flex-bar-end">
@@ -199,7 +199,7 @@
           <oj-bind-if test="[[matchDetailsDialogSelectedTab() === 'visualize']]">
             <div class="oj-flex-bar oj-sm-padding-5x-horizontal oj-sm-padding-3x-top "> 
               <div class=" oj-flex-bar-start">
-                <h6><oj-bind-text value="[[selectedInningsTeamName]]"></oj-bind-text></h6>
+                <h6><oj-bind-text value="[[selectedInningsTitle]]"></oj-bind-text></h6>
               </div> 
               <div class="oj-flex-bar-end">
                 <oj-buttonset-one id="innings-set" value="{{selectedInnings}}">
@@ -215,14 +215,15 @@
                 </oj-buttonset-one>
               </div>
             </div>  
-            <div class="oj-flex oj-sm-padding-5x-horizontal">
+            <div id="batting-charts" class="oj-flex oj-sm-padding-5x-horizontal oj-sm-padding-3x-bottom">
               <div class="oj-sm-padding-2x-bottom"><b>Batting</b></div>
               <div class="oj-flex oj-sm-12" id="batting-charts-div">
                 <!-- batting - score contributions pie chart -->
                 <div class="oj-panel oj-sm-5"> 
-                  <div class="chart-title">Batsmen Contributions to Total Score</div>
+                  <div class="chart-title">Runs Scored by Batters</div>
                   <oj-chart class="scores-chart" type="pie" data="[[batScoreContribsDP]]" 
-                            legend.position="end" animation-on-display="auto">
+                            legend.position="end" animation-on-display="auto"
+                            style-defaults.three-d-effect="on">
                     <template slot="itemTemplate" data-oj-as="item">
                       <oj-chart-item value="[[item.data.runs]]" 
                                     group-id="[[ [item.data.group] ]]"
@@ -246,7 +247,8 @@
                 <div class="oj-panel oj-sm-5"> 
                   <div class="chart-title">Batsmen Impact Score</div>
                   <oj-chart class="scores-chart" type="pie" data="[[batImpactsDP]]" 
-                            legend.position="end" animation-on-display="auto">
+                            legend.position="end" animation-on-display="auto"
+                            style-defaults.three-d-effect="on">
                     <template slot="itemTemplate" data-oj-as="item">
                       <oj-chart-item value="[[item.data.score]]" 
                                     group-id="[[ [item.data.group] ]]"
@@ -263,6 +265,41 @@
                       </div>
                     </template>
                   </oj-chart>
+                </div>
+              </div>
+            </div>
+            <div id="bowling-charts" class="oj-flex oj-sm-padding-5x-horizontal oj-sm-padding-3x-bottom">
+              <div class="oj-sm-padding-2x-bottom"><b>Bowling</b></div>
+              <div class="oj-flex oj-sm-12" id="bowling-charts-div">
+                <!-- bowling - score contributions pie chart -->
+                <div class="oj-panel oj-sm-5"> 
+                  <div class="chart-title">Runs Conceded by Bowlers</div>
+                  <oj-chart class="scores-chart" type="pie" data="[[bowlScoreContribsDP]]" 
+                            legend.position="end" animation-on-display="auto"
+                            style-defaults.three-d-effect="on">
+                    <template slot="itemTemplate" data-oj-as="item">
+                      <oj-chart-item value="[[item.data.runs]]" 
+                                    group-id="[[ [item.data.group] ]]"
+                                    series-id="[[item.data.name]]">
+                      </oj-chart-item>
+                    </template>
+                    <template slot="tooltipTemplate">
+                      <div class="oj-flex">
+                        <div class="oj-flex-item">
+                          <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
+                          <br />
+                          <span><i><oj-bind-text value="[['Runs:'+ $current.itemData.runs]]"></oj-bind-text></i></span>
+                          <br />
+                          <span><i><oj-bind-text value="[['Balls:'+ $current.itemData.balls]]"></oj-bind-text></i></span>
+                        </div>
+                      </div>
+                    </template>
+                  </oj-chart>
+                </div>
+                <div class="oj-sm-1"></div>
+                <div class="oj-panel oj-sm-5"> 
+                  <div class="chart-title">Bolwers Impact Score</div>
+                  
                 </div>
               </div>
             </div>
