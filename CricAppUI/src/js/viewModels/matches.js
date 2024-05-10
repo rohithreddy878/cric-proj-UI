@@ -12,13 +12,13 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
         '../utils/AusTourofIndia','ojs/ojarraydataprovider','ojs/ojpagingdataproviderview',
-        'oj-st-scroll-to-top/loader',
+        'ojs/ojarraytreedataprovider','ojs/ojpalette', 'ojs/ojpaletteutils','oj-st-scroll-to-top/loader',
         'ojs/ojselectsingle', 'ojs/ojtable','ojs/ojdialog','ojs/ojcollapsible','oj-c/button',
         'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout','ojs/ojformlayout',
         'ojs/ojpagingcontrol','ojs/ojdefer','ojs/ojnavigationlist','ojs/ojchart','ojs/ojbutton',
-        ],
+        'ojs/ojtreemap'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils, AusTourofIndia,
-          ArrayDataProvider,PagingDataProviderView) {
+          ArrayDataProvider,PagingDataProviderView,ArrayTreeDataProvider,ojpalette_1, ojpaletteutils_1) {
     function MatchesViewModel() {
      
       var self = this;
@@ -590,8 +590,17 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //self.batScoreContribsData = [];
       self.batScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
-      self.batImpactsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+      self.batImpactsDP = ko.observable(new ArrayTreeDataProvider([],{keyAttributes:'id'}));
       self.bowlScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+      self.getColoursForDataTree = function(inn_index, player_index, bins){
+        {
+          const colorPalatteOptions = ["magma","inferno","plasma","viridis"];
+          colorsPalette = ojpalette_1.getColorValuesFromPalette(colorPalatteOptions[inn_index],bins);
+          c = ojpaletteutils_1.getColorValue(colorsPalette,((player_index+1)/bins));
+          return c;
+        };
+
+      }
 
       self.fillVisualizationDataArrays = function(inningsIndex){
         //console.log("in fillVisualizationDataArrays for innings: ", inningsIndex)
@@ -609,7 +618,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 "id": k,
                 "name": bats[k]["batterName"],
                 "runs": bats[k]["runs"],
-                "balls":bats[k]["balls"]
+                "runsAndBalls":bats[k]["runs"]+"("+bats[k]["balls"]+")",
             });
           }
         }
@@ -617,22 +626,34 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         
         //2. batting impact 
         //IMPACT_SCORE = BATTER_RUNS*((BATTER_RUNS/TOTAL_RUNS)/(BATTER_BALLS/TOTAL_BALLS))
-        batImpactsData = [];
+        nodes=[]
+        sum_scores=0;
         for (var k = 0; k < bats.length; k++) {
           if(bats[k]["runs"]>0 && igs["overs"]!=0 && igs["runs"]!=0){
             sc_ratio = bats[k]["runs"]/igs["runs"];
             balls_ratio = bats[k]["balls"]/(igs["overs"]*6);
             imp_sc = bats[k]["runs"] * (sc_ratio/balls_ratio);
             imp_sc = Math.round(imp_sc * 100) / 100;
-            batImpactsData.push({
+            sum_scores=sum_scores+imp_sc
+            nodes.push({
                 "id": k,
                 "name": bats[k]["batterName"],
                 "score": imp_sc,
+                "runsAndBalls":bats[k]["runs"]+"("+bats[k]["balls"]+")",
+                "colour": self.getColoursForDataTree(inningsIndex,k,bats.length)
+
             });
           }
         }
-        self.batImpactsDP(new ArrayDataProvider(batImpactsData,{keyAttributes:'id'}));
-        
+        batttersData = [{
+          "name":"Batters",
+          "score":sum_scores,
+          "nodes":nodes,
+
+        }];
+        self.batImpactsDP(new ArrayTreeDataProvider(batttersData,{keyAttributes:'id',childrenAttribute: "nodes",}));
+
+
         //3. Bowling - runs conceded
         bowls = igs["bowlersDP"]["data"];
         bowlsConcededData = [];

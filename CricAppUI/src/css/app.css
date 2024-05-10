@@ -139,6 +139,11 @@ li{
   height: 336px;
 }
 
+.scores-tree {
+  width: 100%;
+  height: 236px;
+}
+
 h1.about-header {
   /* font-family:   "montserrat-regular", sans-serif; */
   font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif  ;
