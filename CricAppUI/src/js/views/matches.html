@@ -219,7 +219,7 @@
               <div class="oj-sm-padding-2x-bottom"><b>Batting</b></div>
               <div class="oj-flex oj-sm-12" id="batting-charts-div">
                 <!-- batting - score contributions pie chart -->
-                <div class="oj-panel oj-sm-5"> 
+                <div class="oj-panel oj-sm-5 oj-sm-margin-2x-bottom"> 
                   <div class="chart-title">Runs Scored by Batters</div>
                   <oj-chart class="scores-chart" type="pie" data="[[batScoreContribsDP]]" 
                             legend.position="end" 
@@ -243,11 +243,11 @@
                     </template>
                   </oj-chart>
                 </div>
-                <div class="oj-sm-1"></div>
-                <div class="oj-flex oj-panel oj-sm-6"> 
+                <div class="oj-sm-1 oj-sm-margin-2x-bottom"></div>
+                <div class="oj-flex oj-panel oj-sm-6 oj-sm-margin-2x-bottom"> 
                   <div class="oj-flex-item oj-sm-12 chart-title">Batsmen Impact Score</div>
-                  <div class="oj-flex-item oj-sm-2"></div>
-                  <div class="oj-flex-item oj-sm-8">
+                  <div class="oj-flex-item oj-sm-1"></div>
+                  <div class="oj-flex-item oj-sm-10">
                     <oj-treemap id="treemap1" class="scores-tree" 
                               data="[[batImpactsDP]]"
                               animation-on-display="auto"
@@ -274,20 +274,48 @@
                       </oj-treemap>
                   </div>
                 </div>
+                <div class="oj-panel oj-sm-5 oj-sm-margin-2x-bottom">
+                  <div class="chart-title">Run-scoring methods</div>
+                  <oj-chart class="scores-chart" type="pie" data="[[runsScoredMethodsDP]]" 
+                            legend.position="bottom" 
+                            animation-on-display="auto"
+                            style-defaults.pie-inner-radius="0.4"
+                            pie-center.label="Run Scoring"
+                            hover-behavior="dim">
+                    <template slot="itemTemplate" data-oj-as="item">
+                      <oj-chart-item value="[[item.data.runs]]" 
+                                    group-id="[[ [item.data.group] ]]"
+                                    series-id="[[item.data.method]]">
+                      </oj-chart-item>
+                    </template>
+                    <template slot="tooltipTemplate">
+                      <div class="oj-flex">
+                        <div class="oj-flex-item">
+                          <span><b><oj-bind-text value="[[$current.itemData.method]]"></oj-bind-text></b></span>
+                          <br />
+                          <span><oj-bind-text value="[['Runs Scores: '+ $current.itemData.runs]]"></oj-bind-text></span>
+                        </div>
+                      </div>
+                    </template>
+                  </oj-chart>
+                </div>
               </div>
             </div>
             <div id="bowling-charts" class="oj-flex oj-sm-padding-5x-horizontal oj-sm-padding-3x-bottom">
               <div class="oj-sm-padding-2x-bottom"><b>Bowling</b></div>
               <div class="oj-flex oj-sm-12" id="bowling-charts-div">
                 <!-- bowling - score contributions pie chart -->
-                <div class="oj-panel oj-sm-5"> 
-                  <div class="chart-title">Runs Conceded by Bowlers</div>
-                  <oj-chart class="scores-chart" type="pie" data="[[bowlScoreContribsDP]]" 
-                            legend.position="end" animation-on-display="auto"
-                            style-defaults.three-d-effect="on">
+                <div class="oj-panel oj-sm-margin-2x-bottom oj-sm-5"> 
+                  <div class="chart-title">Economies of Bowlers</div>
+                  <oj-chart class="" type="bar" data="[[bowlerEconomiesDP]]" 
+                            legend.rendered="off" animation-on-display="auto"
+                            orientation="vertical" stack="off"
+                            style-defaults.max-bar-width="42"
+                            style-defaults.bar-gap-ratio="0.25"
+                            style-defaults.data-item-gaps="10%">
                     <template slot="itemTemplate" data-oj-as="item">
-                      <oj-chart-item value="[[item.data.runs]]" 
-                                    group-id="[[ [item.data.group] ]]"
+                      <oj-chart-item value="[[item.data.economy]]" 
+                                    group-id="[[ [item.data.name] ]]"
                                     series-id="[[item.data.name]]">
                       </oj-chart-item>
                     </template>
@@ -296,16 +324,16 @@
                         <div class="oj-flex-item">
                           <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
                           <br />
-                          <span><i><oj-bind-text value="[['Runs:'+ $current.itemData.runs]]"></oj-bind-text></i></span>
+                          <span><i><oj-bind-text value="[['Economy:'+ $current.itemData.economy]]"></oj-bind-text></i></span>
                           <br />
-                          <span><i><oj-bind-text value="[['Balls:'+ $current.itemData.balls]]"></oj-bind-text></i></span>
+                          <span><i><oj-bind-text value="[['Bowling:'+ $current.itemData.desc]]"></oj-bind-text></i></span>
                         </div>
                       </div>
                     </template>
                   </oj-chart>
                 </div>
-                <div class="oj-sm-1"></div>
-                <div class="oj-panel oj-sm-5"> 
+                <div class="oj-sm-1 oj-sm-margin-2x-bottom"></div>
+                <div class="oj-panel oj-sm-5 oj-sm-margin-2x-bottom"> 
                   <div class="chart-title">Bolwers Impact Score</div>
                   
                 </div>

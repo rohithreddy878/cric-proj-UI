@@ -589,9 +589,10 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.selectedInningsTitle = ko.observable("");
 
       //self.batScoreContribsData = [];
-      self.batScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
-      self.batImpactsDP = ko.observable(new ArrayTreeDataProvider([],{keyAttributes:'id'}));
-      self.bowlScoreContribsDP = ko.observable(new ArrayDataProvider([],{keyAttributes:'id'}));
+      self.batScoreContribsDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batImpactsDP = ko.observable(new ArrayTreeDataProvider([],{}));
+      self.bowlerEconomiesDP = ko.observable(new ArrayDataProvider([],{}));
+      self.runsScoredMethodsDP = ko.observable(new ArrayDataProvider([],{}));
       self.getColoursForDataTree = function(inn_index, player_index, bins){
         {
           const colorPalatteOptions = ["magma","inferno","plasma","viridis"];
@@ -615,14 +616,13 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           //console.log("batter: ",k,": ",bats[k])
           if(bats[k]["runs"]>0){
             batScoreContribsData.push({
-                "id": k,
                 "name": bats[k]["batterName"],
                 "runs": bats[k]["runs"],
                 "runsAndBalls":bats[k]["runs"]+"("+bats[k]["balls"]+")",
             });
           }
         }
-        self.batScoreContribsDP(new ArrayDataProvider(batScoreContribsData,{keyAttributes:'id'}));
+        self.batScoreContribsDP(new ArrayDataProvider(batScoreContribsData,{keyAttributes:'name'}));
         
         //2. batting impact 
         //IMPACT_SCORE = BATTER_RUNS*((BATTER_RUNS/TOTAL_RUNS)/(BATTER_BALLS/TOTAL_BALLS))
@@ -636,7 +636,6 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             imp_sc = Math.round(imp_sc * 100) / 100;
             sum_scores=sum_scores+imp_sc
             nodes.push({
-                "id": k,
                 "name": bats[k]["batterName"],
                 "score": imp_sc,
                 "runsAndBalls":bats[k]["runs"]+"("+bats[k]["balls"]+")",
@@ -651,23 +650,53 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           "nodes":nodes,
 
         }];
-        self.batImpactsDP(new ArrayTreeDataProvider(batttersData,{keyAttributes:'id',childrenAttribute: "nodes",}));
+        self.batImpactsDP(new ArrayTreeDataProvider(batttersData,{keyAttributes:'name',childrenAttribute: "nodes",}));
 
+        //3. batScoreContribsData 
+        runsScoredMethodsData = [];
+        fours=0;
+        sixes=0;
+        runningBetween=0;
+        for (var k = 0; k < bats.length; k++) {
+          fours=fours+bats[k]["fours"]*4;
+          sixes=sixes+bats[k]["sixes"]*6;
+          runsWithBoundaries=(bats[k]["fours"]*4)+(bats[k]["sixes"]*6);
+          runningBetween= runningBetween+(bats[k]["runs"]-runsWithBoundaries);
+        }
+        runsScoredMethodsData=[
+          {
+            "method": "Running between the wickets",
+            "runs": runningBetween,
+          },
+          {
+            "method": "Fours",
+            "runs": fours,
+          },
+          {
+            "method": "Sixes",
+            "runs": sixes,
+          },
+          {
+            "method": "Extras",
+            "runs": igs["extras"],
+          }
+        ]
+        self.runsScoredMethodsDP(new ArrayDataProvider(runsScoredMethodsData,{keyAttributes:'method'}));
 
-        //3. Bowling - runs conceded
+        //4. Bowling - economies
         bowls = igs["bowlersDP"]["data"];
-        bowlsConcededData = [];
+        bowlerEconomies = [];
         for (var k = 0; k < bowls.length; k++) {
           if(bowls[k]["balls"]>0){
-            bowlsConcededData.push({
-                "id": k,
+            bowlerEconomies.push({
                 "name": bowls[k]["bowlerName"],
-                "runs": bowls[k]["runs"],
-                "balls":bowls[k]["balls"]
+                "economy": bowls[k]["economy"],
+                "desc":bowls[k]["overs"]+"-0-"+bowls[k]["runs"]+"-"+bowls[k]["wickets"]
             });
           }
         }
-        self.bowlScoreContribsDP(new ArrayDataProvider(bowlsConcededData,{keyAttributes:'id'}));
+        console.log(bowlerEconomies);
+        self.bowlerEconomiesDP(new ArrayDataProvider(bowlerEconomies,{keyAttributes:'name'}));
         
       }
 
