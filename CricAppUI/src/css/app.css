@@ -79,11 +79,15 @@ li{
   margin: 10px;
 }
 
+#appn-short-header{
+  background-color: #061931;
+  margin: 10px;
+}
 
 
-#appn-title{
+
+.appn-title{
   /* The Cover Drive Zone */
-
   font-family: 'Rock Salt'; 
   font-style: oblique;
   font-weight: 400;
@@ -95,7 +99,19 @@ li{
   color: #F5F5F5;
 }
 
-#appn-caption{
+.appn-short-title{
+  font-family: 'Rock Salt'; 
+  font-style: oblique;
+  font-weight: 150;
+  font-size: 36px;
+  line-height: 36px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #F5F5F5;
+}
+
+.appn-caption{
   /* Studying a funny Game... */
   font-family: 'Satisfy';
   font-style: oblique;

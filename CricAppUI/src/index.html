@@ -73,21 +73,19 @@
             <div class="oj-flex-item oj-sm-8 oj-flex">
             <!-- logo goes here.. -->
               <img  id="appn-logo" src="css/images/logo-circle.png"
-                  alt="bulleted list image"
-                  width="120"
-                  height="120"/>
+                  width="120" height="120"/>
             </div>
           </div>
           
           <div class="oj-flex oj-sm-5 oj-flex-bar-middle oj-sm-align-items-center">
             <!-- application title and caption -->
             <div> 
-              <oj-bind-text id="appn-title" class="oj-flex-item oj-sm-12 oj-flex">
+              <oj-bind-text class="appn-title" class="oj-flex-item oj-sm-12 oj-flex">
                 The Cover Drive Zone
               </oj-bind-text> 
               <div class="oj-flex oj-sm-align-items-flex-end"> 
               <oj-bind-text class="oj-flex-item oj-sm-6 oj-flex"></oj-bind-text>
-              <oj-bind-text id="appn-caption" class="oj-flex-item oj-sm-6 oj-flex">
+              <oj-bind-text class="appn-caption" class="oj-flex-item oj-sm-6 oj-flex">
                 Studying a funny Game...
               </oj-bind-text> 
               </div>
@@ -123,6 +121,22 @@
                   </div> 
               </div>
           </div>
+
+        </div>
+        <div id="appn-short-header" class="oj-web-applayout-max-width" style="display: none;">
+          <div class="oj-flex-bar oj-sm-12 oj-sm-padding-2x">
+            <div class="oj-flex-bar-start oj-sm-1 oj-sm-align-items-center oj-sm-flex-direction-column">
+              <img id="appn-logo" src="css/images/logo-circle.png"
+                  width="45"height="45"/>
+            </div>
+          
+            <div class="oj-flex-bar-middle oj-sm-5 oj-sm-align-items-center">
+              <oj-bind-text class="appn-short-title">
+                The Cover Drive Zone
+              </oj-bind-text> 
+            </div>
+          </div>
+          
 
         </div>
       </header>

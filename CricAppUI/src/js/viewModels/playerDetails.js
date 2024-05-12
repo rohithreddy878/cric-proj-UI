@@ -18,7 +18,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       var self = this;
       this.connected = () => {
         accUtils.announce('Player details page loaded.');
-        document.getElementById("navigation-div").style.display = "none";
+        document.getElementById("appn-header").style.display = "none";
+        document.getElementById("appn-short-header").style.display = "block";
         pName=routerArgs.params.playerName;
         document.title = pName; //change it to player name
         // Implement further logic if needed
@@ -108,7 +109,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       this.disconnected = () => {
         // Implement if needed
-        document.getElementById("navigation-div").style.display = "block";
+        document.getElementById("appn-short-header").style.display = "none";
+        document.getElementById("appn-header").style.display = "flex";
       };
 
       this.transitionCompleted = () => {

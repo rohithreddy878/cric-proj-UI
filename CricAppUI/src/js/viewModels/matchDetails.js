@@ -22,7 +22,9 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       var self = this;
       this.connected = () => {
         accUtils.announce('Match details page loaded.');
-        document.getElementById("navigation-div").style.display = "none";
+        document.getElementById("appn-header").style.display = "none";
+        document.getElementById("appn-short-header").style.display = "block";
+
         mId=routerArgs.params.matchId;
         document.title = mId; //try to change it to match name eg CSK v GT
         // Implement further logic if needed
@@ -436,7 +438,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
     /*************************************************************************/
       this.disconnected = () => {
         // Implement if needed
-        document.getElementById("navigation-div").style.display = "block";
+        document.getElementById("appn-short-header").style.display = "none";
+        document.getElementById("appn-header").style.display = "flex";
       };
 
       this.transitionCompleted = () => {
