@@ -10,7 +10,7 @@
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         '../utils/DataUtils','ojs/ojarraydataprovider',
-        'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext',
+        'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext','ojs/ojbutton',
         'ojs/ojlistview','ojs/ojinputsearch'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayerDetailsViewModel(routerArgs) {
@@ -99,6 +99,9 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         );
       }
 
+      self.goBackToPlayersPage = function(){
+        CommonUtils.changeRoute(routerArgs, "players", {});
+      }
 
       //on initial load:
       self.getPlayerBasicDetails();

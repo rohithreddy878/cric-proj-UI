@@ -44,6 +44,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
         { path: 'players', detail: { label: 'Players'} },
         { path: 'matches', detail: { label: 'Matches' } },
         { path: 'analyses', detail: { label: 'Analize' } },
+        { path: 'matchDetails', detail: { label: 'MatchDetails' } },
         { path: 'playerDetails', detail: { label: 'PlayerDetails' } },
       ];
       // Router setup

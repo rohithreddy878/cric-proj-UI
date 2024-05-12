@@ -1,13 +1,18 @@
-<div id="player-details-main-div" class="oj-flex oj-hybrid-padding" style="display: block; height:fit-content;">
-
-
-    <div id="player-details-div" class="oj-flex oj-flex-bar">  
-      <div id="matches-heaing-div" class="oj-sm-3 oj-flex-bar-start">
-        <h2 class="oj-sm-padding-5x-start tab-header">
-            <oj-bind-text value="[[currentPlayerName]]"></oj-bind-text>
-        </h2>
+<div class="oj-sm-padding-5x-start">
+  
+  <div class="oj-flex-bar oj-sm-padding-1x-start oj-sm-margin-5x-bottom">
+      <div class="oj-flex-bar-start">
+          <oj-button display="all" on-oj-action="[[goBackToPlayersPage]]">
+              <span slot="startIcon" class="oj-ux-ico-arrow-left-alt"></span>
+              Back
+          </oj-button>
       </div>
-  
-    </div>
-  
+      <div class="oj-flex-item oj-flex-bar-middle oj-sm-align-items-center  oj-sm-flex-direction-column">
+          <h5><oj-bind-text value=[[currentPlayerName]]></oj-bind-text> </h5>
+      </div>
+  </div>
+
+
+
+
 </div>
