@@ -124,7 +124,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getLeagueEventSeasons = function(){
         var seasons = []
-        var getLeagueEventSeasonsUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/seasons";
+        var getLeagueEventSeasonsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "leagues/seasons";
         //console.log("fetching all League Event Seasons, ", getLeagueEventSeasonsUrl);
         CommonUtils.ajaxCall('GET',getLeagueEventSeasonsUrl,true,"","json","",
           function(data){},          //success call back
@@ -133,7 +133,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           (xhr, res) => { 
             //console.log("inside complete callback of get all League Event Seasons",res);
             if (res.status == 200){
-              var data = res.responseJSON;
+              var data = res.responseJSON.data;
               $.each(data, function () {
                 seasons.push({
                     value: this
@@ -163,7 +163,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getLeagueEventsForSeason = function(season){
         var events = []
-        var getLeagueEventsForSeasonUrl = Constants.SERVICES_CONTEXT_PATH + "leagues/events?season="+season;
+        var getLeagueEventsForSeasonUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "leagues/events/"+season;
         //console.log("fetching all League Events for a Season, ", getLeagueEventsForSeasonUrl);
         CommonUtils.ajaxCall('GET',getLeagueEventsForSeasonUrl,true,"","json","",
           function(data){}, //success call back
@@ -172,7 +172,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           (xhr, res) => { 
             //console.log("inside complete callback of get all League Events for Season",res);
             if (res.status == 200){
-              var data = res.responseJSON;
+              var data = res.responseJSON.data;
               $.each(data, function () {
                 events.push({
                     value: this.leagueEventId,
