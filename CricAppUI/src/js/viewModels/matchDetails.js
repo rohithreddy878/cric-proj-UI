@@ -196,7 +196,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         }
       }
       catch(ex){ // any exceptions in query params in url will be caught here  
-        console.log("something wrong in try", ex)
+        //console.log("something wrong in try", ex)
       }
     /********************** functions *************************/
 
@@ -444,6 +444,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       this.transitionCompleted = () => {
         // Implement if needed
+        document.title = self.currentMatchName();
       };
 
 

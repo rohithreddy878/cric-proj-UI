@@ -137,7 +137,7 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
             var curMeridiem = today.getHours() > 12 ? "PM" : "AM";
 
             var str = curMonth + " " +  dayOfMonth + ", " + curYear + " " + curHour + ":" + curMinute + " " + curMeridiem;
-            console.log("date string: " + str);
+            //console.log("date string: " + str);
             return str;
 
         }

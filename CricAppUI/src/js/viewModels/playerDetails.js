@@ -52,7 +52,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       }
       catch(ex){ // any exceptions in query params in url will be caught here  
-        console.log("something wrong in try", ex)
+        //console.log("something wrong in try", ex)
       }
     /********************** functions *************************/
       self.getPlayerBasicDetails = function(){
