@@ -201,7 +201,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.onOpenMatchDetailsClick = function(){
         let mId = self.currentMatchId();
         var matchDetails = self.fetchMatchDetails(mId);
-        var mt = matchDetails.match;
+        var mt = matchDetails;
         self.currentMatchInfo(matchDetails);
         self.currentMatchName(mt.name);
         self.currentMatchDate(CommonUtils.formatDateForDisplay(mt.date));
@@ -261,7 +261,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.fetchMatchDetails = function(matchId){
         var match = null;
-        var getMatchDetailsUrl = Constants.SERVICES_CONTEXT_PATH + "matches/matchDetails?matchId="+matchId;
+        var getMatchDetailsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "matches/"+matchId;
         //console.log("fetching match details with URL: ", getMatchDetailsUrl);
         CommonUtils.ajaxCall('GET',getMatchDetailsUrl,true,"","json","",
           function(data){},    //success call back
@@ -270,7 +270,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           (xhr, res) => { 
             //console.log("inside complete callback of get match details",res);
             if (res.status == 200){
-              var data = res.responseJSON;
+              var data = res.responseJSON.data;
               match=data;
             }
           }

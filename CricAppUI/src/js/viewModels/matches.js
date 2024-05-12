@@ -212,7 +212,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getMatchesForLeagueEvent = function(le,pageNo){
         var matches = []
-        var getMatchesForLeagueEventUrl = Constants.SERVICES_CONTEXT_PATH + "matches?leagueEvent="+le+"&pageNo="+pageNo+"&pageSize="+self.currentPageSize;
+        var getMatchesForLeagueEventUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "matches/paginated/"+le+"?pageNo="+pageNo+"&pageSize="+self.currentPageSize;
         //console.log("fetching all matches for League Event, ", getMatchesForLeagueEventUrl);
         CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
           function(data){},   //success call back
@@ -221,7 +221,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           (xhr, res) => { 
             //console.log(res.status);
             if (res.status == 200){
-              var data = res.responseJSON.matchesList;
+              var data = res.responseJSON.data.matchesList;
               $.each(data, function () {
                 matches.push({
                   stage: CommonUtils.getEventStageDisplay(this.eventStage),
@@ -231,8 +231,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                   format: this.matchType,
                   name: CommonUtils.shortenMatchName(this.name,this.team1,this.team2),
                   venue: this.venue,
-                  tosswinner: this.tossWonTeam.name,
-                  tosschoice: this.tossWonTeam.tossWinnerChoice,
+                  //tosswinner: this.tossWonTeam.name,
+                  //tosschoice: this.tossWonTeam.tossWinnerChoice,
                   result: this.matchOutcome.winner!=null?
                             this.matchOutcome.winner.displayName + " " +  this.matchOutcome.outcome.replace('Win', 'won'):
                             this.matchOutcome.outcome,
@@ -248,7 +248,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
               self.matchesArray = matches;
               //self.matchesListDP(new PagingDataProviderView(new ArrayDataProvider(matches, { keyAttributes: "value" })));
               self.matchesListDP(new ArrayDataProvider(matches, { keyAttributes: "value" }));
-              var tr = res.responseJSON.totalResults;
+              var tr = res.responseJSON.data.totalResults;
               var t = Math.ceil(tr / Constants.MATCHES_TABLE_PAGESIZE);
               //console.log("tr: ",tr, "t: ",t);
               self.totalNoOfPagesMatchesTable(t);

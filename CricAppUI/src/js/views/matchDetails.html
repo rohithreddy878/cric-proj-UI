@@ -34,18 +34,18 @@
                                     <h6>Match Facts</h6>
                                 </span>
                                 <div class="oj-sm-padding-5x-start"> 
-                                    <p><b>Match:</b> <oj-bind-text value="[[currentMatchInfo().match.name]]"></oj-bind-text></p>
+                                    <p><b>Match:</b> <oj-bind-text value="[[currentMatchInfo().name]]"></oj-bind-text></p>
                                     <p><b>Date:</b> <oj-bind-text value="[[currentMatchDate]]"></oj-bind-text></p>
-                                    <p><b>Venue:</b> <oj-bind-text value="[[currentMatchInfo().match.venue]]"></oj-bind-text></p>
+                                    <p><b>Venue:</b> <oj-bind-text value="[[currentMatchInfo().venue]]"></oj-bind-text></p>
                                     <p><b>Toss:</b> 
-                                        <oj-bind-text value="[[currentMatchInfo().match.tossWonTeam.displayName]]"></oj-bind-text>
+                                        <oj-bind-text value="[[currentMatchInfo().tossWonTeam.displayName]]"></oj-bind-text>
                                         <oj-bind-text value=" won the toss and chose to "></oj-bind-text>
-                                        <oj-bind-text value="[[currentMatchInfo().match.tossWinnerChoice]]"></oj-bind-text>
+                                        <oj-bind-text value="[[currentMatchInfo().tossWinnerChoice]]"></oj-bind-text>
                                     </p>
                                     <p><b>Result:</b>
-                                        <oj-bind-text value="[[currentMatchInfo().match.matchOutcome.winner.displayName]]"></oj-bind-text>
+                                        <oj-bind-text value="[[currentMatchInfo().matchOutcome.winner.displayName]]"></oj-bind-text>
                                         <oj-bind-text value=" "></oj-bind-text>
-                                        <oj-bind-text value="[[currentMatchInfo().match.matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
+                                        <oj-bind-text value="[[currentMatchInfo().matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
                                     </p>
                                 </div>
                             </oj-collapsible> 
