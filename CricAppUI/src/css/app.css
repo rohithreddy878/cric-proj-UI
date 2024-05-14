@@ -256,3 +256,16 @@ ul#matches-pagination li a.active-page {
   pointer-events: none; /* Disable pointer events */
   color: gray; /* Change text color to indicate it's disabled */
 }
+
+.player-details-drawer-start {
+  min-width: 12.5rem;
+  height: 100%;
+  background-color: #061931;
+}
+  
+.player-details-drawer-header {
+  display: flex;
+  padding: 0.3rem 1rem 0 1rem;
+  justify-content: space-between;
+  align-items: center;
+}

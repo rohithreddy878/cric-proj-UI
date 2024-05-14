@@ -27,7 +27,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.totalNoOfPagesMatchesTable = ko.observable(0);
 
-      self.selectedSeasonVal = ko.observable('2023');//defaulting to 2023 on first load
+      self.selectedSeasonVal = ko.observable();//defaulting to 2023 on first load
       self.selectedLeagueEventVal = ko.observable();  //defaulting to IPL-2023 on first load
 
       self.seasonListDP = ko.observable(new ArrayDataProvider([], { }));
@@ -115,8 +115,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.leagueEventsListDP = ko.observable([]);//new ArrayDataProvider(self.leagueEvents(), { keyAttributes: "value" });
 
       self.matchesTableTitle = ko.observable(" ");
-      self.matchesArray = []
-      self.matchesListDP =  ko.observable(new ArrayDataProvider(self.matchesArray, { keyAttributes: "value" }));
+      self.matchesListDP =  ko.observable(new ArrayDataProvider([], {}));
 
       self.currentPage = ko.observable();
       self.currentPageSize = Constants.MATCHES_TABLE_PAGESIZE;
@@ -153,11 +152,22 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         if(v==pv){
           //self.leagueEventsListDP(new ArrayDataProvider(self.leagueEvents, { keyAttributes: "value" }));
         }
-        else if(v ==null || v==""){
-          self.leagueEvents = [];
-        }
         else{
-          self.getLeagueEventsForSeason(v);
+          self.matchesListDP(new ArrayDataProvider([], {}));
+          //DELETE ANY PREV TAGS 
+          var pagination = document.getElementById('matches-pagination');
+          var oldPageLinks = pagination.querySelectorAll('li.numbered-page');
+          oldPageLinks.forEach(function(element) {
+            element.remove();
+          });
+          pagination.removeEventListener('click', self.pagesClickingFunction);
+          self.currentPage(1);
+          if(v ==null || v==""){
+            self.leagueEvents = [];
+          }
+          else{
+            self.getLeagueEventsForSeason(v);
+          }
         }
       }
 
@@ -198,7 +208,6 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           //do nothing
         }
         else if(v ==null || v==""){
-          self.matchesArray = [];
           self.matchesTableTitle(" ");
         }
         else{
@@ -212,8 +221,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getMatchesForLeagueEvent = function(le,pageNo){
         var matches = []
+        console.log("fetching all matches called with pageno: ", pageNo);
         var getMatchesForLeagueEventUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "matches/paginated/"+le+"?pageNo="+pageNo+"&pageSize="+self.currentPageSize;
-        //console.log("fetching all matches for League Event, ", getMatchesForLeagueEventUrl);
         CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
           function(data){},   //success call back
           function(data){},  //failure call back
@@ -245,7 +254,6 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                   //playing112:this.playing11List[1],
                 })
               });
-              self.matchesArray = matches;
               //self.matchesListDP(new PagingDataProviderView(new ArrayDataProvider(matches, { keyAttributes: "value" })));
               self.matchesListDP(new ArrayDataProvider(matches, { keyAttributes: "value" }));
               var tr = res.responseJSON.data.totalResults;
@@ -266,15 +274,51 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         CommonUtils.changeRoute(routerArgs, "matchDetails", params);
       }
 
+      self.pagesClickingFunction =  function(event) {
+        var pagination = document.getElementById('matches-pagination');
+        // Check if the clicked element is a page number link
+        if (event.target.tagName === 'A'){
+
+          if(event.target.id !== 'matches-tables-prev-button' && event.target.id !== 'matches-tables-next-button') {
+            var pageLinks = pagination.getElementsByTagName('a');
+            for (var i = 0; i < pageLinks.length; i++) {
+                pageLinks[i].classList.remove('active-page');
+            }
+            event.target.classList.add('active-page'); 
+
+            // Prevent default behavior of anchor tags
+            event.preventDefault();
+            var pageNumber = event.target.textContent;
+            self.getMatchesForLeagueEvent(le=self.selectedLeagueEventVal(),pageNo=pageNumber);
+            self.currentPage(pageNumber);
+          }
+          else{
+            var curr = Number(self.currentPage());
+            var pageLinks = pagination.getElementsByTagName('a');
+            pageLinks[curr].classList.remove('active-page');
+            if(event.target.id == 'matches-tables-prev-button'){
+              curr = curr-1;
+            }
+            else if(event.target.id == 'matches-tables-next-button'){
+              curr = curr+1;
+            }
+            pageLinks[curr].classList.add('active-page');
+            self.currentPage(curr);
+            self.getMatchesForLeagueEvent(le=self.selectedLeagueEventVal(),pageNo=curr);
+          }
+        }
+      }
+
       self.addPagingControl = function(){
         document.getElementById('matches-table-paging-div').style.display = 'block';
         var totalPages = self.totalNoOfPagesMatchesTable();
         var pagination = document.getElementById('matches-pagination');
+
         // Generate page number links dynamically
         for (var i = 1; i <= totalPages; i++) {
             var li = document.createElement('li');
+            li.classList.add('numbered-page');
             var a = document.createElement('a');
-            a.href = '#matches-table-div';
             a.textContent = i;
             li.appendChild(a);
             pagination.insertBefore(li, pagination.lastElementChild);
@@ -283,40 +327,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         pageLinks[1].classList.add('active-page');
 
         // Add click event listener to the pagination element
-        pagination.addEventListener('click', function(event) {
-            // Check if the clicked element is a page number link
-            if (event.target.tagName === 'A'){
-
-              if(event.target.id !== 'matches-tables-prev-button' && event.target.id !== 'matches-tables-next-button') {
-                var pageLinks = pagination.getElementsByTagName('a');
-                for (var i = 0; i < pageLinks.length; i++) {
-                    pageLinks[i].classList.remove('active-page');
-                }
-                event.target.classList.add('active-page'); 
-
-                // Prevent default behavior of anchor tags
-                event.preventDefault();
-                var pageNumber = event.target.textContent;
-                //console.log('Clicked on page number:', pageNumber);
-                self.getMatchesForLeagueEvent(le=self.selectedLeagueEventVal(),pageNo=pageNumber);
-                self.currentPage(pageNumber);
-              }
-              else{
-                var curr = Number(self.currentPage());
-                var pageLinks = pagination.getElementsByTagName('a');
-                pageLinks[curr].classList.remove('active-page');
-                if(event.target.id == 'matches-tables-prev-button'){
-                  curr = curr-1;
-                }
-                else if(event.target.id == 'matches-tables-next-button'){
-                  curr = curr+1;
-                }
-                pageLinks[curr].classList.add('active-page');
-                self.currentPage(curr);
-                self.getMatchesForLeagueEvent(le=self.selectedLeagueEventVal(),pageNo=curr);
-              }
-            }
-        });
+        pagination.addEventListener('click',self.pagesClickingFunction);
       }
 
       self.currentPage.subscribe(function(newValue) {
@@ -341,7 +352,6 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       });
 
 
-
       //on start
       self.getLeagueEventSeasons();
       self.leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
@@ -352,6 +362,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       this.transitionCompleted = () => {
         // Initial variable allocations
+        self.selectedSeasonVal("2023");
         self.selectedLeagueEventVal(14);
         self.currentPage(1);
       };

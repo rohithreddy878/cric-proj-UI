@@ -13,7 +13,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
         'ojs/ojresponsiveknockoututils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 
         'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 'ojs/ojarraydataprovider', 
         'ojs/ojknockouttemplateutils', 'ojs/ojmodule-element', 'ojs/ojknockout',
-        'ojs/ojbutton'],
+        'oj-c/button'],
   function(ko, Context,CommonUtils, Constants,moduleUtils, ResponsiveUtils, ResponsiveKnockoutUtils, CoreRouter, 
            ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ArrayDataProvider, 
            KnockoutTemplateUtils) {

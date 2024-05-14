@@ -1,11 +1,11 @@
-<div class="oj-sm-padding-5x-start">
+<div class="oj-sm-padding-2x-start">
   
-  <div class="oj-flex-bar oj-sm-padding-1x-start oj-sm-margin-5x-bottom">
+  <div class="oj-flex-bar oj-sm-padding-5x-start oj-sm-margin-5x-bottom">
       <div class="oj-flex-bar-start oj-sm-align-items-center">
-          <oj-button display="all" on-oj-action="[[goBackToPlayersPage]]">
+          <oj-c-button display="all" label="Back"
+                    on-oj-action="[[goBackToPlayersPage]]">
               <span slot="startIcon" class="oj-ux-ico-arrow-left-alt"></span>
-              Back
-          </oj-button>
+          </oj-c-button>
       </div>
       <div class="oj-flex-item oj-sm-6 oj-flex-bar-middle oj-sm-align-items-center  oj-sm-flex-direction-column">
           <h5><oj-bind-text value=[[currentPlayerName]]></oj-bind-text> </h5>
@@ -13,10 +13,47 @@
   </div>
 
   <div class="oj-flex">
-    
+    <oj-drawer-layout start-opened="{{drawerOpened}}" style="min-height: 70vh;">
+            <div style="padding-bottom: 1rem">
+              <oj-c-button class="oj-button-md"
+                         display="icons"  label="Menu"
+                         on-oj-action="[[drawerToggle]]">
+                <span slot="startIcon" class="oj-ux-ico-menu"></span>
+              </oj-c-button>
+            </div>
+        <div slot="start" class="oj-color-invert player-details-drawer-start">
+            <div class="player-details-drawer-header">
+              <div>
+                <h6>Choose one</h6>
+              </div>
+            </div>
+            <oj-navigation-list selection="{{drawerNavSelection}}">
+              <ul>
+                <li id="basic"><a href="#">Basic</a></li>
+                <li id="batting"><a href="#">Batting</a></li>
+                <li id="bowling"><a href="#">Bowling</a></li>
+              </ul>
+            </oj-navigation-list>
+        </div>
+    </oj-drawer-layout>
+    <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
+        <div class="oj-flex-item">
+            <oj-bind-text value="[[currentPlayerInfo().role]]"></oj-bind-text>
+        </div>
+    </oj-bind-if>
+    <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
+        <div class="oj-flex-item">
+            <oj-bind-text value="[[currentPlayerInfo().batStyle]]"></oj-bind-text>
+        </div>
+    </oj-bind-if>
+    <oj-bind-if test="[[drawerNavSelection() == 'bowling']]">    
+        <div class="oj-flex-item">
+            <oj-bind-text value="[[currentPlayerInfo().bowlStyle]]"></oj-bind-text>
+        </div>
+    </oj-bind-if>
   </div>
 
 
-
+  <oj-st-scroll-to-top></oj-st-scroll-to-top>
 
 </div>

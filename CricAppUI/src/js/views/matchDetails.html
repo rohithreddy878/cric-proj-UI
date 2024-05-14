@@ -1,6 +1,6 @@
 <div class="oj-sm-padding-5x-start">
     <div class="oj-flex-bar oj-sm-padding-1x-start oj-sm-margin-5x-bottom">
-        <div class="oj-flex-bar-start">
+        <div class="oj-flex-bar-start oj-sm-align-items-center">
             <oj-button display="all" on-oj-action="[[goBackToMatchesPage]]">
                 <span slot="startIcon" class="oj-ux-ico-arrow-left-alt"></span>
                 Back
@@ -283,7 +283,7 @@
                           <div class="oj-flex-item">
                             <span><b><oj-bind-text value="[[$current.itemData.method]]"></oj-bind-text></b></span>
                             <br />
-                            <span><oj-bind-text value="[['Runs Scores: '+ $current.itemData.runs]]"></oj-bind-text></span>
+                            <span><oj-bind-text value="[['Runs Scored: '+ $current.itemData.runs]]"></oj-bind-text></span>
                           </div>
                         </div>
                       </template>
@@ -334,6 +334,8 @@
 
 
     </oj-bind-if>
+
+    <oj-st-scroll-to-top></oj-st-scroll-to-top>
 
 </div>
     

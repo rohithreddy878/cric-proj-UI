@@ -110,13 +110,12 @@
                   <div id="proceed-button-div" class="oj-flex-bar-end oj-md-justify-content-flex-end oj-sm-padding-10x" style="display: none;">   
                     <!-- <div class="oj-flex oj-sm-9"></div>   -->
                     <div class="oj-flex">
-                      <oj-button class="oj-button-lg oj-color-invert" 
-                               display="all"
+                      <oj-c-button class="oj-button-lg oj-color-invert" 
+                               display="all" label="Lets go"
                                chroming="callToAction"
-                               on-click="[[goToDashboard]]">
+                               on-oj-action="[[goToDashboard]]">
                         <span slot="endIcon" class="oj-ux-ico-arrow-right"></span>
-                        Lets go
-                      </oj-button>
+                      </oj-c-button>
                     </div>  
                   </div> 
               </div>
@@ -137,6 +136,15 @@
               <div class="oj-flex-item oj-icon-circle oj-icon-circle-xl oj-color-invert"> 
                 <span class="oj-ux-ico-copyright"></span> 
               </div>
+            </div>
+
+            <div class="oj-flex-bar-end oj-sm-2 oj-sm-align-items-flex-end oj-sm-flex-direction-column oj-sm-padding-5x-end">
+              <oj-c-button class="oj-button-sm  oj-color-invert" 
+                        display="icons" label="Home"
+                        chroming="solid"
+                        on-oj-action="[[goToDashboard]]">
+                  <span slot="startIcon" class="oj-ux-ico-home"></span>
+              </oj-c-button>
             </div>
           </div>
           
