@@ -214,23 +214,24 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         ar2 = CommonUtils.formPlaying11Para(pList[1]);
         self.currPlaying112Para(ar2[1]);
         self.currTeam2(ar2[0]);
-
-        //fetch scorecard using self.currentMatchId:
+        matchTeams=[matchDetails.team1, matchDetails.team2];
+       //fetch scorecard using self.currentMatchId:
         var scorecards = self.fetchMatchScorecards(mId);
         self.currInnings([]);
         if(scorecards[0].runs!=0 || scorecards[1].runs!=0){
           scorecards.forEach(inn => {
+            inn.teamName
             battersCards = []
             inn.batterScoresList.forEach(br =>{ 
               bCard = {
                 'batterId': br.batterId,
                 'batterName':br.batterName, 
-                'battingPosition': br.battingPosition,
+                //'battingPosition': br.battingPosition,
                 'runs': br.runs,
                 'balls': br.balls,
                 'fours': br.fours,
                 'sixes': br.sixes,
-                'strikeRate': br.strikeRate,
+                'strikeRate': br.balls !== 0 ? parseFloat((Math.round((100*br.runs/br.balls)*100)/100).toFixed(2)) : 0,
                 'outStatusString': CommonUtils.formulateOutStringForBatter(br.out,
                                                       br.wicketBowlerName,
                                                       br.wicketFielder1Name,
@@ -238,6 +239,21 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                                                       br.wicketKind)
               }
               battersCards.push(bCard);
+            });
+            bowlerCards = []
+            inn.bowlerScoresList.forEach(bw =>{ 
+                bwCard = {
+                  'bowlerId': bw.bowlerId,
+                  'bowlerName':bw.bowlerName, 
+                  'runs': bw.runs,
+                  'wickets':bw.wickets,
+                  'overs': (Math.floor(bw.balls/6))+((bw.balls%6)/10),
+                  'balls': bw.balls,
+                  'noballs': bw.noballs,
+                  'wides':bw.wides,
+                  'economy': bw.balls !== 0 ? parseFloat((Math.round((bw.runs/(bw.balls/6))*100)/100).toFixed(2)) : 0,
+                }
+                bowlerCards.push(bwCard);
             });
             innings = {
               "extras": inn.extras,
@@ -249,16 +265,18 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
               "runs": inn.runs,
               "wickets": inn.wickets,
               "teamDisplayName":inn.teamDisplayName,
+              "color":matchTeams.find(team => team.name === inn.teamName).primaryColour.toLowerCase(),
               "score":inn.runs+"-"+inn.wickets+"("+inn.overs+" Ov)",
               "battersDP": new ArrayDataProvider(battersCards, { keyAttributes: "batterId" }),
-              "bowlersDP": new ArrayDataProvider(inn.bowlerScoresList, { keyAttributes: "bowlerId" }),
-
+              "bowlersDP": new ArrayDataProvider(bowlerCards, { keyAttributes: "bowlerId" }),
+            
 
             };
             self.currInnings.push(innings);
           });
         }
-        self.matchDetailsDialogSelectedTab('scorecard')
+        self.matchDetailsDialogSelectedTab('visualize')
+          
       }
 
       self.fetchMatchDetails = function(matchId){
@@ -304,7 +322,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         {
           const colorPalatteOptions = ["magma","inferno","plasma","viridis"];
           colorsPalette = ojpalette_1.getColorValuesFromPalette(colorPalatteOptions[inn_index],bins);
-          c = ojpaletteutils_1.getColorValue(colorsPalette,((player_index+1)/bins));
+          c = ojpaletteutils_1.getColorValue(colorsPalette,((player_index)/bins));
           return c;
         };
 
@@ -326,6 +344,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 "name": bats[k]["batterName"],
                 "runs": bats[k]["runs"],
                 "runsAndBalls":bats[k]["runs"]+"("+bats[k]["balls"]+")",
+                "colour": self.getColoursForDataTree(inningsIndex,k,bats.length)
             });
           }
         }
@@ -399,7 +418,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 "name": bowls[k]["bowlerName"],
                 "economy": bowls[k]["economy"],
                 "group":"Bowlers",
-                "desc":bowls[k]["overs"]+"-0-"+bowls[k]["runs"]+"-"+bowls[k]["wickets"]
+                "desc":bowls[k]["overs"]+"-0-"+bowls[k]["runs"]+"-"+bowls[k]["wickets"],
+                "colour": self.getColoursForDataTree(inningsIndex,k,bowls.length)
             });
           }
         }
@@ -419,7 +439,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           }
           self.inningsSelectionOptions = innSelects;
           self.selectedInnings("innings1");
-        }   
+        }  
       });
 
       self.selectedInnings.subscribe(function(newValue) {
@@ -427,6 +447,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         self.fillVisualizationDataArrays(t);
           
       });
+
 
       self.goBackToMatchesPage = function(){
         CommonUtils.changeRoute(routerArgs, "matches", {});

@@ -184,7 +184,7 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
         self.formPlaying11Para = function(playing11List){
             team = playing11List.team.name;
             pslist = ['player1','player2','player3','player4','player5','player6','player7','player8','player9','player10','player11'];
-            ps = ': ';
+            ps = '';
             for(p in pslist){
                 t = pslist[p];
                 if(playing11List[t]!=null){
@@ -195,6 +195,15 @@ function (oj,ko,$, Constants, RegExpValidator,AsyncLengthValidator,ArrayDataProv
                     else{
                         ps = ps+player.name+', ';
                     }
+                }
+            }
+            impactPlayer = playing11List['subsInPlayer']
+            if(impactPlayer!=null){
+                if(impactPlayer.commonName!=null && impactPlayer.commonName!="" && impactPlayer.commonName!=undefined){
+                    ps = ps+impactPlayer.commonName+' <i>(impact)</i>'+', ';
+                }
+                else{
+                    ps = ps+impactPlayer.name+' (impact)'+', ';
                 }
             }
             let lastIndex = ps.lastIndexOf(",");

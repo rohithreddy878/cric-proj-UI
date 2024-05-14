@@ -42,11 +42,23 @@
                                         <oj-bind-text value=" won the toss and chose to "></oj-bind-text>
                                         <oj-bind-text value="[[currentMatchInfo().tossWinnerChoice]]"></oj-bind-text>
                                     </p>
-                                    <p><b>Result:</b>
+                                    <oj-bind-if test="[[currentMatchInfo().matchOutcome.winner]]">
+                                      <p><b>Result:</b>
                                         <oj-bind-text value="[[currentMatchInfo().matchOutcome.winner.displayName]]"></oj-bind-text>
                                         <oj-bind-text value=" "></oj-bind-text>
                                         <oj-bind-text value="[[currentMatchInfo().matchOutcome.outcome.replace('Win', 'won')]]"></oj-bind-text>
-                                    </p>
+                                      </p>
+                                    </oj-bind-if>
+                                    <oj-bind-if test="[[currentMatchInfo().matchOutcome.manOfTheMatch]]">
+                                      <p><b>Man of the Match:</b>
+                                        <oj-bind-text value="[[currentMatchInfo().matchOutcome.manOfTheMatch.commonName]]"></oj-bind-text>
+                                      </p>
+                                    </oj-bind-if>
+                                    <oj-bind-if test="[[!currentMatchInfo().matchOutcome.winner]]">
+                                      <p><b>Outcome:</b>
+                                        <oj-bind-text value="[[currentMatchInfo().matchOutcome.outcome.toUpperCase()]]"></oj-bind-text>
+                                      </p>
+                                    </oj-bind-if>
                                 </div>
                             </oj-collapsible> 
                         </div>
@@ -61,14 +73,14 @@
                                     <div class="oj-panel  oj-panel-shadow-lg">
                                         <p>
                                             <i><b><oj-bind-text value="[[currTeam1]]"></oj-bind-text></b></i>
-                                            <oj-bind-text value="[[currPlaying111Para]]"></oj-bind-text>
+                                            <div data-bind="html: currPlaying111Para"></div>
                                         </p>
                                     </div>
                                     <br>
                                     <div class="oj-panel  oj-panel-shadow-lg">
                                         <p>
                                          <i><b><oj-bind-text value="[[currTeam2]]"></oj-bind-text></b></i>
-                                         <oj-bind-text value="[[currPlaying112Para]]"></oj-bind-text>
+                                         <div data-bind="html: currPlaying112Para"></div>
                                         </p>
                                     </div>
                                 </div>
@@ -84,12 +96,13 @@
                   </span>
                   <oj-c-list-view id="innings-list" class="oj-sm-padding-2x-vertical"
                                 data="[[currInningsDP]]"
-                                gridlines.item="hidden">
+                                gridlines.item="visible">
                     <template slot="itemTemplate" data-oj-as="item">
                       <li>
-                        <!-- each item is one innings -->
+                        <!-- each item is one innings.  data-bind="style:{background: item.data.primaryColor}" -->
                         <oj-c-list-item-layout> 
-                          <div id="innings-heading-div" class="oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar  scores-header oj-sm-align-items-center">
+                          <div data-bind="style:{background: item.data.color}"> 
+                          <div class="scores-header oj-sm-padding-2x-horizontal oj-flex oj-sm-12 oj-flex-bar oj-sm-align-items-center">
                             <div class="oj-sm-4 oj-flex-bar-start">
                               <oj-bind-text value="[[item.data.teamName]]"></oj-bind-text>
     
@@ -131,6 +144,8 @@
                                     </span>
                                 </template>
                           </oj-table>
+
+                        </div>
                         </oj-c-list-item-layout>
                         <br>
                       </li>
@@ -148,170 +163,177 @@
     </oj-bind-if>
     
 
-        <oj-bind-if test="[[matchDetailsDialogSelectedTab() === 'visualize']]">
+    <oj-bind-if test="[[matchDetailsDialogSelectedTab() === 'visualize']]">
 
-            <div class="oj-flex-bar oj-sm-12 oj-sm-padding-5x-horizontal oj-sm-padding-3x-top "> 
-                <div class=" oj-flex-bar-start">
-                  <h6><oj-bind-text value="[[selectedInningsTitle]]"></oj-bind-text></h6>
-                </div> 
-                <div class="oj-flex-bar-end">
-                  <oj-buttonset-one id="innings-set" value="{{selectedInnings}}">
-                  <oj-bind-for-each data="[[inningsSelectionOptions]]">
-                    <template>
-                      <oj-option value="[[$current.data.id]]">
-                        <span>
-                          <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
-                        </span>
-                      </oj-option>
-                    </template>
-                  </oj-bind-for-each>
-                  </oj-buttonset-one>
+      <div class="oj-flex-bar oj-sm-12 oj-sm-padding-5x-horizontal oj-sm-padding-3x-top "> 
+        <div class=" oj-flex-bar-start">
+          <h6><oj-bind-text value="[[selectedInningsTitle]]"></oj-bind-text></h6>
+        </div> 
+        <div class="oj-flex-bar-end">
+          <oj-buttonset-one id="innings-set" value="{{selectedInnings}}">
+          <oj-bind-for-each data="[[inningsSelectionOptions]]">
+            <template>
+              <oj-option value="[[$current.data.id]]">
+                <span>
+                  <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                </span>
+              </oj-option>
+            </template>
+          </oj-bind-for-each>
+          </oj-buttonset-one>
+        </div>
+      </div> 
+
+      <div class="oj-flex">
+        <div class="oj-flex-item oj-sm-4">
+            <oj-accordion>
+                <oj-collapsible expanded="true" disabled="true">
+                    <h3 slot="header">Select a chart</h3>
+                    <div>
+                        <oj-radioset value="{{selectedChartOption}}" labelled-by="mainlabelid">
+                            <oj-label>Batting</oj-label>
+                            <oj-option value="bat-contribs">Runs Scored by Batters</oj-option>
+                            <oj-option value="bat-impact-scores">Batsmen Impact Score</oj-option>
+                            <oj-option value="scoring-methods">Run-scoring methods</oj-option>
+                            <oj-label>Bowling</oj-label>
+                            <oj-option value="bowl-economies">Economies of Bowlers</oj-option>
+                        </oj-radioset>
+                    </div>
+                </oj-collapsible>
+            </oj-accordion>
+        </div>
+        <div class="oj-flex-item oj-sm-8">
+
+            <oj-bind-if test="[[selectedChartOption() === 'bat-contribs']]"> 
+                <div class="oj-panel oj-sm-8"> 
+                    <div class="chart-title">Runs Scored by Batters</div>
+                    <oj-chart class="scores-chart" type="pie" data="[[batScoreContribsDP]]" 
+                              legend.position="end" 
+                              animation-on-display="auto"
+                              style-defaults.three-d-effect="on"
+                              hover-behavior="dim">
+                      <template slot="itemTemplate" data-oj-as="item">
+                        <oj-chart-item value="[[item.data.runs]]" 
+                                      group-id="[[ [item.data.group] ]]"
+                                      series-id="[[item.data.name]]"
+                                      color="[[item.data.colour]]">
+                        </oj-chart-item>
+                      </template>
+                      <template slot="tooltipTemplate">
+                        <div class="oj-flex">
+                          <div class="oj-flex-item">
+                            <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
+                            <br />
+                            <span><oj-bind-text value="[['Runs: '+ $current.itemData.runsAndBalls]]"></oj-bind-text></span>
+                          </div>
+                        </div>
+                      </template>
+                    </oj-chart>
                 </div>
-            </div> 
+            </oj-bind-if>
 
-            <div class="oj-flex">
-                <div class="oj-flex-item oj-sm-4">
-                    <oj-accordion>
-                        <oj-collapsible expanded="true" disabled="true">
-                            <h3 slot="header">Select a chart</h3>
-                            <div>
-                                <oj-radioset value="{{selectedChartOption}}" labelled-by="mainlabelid">
-                                    <oj-label>Batting</oj-label>
-                                    <oj-option value="bat-contribs">Runs Scored by Batters</oj-option>
-                                    <oj-option value="bat-impact-scores">Batsmen Impact Score</oj-option>
-                                    <oj-option value="scoring-methods">Run-scoring methods</oj-option>
-                                    <oj-label>Bowling</oj-label>
-                                    <oj-option value="bowl-economies">Economies of Bowlers</oj-option>
-                                </oj-radioset>
+            <oj-bind-if test="[[selectedChartOption() === 'bat-impact-scores']]"> 
+                <div class="oj-panel oj-sm-8"> 
+                    <div class="chart-title oj-sm-margin-5x-bottom">Batsmen Impact Score</div>
+                      <oj-treemap class="scores-tree  oj-sm-margin-5x" 
+                                data="[[batImpactsDP]]"
+                                animation-on-display="auto"
+                                animation-on-data-change="auto"
+                                hover-behavior="dim"
+                                highlight-mode="descendants">
+                            <template slot="nodeTemplate">
+                              <oj-treemap-node label="[[$current.data.name]]"
+                                      value="[[$current.data.score]]"
+                                      color="[[$current.data.colour]]">
+                              </oj-treemap-node>
+                            </template>
+                            <template slot="tooltipTemplate">
+                              <div class="oj-flex">
+                                <div class="oj-flex-item">
+                                  <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
+                                  <br />
+                                  <span><oj-bind-text value="[['Runs: '+ $current.itemData.runsAndBalls]]"></oj-bind-text></span>
+                                  <br />
+                                  <span><i><oj-bind-text value="[['Imp Score: '+ $current.itemData.score]]"></oj-bind-text></i></span>
+                                </div>
+                              </div>
+                            </template>
+                      </oj-treemap>
+                </div>
+            </oj-bind-if>
+
+            <oj-bind-if test="[[selectedChartOption() === 'scoring-methods']]"> 
+                <div class="oj-panel oj-sm-8">
+                    <div class="chart-title">Run-scoring methods</div>
+                    <oj-chart class="scores-chart" type="pie" data="[[runsScoredMethodsDP]]" 
+                              legend.position="bottom" 
+                              animation-on-display="auto"
+                              style-defaults.pie-inner-radius="0.4"
+                              pie-center.label="Run Scoring"
+                              hover-behavior="dim">
+                      <template slot="itemTemplate" data-oj-as="item">
+                        <oj-chart-item value="[[item.data.runs]]" 
+                                      group-id="[[ [item.data.group] ]]"
+                                      series-id="[[item.data.method]]"
+                                      color="[[item.data.colour]]">
+                        </oj-chart-item>
+                      </template>
+                      <template slot="tooltipTemplate">
+                        <div class="oj-flex">
+                          <div class="oj-flex-item">
+                            <span><b><oj-bind-text value="[[$current.itemData.method]]"></oj-bind-text></b></span>
+                            <br />
+                            <span><oj-bind-text value="[['Runs Scores: '+ $current.itemData.runs]]"></oj-bind-text></span>
+                          </div>
+                        </div>
+                      </template>
+                    </oj-chart>
+                </div>
+            </oj-bind-if>
+
+            <oj-bind-if test="[[selectedChartOption() === 'bowl-economies']]"> 
+                <div class="oj-panel oj-sm-8"> 
+                    <div class="chart-title">Economies of Bowlers</div>
+                    <oj-chart class="scores-chart" type="bar"
+                            orientation="vertical"
+                            stack="off"
+                            data="[[bowlerEconomiesDP]]"
+                            animation-on-display="auto"
+                            animation-on-data-change="auto"
+                            hover-behavior="dim"
+                            style-defaults.max-bar-width="56">
+                        <template slot="itemTemplate" data-oj-as="item">
+                              <oj-chart-item value="[[item.data.economy]]"
+                                            group-id="[[ [item.data.group] ]]"
+                                            series-id="[[item.data.name]]"
+                                            color="[[item.data.colour]]">
+                              </oj-chart-item>
+                        </template>
+                        <template slot="tooltipTemplate">
+                          <div class="oj-flex">
+                            <div class="oj-flex-item">
+                              <span><b><oj-bind-text value="[['Bowler: '+ $current.itemData.name]]"></oj-bind-text></b></span>
+                              <br />
+                              <span><oj-bind-text value="[[$current.itemData.desc]]"></oj-bind-text></span>
                             </div>
-                        </oj-collapsible>
-                    </oj-accordion>
+                          </div>
+                        </template>
+                    </oj-chart>
                 </div>
-                <div class="oj-flex-item oj-sm-8">
+            </oj-bind-if>
 
-                    <oj-bind-if test="[[selectedChartOption() === 'bat-contribs']]"> 
-                        <div class="oj-panel oj-sm-8"> 
-                            <div class="chart-title">Runs Scored by Batters</div>
-                            <oj-chart class="scores-chart" type="pie" data="[[batScoreContribsDP]]" 
-                                      legend.position="end" 
-                                      animation-on-display="auto"
-                                      style-defaults.three-d-effect="on"
-                                      hover-behavior="dim">
-                              <template slot="itemTemplate" data-oj-as="item">
-                                <oj-chart-item value="[[item.data.runs]]" 
-                                              group-id="[[ [item.data.group] ]]"
-                                              series-id="[[item.data.name]]">
-                                </oj-chart-item>
-                              </template>
-                              <template slot="tooltipTemplate">
-                                <div class="oj-flex">
-                                  <div class="oj-flex-item">
-                                    <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
-                                    <br />
-                                    <span><oj-bind-text value="[['Runs: '+ $current.itemData.runsAndBalls]]"></oj-bind-text></span>
-                                  </div>
-                                </div>
-                              </template>
-                            </oj-chart>
-                        </div>
-                    </oj-bind-if>
+        </div>
 
-                    <oj-bind-if test="[[selectedChartOption() === 'bat-impact-scores']]"> 
-                        <div class="oj-panel oj-sm-8"> 
-                            <div class="chart-title oj-sm-margin-5x-bottom">Batsmen Impact Score</div>
-                              <oj-treemap class="scores-tree  oj-sm-margin-5x" 
-                                        data="[[batImpactsDP]]"
-                                        animation-on-display="auto"
-                                        animation-on-data-change="auto"
-                                        hover-behavior="dim"
-                                        highlight-mode="descendants">
-                                    <template slot="nodeTemplate">
-                                      <oj-treemap-node label="[[$current.data.name]]"
-                                              value="[[$current.data.score]]"
-                                              color="[[$current.data.colour]]">
-                                      </oj-treemap-node>
-                                    </template>
-                                    <template slot="tooltipTemplate">
-                                      <div class="oj-flex">
-                                        <div class="oj-flex-item">
-                                          <span><b><oj-bind-text value="[[$current.itemData.name]]"></oj-bind-text></b></span>
-                                          <br />
-                                          <span><oj-bind-text value="[['Runs: '+ $current.itemData.runsAndBalls]]"></oj-bind-text></span>
-                                          <br />
-                                          <span><i><oj-bind-text value="[['Imp Score: '+ $current.itemData.score]]"></oj-bind-text></i></span>
-                                        </div>
-                                      </div>
-                                    </template>
-                              </oj-treemap>
-                        </div>
-                    </oj-bind-if>
+      </div>
 
-                    <oj-bind-if test="[[selectedChartOption() === 'scoring-methods']]"> 
-                        <div class="oj-panel oj-sm-8">
-                            <div class="chart-title">Run-scoring methods</div>
-                            <oj-chart class="scores-chart" type="pie" data="[[runsScoredMethodsDP]]" 
-                                      legend.position="bottom" 
-                                      animation-on-display="auto"
-                                      style-defaults.pie-inner-radius="0.4"
-                                      pie-center.label="Run Scoring"
-                                      hover-behavior="dim">
-                              <template slot="itemTemplate" data-oj-as="item">
-                                <oj-chart-item value="[[item.data.runs]]" 
-                                              group-id="[[ [item.data.group] ]]"
-                                              series-id="[[item.data.method]]">
-                                </oj-chart-item>
-                              </template>
-                              <template slot="tooltipTemplate">
-                                <div class="oj-flex">
-                                  <div class="oj-flex-item">
-                                    <span><b><oj-bind-text value="[[$current.itemData.method]]"></oj-bind-text></b></span>
-                                    <br />
-                                    <span><oj-bind-text value="[['Runs Scores: '+ $current.itemData.runs]]"></oj-bind-text></span>
-                                  </div>
-                                </div>
-                              </template>
-                            </oj-chart>
-                        </div>
-                    </oj-bind-if>
 
-                    <oj-bind-if test="[[selectedChartOption() === 'bowl-economies']]"> 
-                        <div class="oj-panel oj-sm-8"> 
-                            <div class="chart-title">Economies of Bowlers</div>
-                            <oj-chart class="scores-chart" type="bar"
-                                    orientation="vertical"
-                                    stack="off"
-                                    data="[[bowlerEconomiesDP]]"
-                                    animation-on-display="auto"
-                                    animation-on-data-change="auto"
-                                    hover-behavior="dim"
-                                    style-defaults.max-bar-width="56">
-                                <template slot="itemTemplate" data-oj-as="item">
-                                      <oj-chart-item value="[[item.data.economy]]"
-                                                    group-id="[[ [item.data.group] ]]"
-                                                    series-id="[[item.data.name]]"></oj-chart-item>
-                                </template>
-                                <template slot="tooltipTemplate">
-                                  <div class="oj-flex">
-                                    <div class="oj-flex-item">
-                                      <span><b><oj-bind-text value="[['Bowler: '+ $current.itemData.name]]"></oj-bind-text></b></span>
-                                      <br />
-                                      <span><oj-bind-text value="[[$current.itemData.desc]]"></oj-bind-text></span>
-                                    </div>
-                                  </div>
-                                </template>
-                            </oj-chart>
-                        </div>
-                    </oj-bind-if>
 
-                </div>
-
-            </div>
 
  
 
 
 
-        </oj-bind-if>
+    </oj-bind-if>
 
 </div>
     
