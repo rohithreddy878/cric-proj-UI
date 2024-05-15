@@ -12,7 +12,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         '../utils/DataUtils','ojs/ojarraydataprovider',
         'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext','oj-c/button',
         'ojs/ojlistview','ojs/ojinputsearch','ojs/ojdrawerlayout','ojs/ojformlayout',
-        'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar'],
+        'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar',
+        'oj-c/list-view','oj-c/list-item-layout'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayerDetailsViewModel(routerArgs) {
 
@@ -29,6 +30,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.currentPlayerId = ko.observable();
       self.currentPlayerName = ko.observable("");
       self.currentPlayerInfo = ko.observable({});
+      self.currentPlayerTeams = ko.observable(new ArrayDataProvider([], {}));
 
       self.hasBatted = ko.observable(false);
       self.hasBowled = ko.observable(false);
@@ -75,6 +77,29 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             if (res.status == 200){
               var data = res.responseJSON.data;
               self.currentPlayerInfo(data);
+            }
+          }
+        );
+        var getPlayerPlayedTeamsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "teams/players/"+self.currentPlayerId();
+        CommonUtils.ajaxCall('GET',getPlayerPlayedTeamsUrl,true,"","json","",
+          function(data){},    //success call back
+          function(data){},    //failure call back
+          //complete call back
+          (xhr, res) => { 
+            if (res.status == 200){
+              var data = res.responseJSON.data;
+              teams=[];
+              $.each(data, function () {
+                t = {
+                  'id':this.teamId+"-badge",
+                  'name':this.name,
+                  'primaryColour':this.primaryColour,
+                  'secondaryColour':this.secondaryColour,
+                  'displayName':this.displayName
+                };
+                teams.push(t);
+              });
+              self.currentPlayerTeams(new ArrayDataProvider(teams, {keyAttributes: 'id'}));
             }
           }
         );
@@ -356,6 +381,17 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         self.playerBowlingWfDP(new ArrayDataProvider(bowlingWfData, {keyAttributes: 'id'}));
       }
 
+      self.setTeamBadgeColors = function(){
+        currTeams=self.currentPlayerTeams();
+        for(team in currTeams){
+          id = team.id; 
+          badgeElement = document.getElementById(id); //.style = "--oj-badge-bg-color:green";
+          console.log(id,"---",badgeElement)
+          badgeElement.style.setProperty("--oj-badge-bg-color", team.primaryColour);
+        }
+      }
+
+
 
       self.goBackToPlayersPage = function(){
         CommonUtils.changeRoute(routerArgs, "players", {});
@@ -363,7 +399,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //on initial load:
       self.getPlayerBasicDetails();
-      self.getPlayerCareerStats();
+      //self.getPlayerCareerStats();
 
       this.disconnected = () => {
         // Implement if needed
