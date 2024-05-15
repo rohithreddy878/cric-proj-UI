@@ -29,7 +29,7 @@
             </div>
             <oj-navigation-list selection="{{drawerNavSelection}}">
               <ul>
-                <li id="basic"><a href="#">Basic</a></li>
+                <li id="basic"><a href="#">Overview</a></li>
                 <li id="batting"><a href="#">Batting</a></li>
                 <li id="bowling"><a href="#">Bowling</a></li>
               </ul>
@@ -37,8 +37,83 @@
         </div>
     </oj-drawer-layout>
     <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
-        <div class="oj-flex-item">
-            <oj-bind-text value="[[currentPlayerInfo().role]]"></oj-bind-text>
+        <div class="oj-flex-item oj-sm-padding-3x">
+            <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                <oj-form-layout columns="3" max-columns="4" direction="row"
+                                readonly="true" label-edge="top"
+                                user-assistance-density="reflow">
+                    <oj-input-text id="name" value="{{currentPlayerInfo().name}}"
+                                disabled="false" label-hint="Name"
+                                style="font-size: larger;">
+                    </oj-input-text>
+                    <oj-input-text id="common-name" value="{{currentPlayerInfo().commonName}}"
+                                disabled="false" label-hint="Common Name"
+                                style="font-size: larger;">
+                    </oj-input-text>
+                    <oj-input-text id="country" value="{{currentPlayerInfo().country}}"
+                                disabled="false" label-hint="Country"
+                                style="font-size: larger;">
+                    </oj-input-text>
+                    <oj-input-text id="role" value="{{currentPlayerInfo().role}}"
+                                disabled="false" label-hint="Role"
+                                style="font-size: larger;">
+                    </oj-input-text>
+                    <oj-input-text id="bat-style" value="{{currentPlayerInfo().batStyle}}"
+                                disabled="false" label-hint="Batting Style"
+                                style="font-size: larger;">
+                    </oj-input-text>
+                    <oj-input-text id="bowl-style" value="{{currentPlayerInfo().bowlStyle}}"
+                                disabled="false" label-hint="Bowling Style"
+                                style="font-size: larger;">
+                    </oj-input-text>
+              </oj-form-layout>
+            </div>
+            <div class="oj-sm-padding-3x-vertical oj-typography-subheading-md">Career</div>
+            <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Batting</div>
+                <oj-waterfall-layout id="waterfall" class="demo-waterfall"
+                                    data="[[playerBattingWfDP]]">
+                    <template slot="itemTemplate" data-oj-as="item">
+                        <oj-action-card class="oj-sm-only-width-4/5">
+                            <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
+                                <div class="demo-profile-card-layout-emp-name">
+                                    <span class="oj-badge oj-badge-info">
+                                        <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                    </span>
+                                </div>
+                                <oj-c-avatar class="demo-profile-card-layout-emp-image"
+                                            size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
+                                            background="[[item.data.avatarBg]]"
+                                            initials="[[item.data.value]]">
+                                </oj-c-avatar>
+                            </div>
+                        </oj-action-card>
+                    </template>
+                </oj-waterfall-layout>  
+            </div>
+            <div class="oj-sm-padding-3x-vertical"> </div>
+            <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Bowling</div>
+                <oj-waterfall-layout id="waterfall" class="demo-waterfall"
+                                    data="[[playerBowlingWfDP]]">
+                    <template slot="itemTemplate" data-oj-as="item">
+                        <oj-action-card class="oj-sm-only-width-4/5">
+                            <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
+                                <div class="demo-profile-card-layout-emp-name">
+                                    <span class="oj-badge oj-badge-success">
+                                        <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                    </span>
+                                </div>
+                                <oj-c-avatar class="demo-profile-card-layout-emp-image"
+                                            size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
+                                            background="[[item.data.avatarBg]]"
+                                            initials="[[item.data.value]]">
+                                </oj-c-avatar>
+                            </div>
+                        </oj-action-card>
+                    </template>
+                </oj-waterfall-layout>  
+            </div>
         </div>
     </oj-bind-if>
     <oj-bind-if test="[[drawerNavSelection() == 'batting']]">

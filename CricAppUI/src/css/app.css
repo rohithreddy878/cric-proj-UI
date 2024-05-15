@@ -269,3 +269,41 @@ ul#matches-pagination li a.active-page {
   justify-content: space-between;
   align-items: center;
 }
+
+.demo-waterfall {
+  /* height: calc(100vh - 0.625rem); */
+  min-height: 35rem;
+  min-width: 21.875rem;
+}
+
+.demo-profile-card-layout-inner {
+  /* padding-top: 20px;
+  padding-left: 20px; */
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.demo-profile-card-layout-emp-name {
+  overflow: hidden;
+  width: 261px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.demo-profile-card-layout-emp-title {
+  width: 261px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.demo-profile-card-layout-emp-image {
+  margin-bottom: 16px;
+}
+
+.demo-profile-card-layout-emp-spacer {
+  height: 4px;
+  width: 261px;
+}
