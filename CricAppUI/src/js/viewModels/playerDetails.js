@@ -391,6 +391,20 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         }
       }
 
+      self.getBattingFoursHighlights = function(){
+        var getBattingFoursHighlightsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "strengths/bat/highlights/players/"+self.currentPlayerId()+"/fours/";
+        CommonUtils.ajaxCall('GET',getBattingFoursHighlightsUrl,true,"","json","",
+          function(data){},    //success call back
+          function(data){},    //failure call back
+          //complete call back
+          (xhr, res) => { 
+            if (res.status == 200){
+              var data = res.responseJSON.data;
+              self.foursHighlightsImage(data)
+            }
+          }
+        );
+      }
 
 
       self.goBackToPlayersPage = function(){

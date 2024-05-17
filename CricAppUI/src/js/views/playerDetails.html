@@ -12,7 +12,7 @@
       </div>
   </div>
 
-  <div class="oj-flex">
+  <div class="oj-flex">  
     <oj-drawer-layout start-opened="{{drawerOpened}}" style="min-height: 70vh;">
             <div style="padding-bottom: 1rem">
               <oj-c-button class="oj-button-md"
@@ -36,6 +36,7 @@
             </oj-navigation-list>
         </div>
     </oj-drawer-layout>
+
     <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
         <div class="oj-flex-item oj-sm-padding-3x">
             <div class="oj-flex">
@@ -140,8 +141,9 @@
         </div>
     </oj-bind-if>
     <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
-        <div class="oj-flex-item">
-            <oj-bind-text value="[[currentPlayerInfo().batStyle]]"></oj-bind-text>
+        <div class="oj-flex-item oj-sm-padding-3x">
+            
+           
         </div>
     </oj-bind-if>
     <oj-bind-if test="[[drawerNavSelection() == 'bowling']]">    

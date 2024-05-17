@@ -108,7 +108,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
 
       // Footer
       this.footerLinks = [
-        { name: 'About', linkId: 'about', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about', target:"_blank"},
+        { name: 'Me', linkId: 'me', linkTarget:'https://www.linkedin.com/in/rohith-reddy-santa-3b0b57158/', target:"_blank"},
         { name: "Feedback", linkId: "feedback", linkTarget: "mailto:rohithreddysanta@mail.com", target:"_blank"},
         { name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
       ];
