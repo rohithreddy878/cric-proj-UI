@@ -31,7 +31,6 @@ jobs:
           cd CricAppUI
           ojet --version
           pwd
-          ojet build
           ojet restore
           ojet strip
           ojet clean
