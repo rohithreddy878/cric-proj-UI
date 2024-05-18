@@ -21,18 +21,13 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Install project dependencies
-        run: |
-          pwd
-          ls
-          cd CricAppUI
-          npm install
-
       - name: Install Oracle JET CLI globally
         run: npm install -g @oracle/ojet-cli@15.0.0
 
       - name: Run Oracle JET CLI commands
         run: |
+          pwd
+          ls
           cd CricAppUI
           ojet --version
           ojet clean
