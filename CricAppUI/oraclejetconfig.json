@@ -4,7 +4,6 @@
       "common": "src",
       "web": "src-web",
       "javascript": "js",
-      "typescript": "ts",
       "styles": "css",
       "themes": "themes"
     },
