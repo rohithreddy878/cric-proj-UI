@@ -34,6 +34,8 @@ jobs:
           npm config ls
           ojet restore
           ojet build web --release
+          pwd
+          ls
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
