@@ -393,14 +393,36 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getBattingFoursHighlights = function(){
         var getBattingFoursHighlightsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "strengths/bat/highlights/players/"+self.currentPlayerId()+"/fours/";
-        CommonUtils.ajaxCall('GET',getBattingFoursHighlightsUrl,true,"","json","",
-          function(data){},    //success call back
-          function(data){},    //failure call back
-          //complete call back
-          (xhr, res) => { 
-            if (res.status == 200){
-              var data = res.responseJSON.data;
-              self.foursHighlightsImage(data)
+        console.log("fetching image with url: ", getBattingFoursHighlightsUrl);
+        CommonUtils.ajaxCall('GET', getBattingFoursHighlightsUrl,"", "image/png", "json", true, 
+          function(data) {
+            if (data && data.image_data) {
+              // Assuming the image data is already in base64 format
+              var imageUrl = "data:image/png;base64," + data.image_data;
+              // ../utils/images/highlghts/fours/kohli/.png
+              // Convert the base64 URL to a Blob
+              var blob = base64ToBlob(imageUrl, 'image/png');
+              // Create a link element
+              var link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = '../utils/images/highlghts/fours/kohli/.png'; // Filename you want to save as
+              // Programmatically click the link to trigger the download
+              ocument.body.appendChild(link);
+              link.click();
+              // Clean up and remove the link
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(link.href);
+              
+            } else {
+              // Handle case where image data is missing or invalid
+            }
+          },
+          function(data) {
+            // Handle failure callback
+          },
+          function(xhr, res) {
+            if (res.status == 200) {
+            // Handle complete callback
             }
           }
         );
@@ -414,6 +436,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       //on initial load:
       self.getPlayerBasicDetails();
       //self.getPlayerCareerStats();
+      self.getBattingFoursHighlights();
 
       this.disconnected = () => {
         // Implement if needed
