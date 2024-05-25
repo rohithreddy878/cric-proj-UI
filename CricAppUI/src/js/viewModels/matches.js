@@ -11,7 +11,7 @@
  * Your incidents ViewModel code goes here
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
-        ,'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
+        'ojs/ojarraydataprovider','oj-st-scroll-to-top/loader',
         'ojs/ojselectsingle', 'ojs/ojtable','oj-c/button','ojs/ojbutton'],
  function(ko, Context, accUtils,CommonUtils, Constants, DataUtils,
           ArrayDataProvider) {
