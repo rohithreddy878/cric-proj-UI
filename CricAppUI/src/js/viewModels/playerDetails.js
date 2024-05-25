@@ -435,7 +435,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //on initial load:
       self.getPlayerBasicDetails();
-      //self.getPlayerCareerStats();
+      self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
 
       this.disconnected = () => {
