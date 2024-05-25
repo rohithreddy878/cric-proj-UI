@@ -9,14 +9,14 @@
  * Your customer ViewModel code goes here
  */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants','../utils/DataUtils',
-        'ojs/ojarraydataprovider','ojs/ojpagingdataproviderview',
+        'ojs/ojarraydataprovider',
         'ojs/ojarraytreedataprovider','ojs/ojpalette', 'ojs/ojpaletteutils','oj-st-scroll-to-top/loader',
         'ojs/ojselectsingle', 'ojs/ojtable','ojs/ojdialog','ojs/ojcollapsible','oj-c/button',
         'oj-c/list-view','ojs/ojlistview','oj-c/list-item-layout','ojs/ojlistitemlayout','ojs/ojformlayout',
         'ojs/ojpagingcontrol','ojs/ojdefer','ojs/ojnavigationlist','ojs/ojchart','ojs/ojbutton',
         'ojs/ojtreemap',"ojs/ojaccordion","ojs/ojradioset","ojs/ojlabel"],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider,
-            PagingDataProviderView,ArrayTreeDataProvider,ojpalette_1, ojpaletteutils_1) {
+          ArrayTreeDataProvider,ojpalette_1, ojpaletteutils_1) {
     function MatchDetailsViewModel(routerArgs) {
 
       var self = this;
