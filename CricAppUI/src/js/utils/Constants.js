@@ -9,8 +9,8 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout'], function (oj, ko,
         self.SERVICES_CONTEXT_PATH = "http://localhost:8080/cric/services/";
         self.UI_CONTEXT_PATH = "/cric/web/thecoverdrivezone/";
 
-        self.FLASK_SERVICES_CONTEXT_PATH = "http://127.0.0.1:9000/cric/ml/services/"
-        //self.FLASK_SERVICES_CONTEXT_PATH = "https://tcdz-flask-api.azurewebsites.net/cric/ml/services/";
+        //self.FLASK_SERVICES_CONTEXT_PATH = "http://127.0.0.1:9000/cric/ml/services/"
+        self.FLASK_SERVICES_CONTEXT_PATH = "https://tcdz-flask-api.azurewebsites.net/cric/ml/services/";
 
         self.TIMEZONE_MEANING = ' UTC';
         self.MATCHES_TABLE_PAGESIZE = 5;
