@@ -20,11 +20,11 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       var self = this;
       this.connected = () => {
         accUtils.announce('Player details page loaded.');
-        document.getElementById("appn-header").style.display = "none";
-        document.getElementById("appn-short-header").style.display = "block";
         pName=routerArgs.params.playerName;
         document.title = pName; //change it to player name
         // Implement further logic if needed
+        document.getElementById("appn-header").style.display = "none";
+        document.getElementById("appn-short-header").style.display = "block";
       };
 
       self.currentPlayerId = ko.observable();
@@ -434,6 +434,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       }
 
       //on initial load:
+      document.getElementById('global-loader-progresscircle').style.display = "block";
       self.getPlayerBasicDetails();
       self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
@@ -442,10 +443,14 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         // Implement if needed
         document.getElementById("appn-short-header").style.display = "none";
         document.getElementById("appn-header").style.display = "flex";
+
+        //document.getElementById('global-loader-progresscircle').style.display = "block";
       };
 
       this.transitionCompleted = () => {
         // Implement if needed
+        console.log("transition Completed in pl details page")
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
 
 

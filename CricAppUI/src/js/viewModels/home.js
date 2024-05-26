@@ -46,6 +46,9 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
       this.transitionCompleted = () => {
         // Implement if needed
       };
+      $(document).ready(function() {
+        document.getElementById('global-loader-progresscircle').style.display = "none";
+      });
 
 
     }

@@ -104,6 +104,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           playerName: event.detail.name,
           playerId: event.detail.value,
         }
+        document.getElementById('global-loader-progresscircle').style.display = "block";
         CommonUtils.changeRoute(routerArgs, "playerDetails", params);
       }
 
@@ -122,6 +123,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       this.transitionCompleted = () => {
         // Implement if needed
         self.fetchFavouritePlayers();
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
 
 

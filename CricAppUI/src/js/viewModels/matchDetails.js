@@ -450,10 +450,12 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
 
       self.goBackToMatchesPage = function(){
+        document.getElementById('global-loader-progresscircle').style.display = "block";
         CommonUtils.changeRoute(routerArgs, "matches", {});
       }
 
       //on initial load
+      document.getElementById('global-loader-progresscircle').style.display = "block";
       self.onOpenMatchDetailsClick();
 
     /*************************************************************************/
@@ -466,6 +468,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       this.transitionCompleted = () => {
         // Implement if needed
         document.title = self.currentMatchName();
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
 
 

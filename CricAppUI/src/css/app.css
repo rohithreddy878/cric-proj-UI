@@ -57,6 +57,14 @@ li{
 
 /*  custom css */
 
+.global-loader-circle {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
 .landing-page-bg{
   background-image: url("images/3456.png");
   background-size: 100% 100%;

@@ -221,7 +221,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.getMatchesForLeagueEvent = function(le,pageNo){
         var matches = []
-        console.log("fetching all matches called with pageno: ", pageNo);
+        //console.log("fetching all matches called with pageno: ", pageNo);
         var getMatchesForLeagueEventUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "matches/paginated/"+le+"?pageNo="+pageNo+"&pageSize="+self.currentPageSize;
         CommonUtils.ajaxCall('GET',getMatchesForLeagueEventUrl,true,"","json","",
           function(data){},   //success call back
@@ -271,6 +271,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         let params = {
           matchId: mId,
         }
+        document.getElementById('global-loader-progresscircle').style.display = "block";
         CommonUtils.changeRoute(routerArgs, "matchDetails", params);
       }
 
@@ -353,6 +354,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
 
       //on start
+      document.getElementById('global-loader-progresscircle').style.display = "block";
       self.getLeagueEventSeasons();
       self.leagueEvents = self.getLeagueEventsForSeason(self.selectedSeasonVal());
 
@@ -365,6 +367,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         self.selectedSeasonVal("2023");
         self.selectedLeagueEventVal(14);
         self.currentPage(1);
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
     }
 

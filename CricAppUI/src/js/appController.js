@@ -8,12 +8,10 @@
 /*
  * Your application specific code will go here
  */
-define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants',
-        'ojs/ojmodule-element-utils', 'ojs/ojresponsiveutils', 
-        'ojs/ojresponsiveknockoututils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 
-        'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 'ojs/ojarraydataprovider', 
-        'ojs/ojknockouttemplateutils', 'ojs/ojmodule-element', 'ojs/ojknockout',
-        'oj-c/button'],
+define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/ojmodule-element-utils', 'ojs/ojresponsiveutils', 
+        'ojs/ojresponsiveknockoututils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 
+        'ojs/ojarraydataprovider', 'ojs/ojknockouttemplateutils', 'ojs/ojmodule-element', 'ojs/ojknockout',
+        'oj-c/button','oj-c/progress-circle'],
   function(ko, Context,CommonUtils, Constants,moduleUtils, ResponsiveUtils, ResponsiveKnockoutUtils, CoreRouter, 
            ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ArrayDataProvider, 
            KnockoutTemplateUtils) {
