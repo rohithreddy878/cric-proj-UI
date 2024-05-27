@@ -4,7 +4,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
         'oj-c/button','oj-c/progress-circle'],
   function(ko, Context,CommonUtils, Constants,moduleUtils, ResponsiveUtils, ResponsiveKnockoutUtils, CoreRouter, 
            ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ArrayDataProvider, 
-           KnockoutTemplateUtils, VercelAnalytics) {
+           KnockoutTemplateUtils) {
      function ControllerViewModel() {
         var self = this;
         this.KnockoutTemplateUtils = KnockoutTemplateUtils;
