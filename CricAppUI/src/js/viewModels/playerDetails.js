@@ -21,6 +21,8 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.currentPlayerName = ko.observable("");
       self.currentPlayerInfo = ko.observable({});
       self.currentPlayerTeams = ko.observable(new ArrayDataProvider([], {}));
+      self.photoSrc = ko.observable();
+
 
       self.hasBatted = ko.observable(false);
       self.hasBowled = ko.observable(false);
@@ -116,6 +118,25 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 }
             }
         );
+      }
+
+      self.getPlayerPhoto = async function(){
+        var getPlayerPhotoUrl = self.currentPlayerInfo().photoUrl;
+        if(getPlayerPhotoUrl == null || getPlayerPhotoUrl == ""){
+          self.photoSrc("")
+          return;
+        }
+        try {
+          const response = await fetch(getPlayerPhotoUrl);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          self.photoSrc(imageUrl);
+        } catch (error) {
+          //console.error('There was a problem with the fetch operation:', error);
+        }
       }
   
 
@@ -423,6 +444,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
       self.getPlayerBasicDetails();
+      self.getPlayerPhoto();
       self.getBattingSixesHighlights();
 
       

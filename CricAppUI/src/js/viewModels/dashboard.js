@@ -48,6 +48,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
        */
       this.transitionCompleted = () => {
         // Implement if needed
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
 
       self.errorPageMsg = ko.observable();

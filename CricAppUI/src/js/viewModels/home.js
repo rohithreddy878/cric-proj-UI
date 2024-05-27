@@ -45,6 +45,7 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
        */
       this.transitionCompleted = () => {
         // Implement if needed
+        document.getElementById('global-loader-progresscircle').style.display = "none";
       };
       $(document).ready(function() {
         document.getElementById('global-loader-progresscircle').style.display = "none";

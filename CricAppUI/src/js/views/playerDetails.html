@@ -22,10 +22,16 @@
               </oj-c-button>
             </div>
         <div slot="start" class="oj-color-invert player-details-drawer-start">
-            <div class="player-details-drawer-header">
-              <div>
+            <div class="oj-flex-bar player-details-drawer-header">
+              <div class="oj-flex-bar-start">
                 <h6>Choose one</h6>
               </div>
+              <div class="oj-flex-bar-end">
+                    <oj-c-button class="oj-button-sm" chroming="borderless"
+                        on-oj-action="[[onDrawerNavSelection]]">
+                        <span slot="startIcon" class="oj-ux-ico-close"> </span>
+                    </oj-c-button>
+               </div>
             </div>
             <oj-navigation-list selection="{{drawerNavSelection}}"
                     on-selection-changed="[[onDrawerNavSelection]]">
@@ -41,7 +47,7 @@
     <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
         <div class="oj-flex-item oj-sm-padding-3x-horizontal">
             <div class="oj-flex">
-                <div class="oj-sm-7 oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm oj-sm-padding-5x-start">
                     <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Info</div>
                     <oj-form-layout columns="2" max-columns="3" direction="row"
                                 readonly="true" label-edge="top"
@@ -72,8 +78,10 @@
                         </oj-input-text>
                     </oj-form-layout>
                 </div>
-                <div class="oj-sm-1"></div>
-                <div class="oj-sm-4 oj-panel oj-panel-shadow-sm ">
+                <div class="oj-sm-3 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm">
+                    <img :alt=[[currentPlayerName]] :src="[[photoSrc]]"/>
+                </div>
+                <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm ">
                     <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Teams</div>
                     <oj-c-list-view data="[[currentPlayerTeams]]" gridlines.item="visible"
                                 class="oj-sm-padding-2x-vertical"
@@ -158,13 +166,13 @@
                     <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
                         <div class="chart-title">Fours highlights</div>
                         <img alt="fours" class="highlights-image" 
-                        data-bind="attr: { src: foursHighlightsImageSrc }" />
+                        :src="[[foursHighlightsImageSrc]]" />
                     </div>
                     <div class="oj-sm-1"></div>
                     <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
                         <div class="chart-title">Sixes highlights</div>
                         <img alt="sixes" class="highlights-image" 
-                        data-bind="attr: { src: sixesHighlightsImageSrc }" />
+                              :src="[[sixesHighlightsImageSrc]]" />
                     </div>
                 </div>
             </oj-bind-if>
