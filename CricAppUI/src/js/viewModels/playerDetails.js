@@ -1,18 +1,8 @@
-/**
- * @license
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates.
- * Licensed under The Universal Permissive License (UPL), Version 1.0
- * as shown at https://oss.oracle.com/licenses/upl/
- * @ignore
- */
-/*
- * Your customer ViewModel code goes here
- */
 define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../utils/Constants',
         '../utils/DataUtils','ojs/ojarraydataprovider',
         'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext','oj-c/button',
         'ojs/ojlistview','ojs/ojinputsearch','ojs/ojdrawerlayout','ojs/ojformlayout',
-        'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar',
+        'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar','ojs/ojradioset',
         'oj-c/list-view','oj-c/list-item-layout'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayerDetailsViewModel(routerArgs) {
@@ -39,12 +29,16 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.drawerOpened = ko.observable(false);
       self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
-      self.drawerNavSelection = ko.observable("basic");
+      self.drawerNavSelection = ko.observable("batting");
 
       self.playerBattingWfDP =  ko.observable(new ArrayDataProvider([], {}));
       self.playerBowlingWfDP =  ko.observable(new ArrayDataProvider([], {}));
 
-      
+      self.foursHighlightsImageSrc = ko.observable();
+      self.sixesHighlightsImageSrc = ko.observable();
+
+
+      self.selectedStrengthsOption = ko.observable("highlights");
 
     /********************** logic to extract module params *************************/
       
@@ -103,33 +97,22 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             }
           }
         );
-        var updatePlayerHasBattedUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "players/"+self.currentPlayerId()+"/playedAs/"+"batter";
-        CommonUtils.ajaxCall('GET',updatePlayerHasBattedUrl,true,"","json","",
+        var updateDeliveriesPlayedCount = Constants.FLASK_SERVICES_CONTEXT_PATH + "players/"+self.currentPlayerId()+"/playedAs";
+        CommonUtils.ajaxCall('GET',updateDeliveriesPlayedCount,true,"","json","",
             function(data){},    //success call back
             function(data){},    //failure call back
             //complete call back
             (xhr, res) => { 
                 if (res.status == 200){
                     var data = res.responseJSON.data;
-                    if(data.count>0){
+                    if(data.batting>0){
                         self.hasBatted(true);
-                        self.noOfDelsBatted(data.count);
+                        self.noOfDelsBatted(data.batting);
                     }
-                }
-            }
-        );
-        var updatePlayerHasBowledUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "players/"+self.currentPlayerId()+"/playedAs/"+"bowler";
-        CommonUtils.ajaxCall('GET',updatePlayerHasBowledUrl,true,"","json","",
-            function(data){},    //success call back
-            function(data){},    //failure call back
-            //complete call back
-            (xhr, res) => { 
-                if (res.status == 200){
-                    var data = res.responseJSON.data;
-                    if(data.count>0){
-                        self.hasBowled(true);
-                        self.noOfDelsBowled(data.count);
-                    }
+                    if(data.batting>0){
+                      self.hasBowled(true);
+                      self.noOfDelsBowled(data.bowling);
+                  }
                 }
             }
         );
@@ -386,47 +369,39 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         for(team in currTeams){
           id = team.id; 
           badgeElement = document.getElementById(id); //.style = "--oj-badge-bg-color:green";
-          console.log(id,"---",badgeElement)
+          //console.log(id,"---",badgeElement)
           badgeElement.style.setProperty("--oj-badge-bg-color", team.primaryColour);
         }
       }
 
-      self.getBattingFoursHighlights = function(){
-        var getBattingFoursHighlightsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "strengths/bat/highlights/players/"+self.currentPlayerId()+"/fours/";
-        console.log("fetching image with url: ", getBattingFoursHighlightsUrl);
-        CommonUtils.ajaxCall('GET', getBattingFoursHighlightsUrl,"", "image/png", "json", true, 
-          function(data) {
-            if (data && data.image_data) {
-              // Assuming the image data is already in base64 format
-              var imageUrl = "data:image/png;base64," + data.image_data;
-              // ../utils/images/highlghts/fours/kohli/.png
-              // Convert the base64 URL to a Blob
-              var blob = base64ToBlob(imageUrl, 'image/png');
-              // Create a link element
-              var link = document.createElement('a');
-              link.href = window.URL.createObjectURL(blob);
-              link.download = '../utils/images/highlghts/fours/kohli/.png'; // Filename you want to save as
-              // Programmatically click the link to trigger the download
-              ocument.body.appendChild(link);
-              link.click();
-              // Clean up and remove the link
-              document.body.removeChild(link);
-              window.URL.revokeObjectURL(link.href);
-              
-            } else {
-              // Handle case where image data is missing or invalid
-            }
-          },
-          function(data) {
-            // Handle failure callback
-          },
-          function(xhr, res) {
-            if (res.status == 200) {
-            // Handle complete callback
-            }
+      self.getBattingFoursHighlights = async function() {
+        var getBattingFoursHighlightsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "strengths/bat/highlights/players/"+self.currentPlayerId()+"/fours";
+        try {
+          const response = await fetch(getBattingFoursHighlightsUrl);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
           }
-        );
-      }
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          self.foursHighlightsImageSrc(imageUrl);
+        } catch (error) {
+          //console.error('There was a problem with the fetch operation:', error);
+        }
+      };
+      self.getBattingSixesHighlights = async function() {
+        var getBattingSixesHighlightsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "strengths/bat/highlights/players/"+self.currentPlayerId()+"/sixes";
+        try {
+          const response = await fetch(getBattingSixesHighlightsUrl);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const blob = await response.blob();
+          const imageUrl = URL.createObjectURL(blob);
+          self.sixesHighlightsImageSrc(imageUrl);
+        } catch (error) {
+          //console.error('There was a problem with the fetch operation:', error);
+        }
+      };
 
 
       self.goBackToPlayersPage = function(){
@@ -435,9 +410,12 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //on initial load:
       document.getElementById('global-loader-progresscircle').style.display = "block";
-      self.getPlayerBasicDetails();
-      self.getPlayerCareerStats();
+      //self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
+      self.getPlayerBasicDetails();
+      self.getBattingSixesHighlights();
+
+      
 
       this.disconnected = () => {
         // Implement if needed
@@ -449,7 +427,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       this.transitionCompleted = () => {
         // Implement if needed
-        console.log("transition Completed in pl details page")
+        //console.log("transition Completed in pl details page")
         document.getElementById('global-loader-progresscircle').style.display = "none";
       };
 

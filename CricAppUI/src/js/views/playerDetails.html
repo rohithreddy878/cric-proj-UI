@@ -1,6 +1,6 @@
 <div class="oj-sm-padding-2x-start">
   
-  <div class="oj-flex-bar oj-sm-padding-5x-start oj-sm-margin-5x-bottom">
+  <div class="oj-flex-bar oj-sm-margin-5x-bottom">
       <div class="oj-flex-bar-start oj-sm-align-items-center">
           <oj-c-button display="all" label="Back"
                     on-oj-action="[[goBackToPlayersPage]]">
@@ -38,7 +38,7 @@
     </oj-drawer-layout>
 
     <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
-        <div class="oj-flex-item oj-sm-padding-3x">
+        <div class="oj-flex-item oj-sm-padding-3x-horizontal">
             <div class="oj-flex">
                 <div class="oj-sm-7 oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
                     <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Info</div>
@@ -141,8 +141,37 @@
         </div>
     </oj-bind-if>
     <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
-        <div class="oj-flex-item oj-sm-padding-3x">
-            
+        <div class="oj-flex-item oj-sm-padding-3x-horizontal">
+            <div class="oj-flex">
+                <div>
+                    <oj-radioset value="{{selectedStrengthsOption}}" class="oj-choice-direction-row"
+                            labelled-by="mainlabelid">
+                        <oj-option value="strengths">Strengths</oj-option>
+                        <oj-option value="highlights">Highlights</oj-option>
+                        <oj-option value="scores">Scores</oj-option>
+                    </oj-radioset>
+                </div>
+            </div>
+            <oj-bind-if test="[[selectedStrengthsOption() === 'highlights']]"> 
+                <div class="oj-flex oj-sm-padding-3x-top">
+                    <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
+                        <div class="chart-title">Fours highlights</div>
+                        <img alt="fours" class="highlights-image" 
+                        data-bind="attr: { src: foursHighlightsImageSrc }" />
+                    </div>
+                    <div class="oj-sm-1"></div>
+                    <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
+                        <div class="chart-title">Sixes highlights</div>
+                        <img alt="sixes" class="highlights-image" 
+                        data-bind="attr: { src: sixesHighlightsImageSrc }" />
+                    </div>
+                </div>
+            </oj-bind-if>
+            <oj-bind-if test="[[selectedStrengthsOption() === 'strengths']]"> 
+                <div class="oj-panel oj-sm-10"> 
+                    
+                </div>
+            </oj-bind-if>
            
         </div>
     </oj-bind-if>
