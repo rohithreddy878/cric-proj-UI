@@ -315,3 +315,17 @@ ul#matches-pagination li a.active-page {
   height: 4px;
   width: 261px;
 }
+
+/* player details batting/bowling tabs */
+.highlights-image{
+  height: 275px;
+  width: 500px;
+}
+
+.zoomable-div {
+  transition: transform 0.3s ease;
+}
+
+.zoomable-div:hover {
+  transform: scale(1.5);
+}
