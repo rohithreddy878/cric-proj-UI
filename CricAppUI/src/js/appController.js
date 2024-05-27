@@ -1,21 +1,10 @@
-/**
- * @license
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates.
- * Licensed under The Universal Permissive License (UPL), Version 1.0
- * as shown at https://oss.oracle.com/licenses/upl/
- * @ignore
- */
-/*
- * Your application specific code will go here
- */
 define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/ojmodule-element-utils', 'ojs/ojresponsiveutils', 
         'ojs/ojresponsiveknockoututils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 
-        'ojs/ojarraydataprovider', 'ojs/ojknockouttemplateutils', 'ojs/ojmodule-element', 'ojs/ojknockout',
+        'ojs/ojarraydataprovider', 'ojs/ojknockouttemplateutils', '@vercel/analytics/inject','ojs/ojmodule-element', 'ojs/ojknockout',
         'oj-c/button','oj-c/progress-circle'],
   function(ko, Context,CommonUtils, Constants,moduleUtils, ResponsiveUtils, ResponsiveKnockoutUtils, CoreRouter, 
            ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ArrayDataProvider, 
-           KnockoutTemplateUtils) {
-
+           KnockoutTemplateUtils, inject) {
      function ControllerViewModel() {
         var self = this;
         this.KnockoutTemplateUtils = KnockoutTemplateUtils;
@@ -111,6 +100,10 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
         { name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
         { name: 'IPL', linkId: 'ipl', linkTarget:'https://www.iplt20.com/', target:"_blank"},
       ];
+
+      inject();
+
+
      }
 
      // release the application bootstrap busy state

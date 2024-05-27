@@ -1,27 +1,9 @@
-/**
- * @license
- * Copyright (c) 2014, 2023, Oracle and/or its affiliates.
- * Licensed under The Universal Permissive License (UPL), Version 1.0
- * as shown at https://oss.oracle.com/licenses/upl/
- * @ignore
- */
-/*
- * Your customer ViewModel code goes here
- */
 define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton'],
  function(accUtils,CommonUtils, Constants) {
     function HomeViewModel(routerArgs) {
 
       var self = this;
 
-      /**
-       * Optional ViewModel method invoked after the View is inserted into the
-       * document DOM.  The application can put logic that requires the DOM being
-       * attached here.
-       * This method might be called multiple times - after the View is created
-       * and inserted into the DOM and after the View is reconnected
-       * after being disconnected.
-       */
       this.connected = () => {
         accUtils.announce('home page loaded.');
         document.title = "Home";
