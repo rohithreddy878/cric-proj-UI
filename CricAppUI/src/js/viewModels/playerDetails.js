@@ -29,7 +29,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.drawerOpened = ko.observable(false);
       self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
-      self.drawerNavSelection = ko.observable("batting");
+      self.drawerNavSelection = ko.observable("basic");
 
       self.playerBattingWfDP =  ko.observable(new ArrayDataProvider([], {}));
       self.playerBowlingWfDP =  ko.observable(new ArrayDataProvider([], {}));
