@@ -1,10 +1,10 @@
 define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/ojmodule-element-utils', 'ojs/ojresponsiveutils', 
         'ojs/ojresponsiveknockoututils', 'ojs/ojcorerouter', 'ojs/ojmodulerouter-adapter', 'ojs/ojknockoutrouteradapter', 'ojs/ojurlparamadapter', 
-        'ojs/ojarraydataprovider', 'ojs/ojknockouttemplateutils', '@vercel/analytics/inject','ojs/ojmodule-element', 'ojs/ojknockout',
+        'ojs/ojarraydataprovider', 'ojs/ojknockouttemplateutils','ojs/ojmodule-element', 'ojs/ojknockout',
         'oj-c/button','oj-c/progress-circle'],
   function(ko, Context,CommonUtils, Constants,moduleUtils, ResponsiveUtils, ResponsiveKnockoutUtils, CoreRouter, 
            ModuleRouterAdapter, KnockoutRouterAdapter, UrlParamAdapter, ArrayDataProvider, 
-           KnockoutTemplateUtils, inject) {
+           KnockoutTemplateUtils, VercelAnalytics) {
      function ControllerViewModel() {
         var self = this;
         this.KnockoutTemplateUtils = KnockoutTemplateUtils;
@@ -101,7 +101,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
         { name: 'IPL', linkId: 'ipl', linkTarget:'https://www.iplt20.com/', target:"_blank"},
       ];
 
-      inject();
+      //VercelAnalytics.inject();
 
 
      }
