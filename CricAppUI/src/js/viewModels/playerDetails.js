@@ -28,7 +28,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       self.noOfDelsBowled = ko.observable(0);
 
       self.drawerOpened = ko.observable(false);
-      self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
+      //self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
       self.drawerNavSelection = ko.observable("basic");
 
       self.playerBattingWfDP =  ko.observable(new ArrayDataProvider([], {}));
@@ -402,6 +402,16 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           //console.error('There was a problem with the fetch operation:', error);
         }
       };
+
+      self.drawerOpen = function(){
+        self.drawerOpened(true);
+        document.getElementById("drawerOpenButtonDiv").style.display="none";
+      }
+
+      self.onDrawerNavSelection = function(){
+        self.drawerOpened(false);
+        document.getElementById("drawerOpenButtonDiv").style.display="block";
+      }
 
 
       self.goBackToPlayersPage = function(){

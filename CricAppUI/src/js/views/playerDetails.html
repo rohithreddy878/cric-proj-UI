@@ -14,10 +14,10 @@
 
   <div class="oj-flex">  
     <oj-drawer-layout start-opened="{{drawerOpened}}" style="min-height: 70vh;">
-            <div style="padding-bottom: 1rem">
+            <div style="padding-bottom: 1rem" id="drawerOpenButtonDiv">
               <oj-c-button class="oj-button-md"
                          display="icons"  label="Menu"
-                         on-oj-action="[[drawerToggle]]">
+                         on-oj-action="[[drawerOpen]]">
                 <span slot="startIcon" class="oj-ux-ico-menu"></span>
               </oj-c-button>
             </div>
@@ -27,7 +27,8 @@
                 <h6>Choose one</h6>
               </div>
             </div>
-            <oj-navigation-list selection="{{drawerNavSelection}}">
+            <oj-navigation-list selection="{{drawerNavSelection}}"
+                    on-selection-changed="[[onDrawerNavSelection]]">
               <ul>
                 <li id="basic"><a href="#">Overview</a></li>
                 <li id="batting"><a href="#">Batting</a></li>
