@@ -324,6 +324,7 @@ ul#matches-pagination li a.active-page {
 
 .zoomable-div {
   transition: transform 0.3s ease;
+  border-radius: 2rem;
 }
 
 .zoomable-div:hover {
