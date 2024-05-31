@@ -26,7 +26,6 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
 
       let navData = [
         { path: '', redirect: 'home' },
-        { path: 'me', detail: { label: 'Me' }  },
         { path: 'home', detail: { label: 'Home' }  },
         { path: 'dashboard', detail: { label: 'Dashboard' } },
         { path: 'players', detail: { label: 'Players'} },
