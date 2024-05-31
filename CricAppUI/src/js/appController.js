@@ -97,7 +97,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
       // Footer
       this.footerLinks = [
         //{ name: 'Me', linkId: 'me', linkTarget:'https://www.linkedin.com/in/rohith-reddy-santa-3b0b57158/', target:"_blank"},
-        { name: 'Me', linkId: 'me', linkTarget:'https://thecoverdrivezone.vercel.app/?ojr=me', target:"_blank"},
+        { name: 'Me', linkId: 'me', linkTarget:'https://rohithreddysanta.portfo.ly/', target:"_blank"},
         { name: "Feedback", linkId: "feedback", linkTarget: "mailto:rohithreddysanta@mail.com", target:"_blank"},
         { name: 'Data Source', linkId: 'dataSource', linkTarget:'https://cricsheet.org/', target:"_blank"},
         { name: 'IPL', linkId: 'ipl', linkTarget:'https://www.iplt20.com/', target:"_blank"},
