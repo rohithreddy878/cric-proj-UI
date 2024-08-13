@@ -57,6 +57,21 @@ li{
 
 /*  custom css */
 
+/* videos learn tab */
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display,
+video::-webkit-media-controls-timeline,
+video::-webkit-media-controls-seek-back-button,
+video::-webkit-media-controls-seek-forward-button,
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
+}
+
+
+/*  */
+
 .global-loader-circle {
   position: fixed;
   top: 60%;
@@ -329,4 +344,75 @@ ul#matches-pagination li a.active-page {
 
 .zoomable-div:hover {
   transform: scale(1.5);
+}
+
+
+/* learn tab/page */
+
+.carousel-wrapper {
+  /* min-height: 100vh; */
+}
+
+.carousel-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  padding: 0 20%;
+}
+
+.card {
+  min-width: 270px;
+  width: 270px;
+  min-height: 350px;
+  margin: 0 10px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  flex-shrink: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0.5;
+  transform: scale(0.9);
+  position: relative;
+  z-index: 1;
+}
+
+.card.active {
+  transform: scale(1.5);
+  opacity: 1;
+  z-index: 10;
+  position: relative;
+}
+
+
+.prev-btn, .next-btn {
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+.learn-para{
+  text-wrap: wrap;
+  font-size: small;
 }

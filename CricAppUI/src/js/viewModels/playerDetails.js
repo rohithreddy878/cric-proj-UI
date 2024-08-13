@@ -31,7 +31,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.drawerOpened = ko.observable(false);
       //self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
-      self.drawerNavSelection = ko.observable("batting");
+      self.drawerNavSelection = ko.observable("overview");
 
       self.playerBattingWfDP =  ko.observable(new ArrayDataProvider([], {}));
       self.playerBowlingWfDP =  ko.observable(new ArrayDataProvider([], {}));
@@ -194,7 +194,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'square',
             avatarSize:'lg',
-            avatarBg:'gray'
+            avatarBg:'blue'
           },
           {
             id: "innings",
@@ -203,7 +203,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'square',
             avatarSize:'lg',
-            avatarBg:'gray'
+            avatarBg:'blue'
           },
           {
             id: "runsScored",
@@ -230,7 +230,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'square',
             avatarSize:'xl',
-            avatarBg:'pink'
+            avatarBg:'blue'
           },
           {
             id: "sixes",
@@ -239,7 +239,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'circle',
             avatarSize:'md',
-            avatarBg:'pink'
+            avatarBg:'blue'
           },
           {
             id: "fours",
@@ -248,7 +248,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'circle',
             avatarSize:'lg',
-            avatarBg:'pink'
+            avatarBg:'blue'
           },
           {
             id: "battingAvg",
@@ -257,7 +257,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'square',
             avatarSize:'xl',
-            avatarBg:'pink'
+            avatarBg:'blue'
           },
           {
             id: "notOuts",
@@ -266,7 +266,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'circle',
             avatarSize:'md',
-            avatarBg:'gray'
+            avatarBg:'blue'
           },
           {
             id: "centuries",
@@ -297,7 +297,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'square',
             avatarSize:'lg',
-            avatarBg:'gray'
+            avatarBg:'pink'
           },
           {
             id: "innings",
@@ -306,7 +306,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'square',
             avatarSize:'lg',
-            avatarBg:'gray'
+            avatarBg:'pink'
           },
           {
             id: "oversBowled",
@@ -315,7 +315,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'high',
             avatarShape:'square',
             avatarSize:'xl',
-            avatarBg:'blue'
+            avatarBg:'pink'
           },
           {
             id: "runsConceded",
@@ -324,7 +324,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'square',
             avatarSize:'lg',
-            avatarBg:'blue'
+            avatarBg:'pink'
           },
           {
             id: "wickets",
@@ -369,7 +369,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'circle',
             avatarSize:'md',
-            avatarBg:'blue'
+            avatarBg:'pink'
           },
           {
             id: "4wHauls",
@@ -378,7 +378,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
             priority: 'low',
             avatarShape:'circle',
             avatarSize:'md',
-            avatarBg:'blue'
+            avatarBg:'pink'
           },
 
         ];

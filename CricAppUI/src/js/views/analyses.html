@@ -1,5 +1,65 @@
 <div class="oj-hybrid-padding">
 
+    <div class="oj-flex">
+        <div>
+            <oj-radioset value="{{selectedLearnOption}}" class="oj-choice-direction-row"
+                    labelled-by="mainlabelid">
+                <oj-option value="field">Field Positions</oj-option>
+                <oj-option value="shots">Shots</oj-option>
+                <oj-option value="deliveries">Deliveries</oj-option>
+            </oj-radioset>
+        </div>
+    </div>
+    <oj-bind-if test="[[selectedLearnOption() === 'shots']]">
+        <div class="carousel-wrapper oj-sm-padding-3x">
+            <div class="carousel-container">
+                <oj-c-button class="prev-btn"  label="Prev" display="icons"
+                        on-oj-action="[[goToPrevCard]]">
+                    <span slot="startIcon" class="oj-ux-ico-back"></span>
+                </oj-c-button>
+                <div class="carousel oj-sm-padding-5x">
+                    <div class="card" id="straightdrive-card">
+                        <h4>Straight Drive</h4>
+                        <p>This is the second card.</p>
+                    </div>
+                    <div class="card" id="sweepshot-card">
+                        <h4>Sweep Shot</h4>
+                        <p>This is the third card.</p>
+                    </div>
+                    <div class="card" id="coverdrive-card">
+                        <p>Cover Drive</p>
+                        <p class="learn-para">An attacking shot through the covers </p>
+                        <video controls controlslist="nodownload noremoteplayback" 
+                                muted height="200px" width="240px">
+                            <source src="../../css/videos/cd.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="card" id="flickshot-card">
+                        <p>Flick Shot</p>
+                        <p class="learn-para"> A straight-batted shot played on the leg side by flicking a full-length delivery using the wrists </p>
+                        <video controls controlslist="nodownload noremoteplayback"
+                                 muted height="200px" width="240px">
+                            <source src="../../css/videos/cover-drive.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="card" id="helicoptershot-card">
+                        <h4>Helicopter Shot</h4>
+                        <p>This is the fifth card.</p>
+                    </div>
+                </div>
+                <oj-c-button class="next-btn" label="Next" display="icons"
+                        on-oj-action="[[goToNextCard]]">
+                    <span slot="startIcon" class="oj-ux-ico-forward-next"></span>
+                </oj-c-button>
+            </div>
+
+
+        </div>
+    </oj-bind-if>
+
+
 
 
   
