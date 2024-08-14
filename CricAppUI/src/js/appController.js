@@ -52,7 +52,7 @@ define(['knockout', 'ojs/ojcontext','utils/CommonUtils', 'utils/Constants','ojs/
         { path: 'dashboard', detail: { label: 'Home' , iconClass: 'oj-ux-ico-home' } },
         { path: 'players', detail: { label: 'Players', iconClass: 'oj-ux-ico-human-8' } },
         { path: 'matches', detail: { label: 'Matches', iconClass: 'oj-ux-ico-unmatched' } },
-        { path: 'analyses', detail: { label: 'Learn', iconClass: 'oj-ux-ico-chart-bubble' } }
+        { path: 'analyses', detail: { label: 'Learn', iconClass: 'oj-ux-ico-learning-path' } }
       ];
       self.navDataProvider2 = new ArrayDataProvider(navData2, {keyAttributes: "path"});
       self.selection2 = ko.observable("dashboard");

@@ -1,8 +1,9 @@
 define(['knockout','../accUtils','../utils/CommonUtils', '../utils/Constants',
-        'ojs/ojradioset','oj-c/button',
+        'ojs/ojarraydataprovider',
+        'ojs/ojradioset','oj-c/button','ojs/ojmessagebanner',
         'oj-st-scroll-to-top/loader'
        ],
- function(ko,accUtils,CommonUtils, Constants) {
+ function(ko,accUtils,CommonUtils, Constants,ArrayDataProvider) {
     function AnalysesViewModel() {
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
@@ -19,9 +20,18 @@ define(['knockout','../accUtils','../utils/CommonUtils', '../utils/Constants',
       self.selectedLearnOption = ko.observable("shots");
       self.currentIndex = ko.observable(0);
 
+      self.messageForBannerWarning = [
+        {
+            id: 'fieldPositions',
+            severity: 'info',
+            summary: 'A Standard Cricket Field showing field regions and field positions for a right-handed batsman; For a left-handed batsman, the field is mirrored.',
+            detail: '',
+            closeAffordance: 'off'
+        }
+      ];
+      self.messageForBannerWarningDP = new ArrayDataProvider(self.messageForBannerWarning, {keyAttributes: 'id'});
 
       self.selectedLearnOption.subscribe(function(newValue) {
-        console.log(newValue);
         if(newValue=='shoots'){
           const cardsss = document.querySelectorAll('.card');
           self.currentIndex(3);

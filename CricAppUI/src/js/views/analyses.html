@@ -4,7 +4,7 @@
         <div>
             <oj-radioset value="{{selectedLearnOption}}" class="oj-choice-direction-row"
                     labelled-by="mainlabelid">
-                <oj-option value="field">Field Positions</oj-option>
+                <oj-option value="field">Cricket Field</oj-option>
                 <oj-option value="shots">Shots</oj-option>
                 <oj-option value="deliveries">Deliveries</oj-option>
             </oj-radioset>
@@ -56,6 +56,23 @@
             </div>
 
 
+        </div>
+    </oj-bind-if>
+
+    <oj-bind-if test="[[selectedLearnOption() === 'field']]">
+        <div class="oj-flex-item oj-sm-12 oj-sm-padding-5x-horizontal">
+            <oj-message-banner data="[[messageForBannerWarningDP]]"
+                                type="section">
+            </oj-message-banner>
+        </div>
+        <div class="oj-flex-bar oj-sm-padding-5x-top oj-sm-padding-5x-horizontal oj-sm-align-items-center">
+            <div class="oj-sm-4">    
+                <img class="field-positions-image" src="../../css/images/field_parts.jpg">
+            </div>
+            <div class="oj-sm-1"></div>
+            <div class="oj-sm-4">
+                <img class="field-positions-image" src="../../css/images/field-positions.jpg">
+            </div>
         </div>
     </oj-bind-if>
 

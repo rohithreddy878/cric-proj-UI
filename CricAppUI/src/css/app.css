@@ -416,3 +416,8 @@ ul#matches-pagination li a.active-page {
   text-wrap: wrap;
   font-size: small;
 }
+
+.field-positions-image{
+  height: 500px;
+  width: 475px;
+}
