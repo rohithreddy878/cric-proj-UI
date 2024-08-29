@@ -1,2 +1,28 @@
 <div class="landing-page-bg  oj-flex">
 </div>
+
+<div id="dialogWrapper">
+    <oj-dialog id="app-under-work-dialog" dialog-title="App under work" aria-describedby="desc">
+        <div id="na-dialog-header-div" class="oj-flex-bar" slot="header">
+            <div class="oj-flex-bar-start oj-sm-padding-2x-end oj-sm-align-self-center oj-icon-color-danger oj-ux-ico-error-s oj-ux-icon-size-6x"
+                 role="img"
+                 aria-label="error">
+            </div>
+            <div class="oj-flex-bar-middle">
+                <h4>Website under work</h4>
+            </div>
+        </div>
+        
+        <div slot="body">
+            <p id="desc">
+                Website is under construction. 
+                We are still working on the application, hence few parts are incomplete. 
+                <br/>
+                Sorry for the inconvenience!
+            </p>
+        </div>
+        <div slot="footer">
+            <oj-c-button id="okButton" on-oj-action="[[closeOkButton]]" label="OK"></oj-c-button>
+        </div>
+    </oj-dialog>
+</div>

@@ -1,4 +1,5 @@
-define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton'],
+define(['../accUtils','../utils/CommonUtils', '../utils/Constants',
+        'ojs/ojbutton','ojs/ojdialog','oj-c/button'],
  function(accUtils,CommonUtils, Constants) {
     function HomeViewModel(routerArgs) {
 
@@ -12,6 +13,10 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
         document.getElementById("proceed-button-div").style.display = "block";
 
       };
+
+      this.closeOkButton = function(){
+        document.getElementById('app-under-work-dialog').close();
+      }
 
       /**
        * Optional ViewModel method invoked after the View is disconnected from the DOM.
@@ -31,6 +36,7 @@ define(['../accUtils','../utils/CommonUtils', '../utils/Constants','ojs/ojbutton
       };
       $(document).ready(function() {
         document.getElementById('global-loader-progresscircle').style.display = "none";
+        document.getElementById('app-under-work-dialog').open();
       });
 
 
