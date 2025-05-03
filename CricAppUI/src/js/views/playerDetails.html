@@ -27,8 +27,8 @@
                 <h6>Choose one</h6>
               </div>
               <div class="oj-flex-bar-end">
-                    <oj-c-button class="oj-button-sm" chroming="borderless"
-                        on-oj-action="[[onDrawerNavSelection]]">
+                    <oj-c-button class="oj-button-sm" label="close" chroming="borderless"
+                        on-oj-action="[[onDrawerNavSelection]]" display="icons">
                         <span slot="startIcon" class="oj-ux-ico-close"> </span>
                     </oj-c-button>
                </div>
@@ -36,7 +36,7 @@
             <oj-navigation-list selection="{{drawerNavSelection}}"
                     on-selection-changed="[[onDrawerNavSelection]]">
               <ul>
-                <li id="basic"><a href="#">Overview</a></li>
+                <li id="overview"><a href="#">Overview</a></li>
                 <li id="batting"><a href="#">Batting</a></li>
                 <li id="bowling"><a href="#">Bowling</a></li>
               </ul>
@@ -44,7 +44,7 @@
         </div>
     </oj-drawer-layout>
 
-    <oj-bind-if test="[[drawerNavSelection() == 'basic']]">
+    <oj-bind-if test="[[drawerNavSelection() == 'overview']]">
         <div class="oj-flex-item oj-sm-padding-3x-horizontal">
             <div class="oj-flex">
                 <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm oj-sm-padding-5x-start">
@@ -78,8 +78,8 @@
                         </oj-input-text>
                     </oj-form-layout>
                 </div>
-                <div class="oj-sm-3 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm">
-                    <img :alt=[[currentPlayerName]] :src="[[photoSrc]]"/>
+                <div class="oj-sm-3 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm" style="overflow: hidden;">
+                    <img :alt=[[currentPlayerName]] :src="[[photoSrc]]" style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
                 <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm ">
                     <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Teams</div>
