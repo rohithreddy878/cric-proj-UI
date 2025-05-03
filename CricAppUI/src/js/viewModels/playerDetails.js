@@ -3,7 +3,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext','oj-c/button',
         'ojs/ojlistview','ojs/ojinputsearch','ojs/ojdrawerlayout','ojs/ojformlayout',
         'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar','ojs/ojradioset',
-        'oj-c/list-view','oj-c/list-item-layout'],
+        'oj-c/list-view','oj-c/list-item-layout', 'oj-c/input-text'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayerDetailsViewModel(routerArgs) {
 

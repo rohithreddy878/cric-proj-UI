@@ -42,153 +42,155 @@
               </ul>
             </oj-navigation-list>
         </div>
+        <div>
+            <oj-bind-if test="[[drawerNavSelection() == 'overview']]">
+                <div class="oj-flex-item oj-sm-padding-3x-horizontal">
+                    <div class="oj-flex">
+                        <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm oj-sm-padding-5x-start">
+                            <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Info</div>
+                            <oj-form-layout columns="2" max-columns="3" direction="row"
+                                        readonly="true" label-edge="top"
+                                        user-assistance-density="reflow">
+                                <oj-c-input-text id="name" value="{{currentPlayerInfo().name}}"
+                                        disabled="false" label-hint="Name"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                                <oj-c-input-text id="common-name" value="{{currentPlayerInfo().commonName}}"
+                                        disabled="false" label-hint="Common Name"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                                <oj-c-input-text id="country" value="{{currentPlayerInfo().country}}"
+                                        disabled="false" label-hint="Country"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                                <oj-c-input-text id="role" value="{{currentPlayerInfo().role}}"
+                                        disabled="false" label-hint="Role"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                                <oj-c-input-text id="bat-style" value="{{currentPlayerInfo().batStyle}}"
+                                        disabled="false" label-hint="Batting Style"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                                <oj-c-input-text id="bowl-style" value="{{currentPlayerInfo().bowlStyle}}"
+                                        disabled="false" label-hint="Bowling Style"
+                                        style="font-size: larger;">
+                                </oj-c-input-text>
+                            </oj-form-layout>
+                        </div>
+                        <div class="oj-sm-3 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm" style="overflow: hidden;">
+                            <img :alt=[[currentPlayerName]] :src="[[photoSrc]]" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
+                        <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm ">
+                            <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Teams</div>
+                            <oj-c-list-view data="[[currentPlayerTeams]]" gridlines.item="visible"
+                                        class="oj-sm-padding-2x-vertical"
+                                        style="max-width: 31.25rem;">
+                                <template slot="itemTemplate" data-oj-as="item">
+                                    <li><oj-c-list-item-layout >
+                                        <div slot="leading">
+                                            <span :id="[[item.data.id]]" class="oj-badge oj-typography-body-lg" style="width:20rem;height: 2rem;">
+                                                <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                            </span>
+                                        </div>
+                                    </oj-c-list-item-layout></li>
+                                </template>
+                                <template slot="noData">
+                                    <p class="oj-typography-body-lg">Never Played in IPL</p>
+                                </template>
+                            </oj-c-list-view>
+                        </div>
+                    </div>
+                    <div class="oj-sm-padding-3x-vertical oj-typography-subheading-md">Career</div>
+                    <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                        <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Batting</div>
+                        <oj-waterfall-layout id="waterfall" class="demo-waterfall"
+                                            data="[[playerBattingWfDP]]">
+                            <template slot="itemTemplate" data-oj-as="item">
+                                <oj-action-card class="oj-sm-only-width-4/5">
+                                    <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
+                                        <div class="demo-profile-card-layout-emp-name">
+                                            <span class="oj-badge oj-badge-success">
+                                                <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                            </span>
+                                        </div>
+                                        <oj-c-avatar class="demo-profile-card-layout-emp-image"
+                                                    size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
+                                                    background="[[item.data.avatarBg]]"
+                                                    initials="[[item.data.value]]">
+                                        </oj-c-avatar>
+                                    </div>
+                                </oj-action-card>
+                            </template>
+                        </oj-waterfall-layout>  
+                    </div>
+                    <div class="oj-sm-padding-3x-vertical"> </div>
+                    <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
+                        <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Bowling</div>
+                        <oj-waterfall-layout id="waterfall" class="demo-waterfall"
+                                            data="[[playerBowlingWfDP]]">
+                            <template slot="itemTemplate" data-oj-as="item">
+                                <oj-action-card class="oj-sm-only-width-4/5">
+                                    <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
+                                        <div class="demo-profile-card-layout-emp-name">
+                                            <span class="oj-badge oj-badge-success">
+                                                <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+                                            </span>
+                                        </div>
+                                        <oj-c-avatar class="demo-profile-card-layout-emp-image"
+                                                    size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
+                                                    background="[[item.data.avatarBg]]"
+                                                    initials="[[item.data.value]]">
+                                        </oj-c-avatar>
+                                    </div>
+                                </oj-action-card>
+                            </template>
+                        </oj-waterfall-layout>  
+                    </div>
+                </div>
+            </oj-bind-if>
+            <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
+                <div class="oj-flex-item oj-sm-padding-3x-horizontal">
+                    <div class="oj-flex">
+                        <div>
+                            <oj-radioset value="{{selectedStrengthsOption}}" class="oj-choice-direction-row"
+                                    labelled-by="mainlabelid">
+                                <oj-option value="strengths">Strengths</oj-option>
+                                <oj-option value="highlights">Highlights</oj-option>
+                                <oj-option value="scores">Scores</oj-option>
+                            </oj-radioset>
+                        </div>
+                    </div>
+                    <oj-bind-if test="[[selectedStrengthsOption() === 'highlights']]"> 
+                        <div class="oj-flex oj-sm-padding-3x-top">
+                            <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
+                                <div class="chart-title">Fours highlights</div>
+                                <img alt="fours" class="highlights-image" 
+                                :src="[[foursHighlightsImageSrc]]" />
+                            </div>
+                            <div class="oj-sm-1"></div>
+                            <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
+                                <div class="chart-title">Sixes highlights</div>
+                                <img alt="sixes" class="highlights-image" 
+                                      :src="[[sixesHighlightsImageSrc]]" />
+                            </div>
+                        </div>
+                    </oj-bind-if>
+                    <oj-bind-if test="[[selectedStrengthsOption() === 'strengths']]"> 
+                        <div class="oj-panel oj-sm-10"> 
+                            
+                        </div>
+                    </oj-bind-if>
+                   
+                </div>
+            </oj-bind-if>
+            <oj-bind-if test="[[drawerNavSelection() == 'bowling']]">    
+                <div class="oj-flex-item">
+                    <oj-bind-text value="[[currentPlayerInfo().bowlStyle]]"></oj-bind-text>
+                </div>
+            </oj-bind-if>
+        </div>
     </oj-drawer-layout>
 
-    <oj-bind-if test="[[drawerNavSelection() == 'overview']]">
-        <div class="oj-flex-item oj-sm-padding-3x-horizontal">
-            <div class="oj-flex">
-                <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm oj-sm-padding-5x-start">
-                    <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Info</div>
-                    <oj-form-layout columns="2" max-columns="3" direction="row"
-                                readonly="true" label-edge="top"
-                                user-assistance-density="reflow">
-                        <oj-input-text id="name" value="{{currentPlayerInfo().name}}"
-                                disabled="false" label-hint="Name"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                        <oj-input-text id="common-name" value="{{currentPlayerInfo().commonName}}"
-                                disabled="false" label-hint="Common Name"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                        <oj-input-text id="country" value="{{currentPlayerInfo().country}}"
-                                disabled="false" label-hint="Country"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                        <oj-input-text id="role" value="{{currentPlayerInfo().role}}"
-                                disabled="false" label-hint="Role"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                        <oj-input-text id="bat-style" value="{{currentPlayerInfo().batStyle}}"
-                                disabled="false" label-hint="Batting Style"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                        <oj-input-text id="bowl-style" value="{{currentPlayerInfo().bowlStyle}}"
-                                disabled="false" label-hint="Bowling Style"
-                                style="font-size: larger;">
-                        </oj-input-text>
-                    </oj-form-layout>
-                </div>
-                <div class="oj-sm-3 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm" style="overflow: hidden;">
-                    <img :alt=[[currentPlayerName]] :src="[[photoSrc]]" style="width: 100%; height: 100%; object-fit: cover;" />
-                </div>
-                <div class="oj-sm-4 oj-panel oj-sm-margin-2x-horizontal oj-panel-shadow-sm ">
-                    <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Teams</div>
-                    <oj-c-list-view data="[[currentPlayerTeams]]" gridlines.item="visible"
-                                class="oj-sm-padding-2x-vertical"
-                                style="max-width: 31.25rem;">
-                        <template slot="itemTemplate" data-oj-as="item">
-                            <li><oj-c-list-item-layout >
-                                <div slot="leading">
-                                    <span :id="[[item.data.id]]" class="oj-badge oj-typography-body-lg" style="width:20rem;height: 2rem;">
-                                        <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                                    </span>
-                                </div>
-                            </oj-c-list-item-layout></li>
-                        </template>
-                        <template slot="noData">
-                            <p class="oj-typography-body-lg">Never Played in IPL</p>
-                        </template>
-                    </oj-c-list-view>
-                </div>
-            </div>
-            <div class="oj-sm-padding-3x-vertical oj-typography-subheading-md">Career</div>
-            <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
-                <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Batting</div>
-                <oj-waterfall-layout id="waterfall" class="demo-waterfall"
-                                    data="[[playerBattingWfDP]]">
-                    <template slot="itemTemplate" data-oj-as="item">
-                        <oj-action-card class="oj-sm-only-width-4/5">
-                            <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
-                                <div class="demo-profile-card-layout-emp-name">
-                                    <span class="oj-badge oj-badge-success">
-                                        <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                                    </span>
-                                </div>
-                                <oj-c-avatar class="demo-profile-card-layout-emp-image"
-                                            size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
-                                            background="[[item.data.avatarBg]]"
-                                            initials="[[item.data.value]]">
-                                </oj-c-avatar>
-                            </div>
-                        </oj-action-card>
-                    </template>
-                </oj-waterfall-layout>  
-            </div>
-            <div class="oj-sm-padding-3x-vertical"> </div>
-            <div class="oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start">
-                <div class="oj-sm-padding-1x-vertical oj-typography-subheading-sm">Bowling</div>
-                <oj-waterfall-layout id="waterfall" class="demo-waterfall"
-                                    data="[[playerBowlingWfDP]]">
-                    <template slot="itemTemplate" data-oj-as="item">
-                        <oj-action-card class="oj-sm-only-width-4/5">
-                            <div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center  demo-profile-card-layout-inner">
-                                <div class="demo-profile-card-layout-emp-name">
-                                    <span class="oj-badge oj-badge-success">
-                                        <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-                                    </span>
-                                </div>
-                                <oj-c-avatar class="demo-profile-card-layout-emp-image"
-                                            size="[[item.data.avatarSize]]" shape="[[item.data.avatarShape]]" 
-                                            background="[[item.data.avatarBg]]"
-                                            initials="[[item.data.value]]">
-                                </oj-c-avatar>
-                            </div>
-                        </oj-action-card>
-                    </template>
-                </oj-waterfall-layout>  
-            </div>
-        </div>
-    </oj-bind-if>
-    <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
-        <div class="oj-flex-item oj-sm-padding-3x-horizontal">
-            <div class="oj-flex">
-                <div>
-                    <oj-radioset value="{{selectedStrengthsOption}}" class="oj-choice-direction-row"
-                            labelled-by="mainlabelid">
-                        <oj-option value="strengths">Strengths</oj-option>
-                        <oj-option value="highlights">Highlights</oj-option>
-                        <oj-option value="scores">Scores</oj-option>
-                    </oj-radioset>
-                </div>
-            </div>
-            <oj-bind-if test="[[selectedStrengthsOption() === 'highlights']]"> 
-                <div class="oj-flex oj-sm-padding-3x-top">
-                    <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
-                        <div class="chart-title">Fours highlights</div>
-                        <img alt="fours" class="highlights-image" 
-                        :src="[[foursHighlightsImageSrc]]" />
-                    </div>
-                    <div class="oj-sm-1"></div>
-                    <div class="oj-panel oj-sm-5 oj-sm-margin-3x zoomable-div"> 
-                        <div class="chart-title">Sixes highlights</div>
-                        <img alt="sixes" class="highlights-image" 
-                              :src="[[sixesHighlightsImageSrc]]" />
-                    </div>
-                </div>
-            </oj-bind-if>
-            <oj-bind-if test="[[selectedStrengthsOption() === 'strengths']]"> 
-                <div class="oj-panel oj-sm-10"> 
-                    
-                </div>
-            </oj-bind-if>
-           
-        </div>
-    </oj-bind-if>
-    <oj-bind-if test="[[drawerNavSelection() == 'bowling']]">    
-        <div class="oj-flex-item">
-            <oj-bind-text value="[[currentPlayerInfo().bowlStyle]]"></oj-bind-text>
-        </div>
-    </oj-bind-if>
   </div>
 
 
