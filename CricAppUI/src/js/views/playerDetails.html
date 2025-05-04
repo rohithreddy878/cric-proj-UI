@@ -12,7 +12,7 @@
       </div>
   </div>
 
-  <div class="oj-flex">  
+  <div class="">  
     <oj-drawer-layout start-opened="{{drawerOpened}}" style="min-height: 70vh;">
             <div style="padding-bottom: 1rem" id="drawerOpenButtonDiv">
               <oj-c-button class="oj-button-md"
@@ -150,7 +150,7 @@
             </oj-bind-if>
             <oj-bind-if test="[[drawerNavSelection() == 'batting']]">
                 <div class="oj-flex-item oj-sm-padding-3x-horizontal">
-                    <div class="oj-flex">
+                    <div class="oj-flex oj-sm-padding-3x-bottom">
                         <div>
                             <oj-radioset value="{{selectedStrengthsOption}}" class="oj-choice-direction-row"
                                     labelled-by="mainlabelid">
@@ -176,39 +176,122 @@
                         </div>
                     </oj-bind-if>
                     <oj-bind-if test="[[selectedStrengthsOption() === 'strengths']]"> 
-                        <div class="oj-flex-bar oj-sm-12">
-                        <div class="oj-flex-bar-start oj-panel oj-sm-8"> 
-                            <div class="chart-title">Four Scoring - Lengths</div>
-                            <oj-chart class="fours-lines-chart" type="pie" data="[[batsmanStrengths4sLinesDP]]" 
+                        <div class="oj-flex oj-sm-12">
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-1 oj-flex oj-sm-align-items-center oj-sm-justify-content-center">
+                                <div class="oj-sm-text-align-center stacked-text">FOUR SCORING</div>
+                              </div>
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-5"> 
+                                <div class="chart-title">Four Scoring - Lines</div>
+                                <oj-chart class="fours-lines-chart" type="pie" data="[[batsmanStrengths4sLinesDP]]" 
                                       legend.position="bottom" 
                                       animation-on-display="auto"
                                       style-defaults.pie-inner-radius="0.4"
-                                      pie-center.label="Fours - Lengths"
+                                      pie-center.label="Line of ball"
                                       hover-behavior="dim">
-                              <template slot="itemTemplate" data-oj-as="item">
-                                <oj-chart-item value="[[item.data.count]]" 
+                                    <template slot="itemTemplate" data-oj-as="item">
+                                        <oj-chart-item value="[[item.data.count]]" 
                                               group-id="[[ [item.data.group] ]]"
                                               series-id="[[item.data.line]]"
                                               color="[[item.data.colour]]">
-                                </oj-chart-item>
-                              </template>
-                              <template slot="tooltipTemplate">
-                                <div class="oj-flex">
-                                  <div class="oj-flex-item">
-                                    <span><b><oj-bind-text value="[[$current.itemData.line]]"></oj-bind-text></b></span>
-                                    <br />
-                                    <span><oj-bind-text value="[['No. of 4s: '+ $current.itemData.count]]"></oj-bind-text></span>
-                                  </div>
-                                </div>
-                              </template>
-                            </oj-chart>
+                                        </oj-chart-item>
+                                    </template>
+                                    <template slot="tooltipTemplate">
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item">
+                                                <span><b><oj-bind-text value="[[$current.itemData?.line || '']]"></oj-bind-text></b></span>
+                                                <br />
+                                                <span><oj-bind-text value="[[$current.itemData ? 'No. of 4s: ' + $current.itemData.count : '']]"></oj-bind-text></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </oj-chart>
+                            </div>
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-5"> 
+                                <div class="chart-title">Four Scoring - Lengths</div>
+                                <oj-chart class="fours-lengths-chart" type="pie" data="[[batsmanStrengths4sLengthsDP]]" 
+                                      legend.position="bottom" 
+                                      animation-on-display="auto"
+                                      style-defaults.pie-inner-radius="0.4"
+                                      pie-center.label="Length of ball"
+                                      hover-behavior="dim">
+                                    <template slot="itemTemplate" data-oj-as="item">
+                                        <oj-chart-item value="[[item.data.count]]" 
+                                              group-id="[[ [item.data.group] ]]"
+                                              series-id="[[item.data.length]]"
+                                              color="[[item.data.colour]]">
+                                        </oj-chart-item>
+                                    </template>
+                                    <template slot="tooltipTemplate">
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item">
+                                                <span><b><oj-bind-text value="[[$current.itemData?.length || '']]"></oj-bind-text></b></span>
+                                                <br />
+                                                <span><oj-bind-text value="[[$current.itemData ? 'No. of 4s: ' + $current.itemData.count : '']]"></oj-bind-text></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </oj-chart>
+                            </div>
                         </div>
-                        <div class="oj-flex-bar-middle oj-sm-4 oj-panel oj-panel-shadow-sm oj-sm-padding-5x-start"> 
+                        <div class="oj-flex"> 
                             b
                         </div>
-                        <div class="oj-flex-bar-end oj-panel oj-sm-4 oj-panel-shadow-sm oj-sm-padding-5x-start"> 
-                            c
-                        </div>
+                        <div class="oj-flex oj-sm-12">
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-1 oj-flex oj-sm-align-items-center oj-sm-justify-content-center">
+                                <div class="oj-sm-text-align-center stacked-text">GETTING OUT</div>
+                              </div>
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-5"> 
+                                <div class="chart-title">Getting Out - Lines</div>
+                                <oj-chart class="outs-lines-chart" type="pie" data="[[batsmanStrengthsOutsLinesDP]]" 
+                                      legend.position="bottom" 
+                                      animation-on-display="auto"
+                                      style-defaults.pie-inner-radius="0.4"
+                                      pie-center.label="Line of ball"
+                                      hover-behavior="dim">
+                                    <template slot="itemTemplate" data-oj-as="item">
+                                        <oj-chart-item value="[[item.data.count]]" 
+                                              group-id="[[ [item.data.group] ]]"
+                                              series-id="[[item.data.line]]"
+                                              color="[[item.data.colour]]">
+                                        </oj-chart-item>
+                                    </template>
+                                    <template slot="tooltipTemplate">
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item">
+                                                <span><b><oj-bind-text value="[[$current.itemData?.line || '']]"></oj-bind-text></b></span>
+                                                <br />
+                                                <span><oj-bind-text value="[[$current.itemData ? 'No. of Outs: ' + $current.itemData.count : '']]"></oj-bind-text></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </oj-chart>
+                            </div>
+                            <div class="oj-panel oj-sm-margin-2x-horizontal oj-sm-5"> 
+                                <div class="chart-title">Getting Out- Lengths</div>
+                                <oj-chart class="outs-lengths-chart" type="pie" data="[[batsmanStrengthsOutsLengthsDP]]" 
+                                      legend.position="bottom" 
+                                      animation-on-display="auto"
+                                      style-defaults.pie-inner-radius="0.4"
+                                      pie-center.label="Length of ball"
+                                      hover-behavior="dim">
+                                    <template slot="itemTemplate" data-oj-as="item">
+                                        <oj-chart-item value="[[item.data.count]]" 
+                                              group-id="[[ [item.data.group] ]]"
+                                              series-id="[[item.data.length]]"
+                                              color="[[item.data.colour]]">
+                                        </oj-chart-item>
+                                    </template>
+                                    <template slot="tooltipTemplate">
+                                        <div class="oj-flex">
+                                            <div class="oj-flex-item">
+                                                <span><b><oj-bind-text value="[[$current.itemData?.length || '']]"></oj-bind-text></b></span>
+                                                <br />
+                                                <span><oj-bind-text value="[[$current.itemData ? 'No. of Outs: ' + $current.itemData.count : '']]"></oj-bind-text></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </oj-chart>
+                            </div>
                         </div>
 
                     </oj-bind-if>

@@ -41,6 +41,11 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
       
       //self.batsmanStrengthsData = ko.observable();
       self.batsmanStrengths4sLinesDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batsmanStrengths4sLengthsDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batsmanStrengths6sLinesDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batsmanStrengths6sLengthsDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batsmanStrengthsOutsLinesDP = ko.observable(new ArrayDataProvider([],{}));
+      self.batsmanStrengthsOutsLengthsDP = ko.observable(new ArrayDataProvider([],{}));
 
       self.selectedStrengthsOption = ko.observable("strengths");
 
@@ -434,16 +439,40 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
           //complete call back
           (xhr, res) => { 
             if (res.status == 200){
-              var data = res.responseJSON.data.fours_lines_counter;
-              //self.batsmanStrengthsData(data);
-              //fill 4s data for lines
-              foursLinesData = Object.entries(data).map(([line, count]) => ({  line, count  }));
-              for (const [key, value] of Object.entries(data)) {
-                foursLinesData.push({ "line": key, id:key, "count": Number(value) });
+              var data = res.responseJSON.data;
+              //FOURS
+              arr=[]
+              for (const [key, value] of Object.entries(data.fours_lines_counter)) {
+                arr.push({ "line": key, id:key, "count": Number(value) });
               }
-              //console.log(foursLinesData)
-              self.batsmanStrengths4sLinesDP(new ArrayDataProvider(foursLinesData,{keyAttributes:'line'}));
-
+              self.batsmanStrengths4sLinesDP(new ArrayDataProvider(arr,{keyAttributes:'line'}));
+              arr = []
+              for (const [key, value] of Object.entries(data.fours_lengths_counter)) {
+                arr.push({ "length": key, "count": Number(value) });
+              }
+              self.batsmanStrengths4sLengthsDP(new ArrayDataProvider(arr,{keyAttributes:'length'}));
+              //SIXES
+              arr=[]
+              for (const [key, value] of Object.entries(data.sixes_lines_counter)) {
+                arr.push({ "line": key, id:key, "count": Number(value) });
+              }
+              self.batsmanStrengths6sLinesDP(new ArrayDataProvider(arr,{keyAttributes:'line'}));
+              arr = []
+              for (const [key, value] of Object.entries(data.sixes_lengths_counter)) {
+                arr.push({ "length": key, "count": Number(value) });
+              }
+              self.batsmanStrengths6sLengthsDP(new ArrayDataProvider(arr,{keyAttributes:'length'}));
+              //OUTS
+              arr=[]
+              for (const [key, value] of Object.entries(data.outs_lines_counter)) {
+                arr.push({ "line": key, id:key, "count": Number(value) });
+              }
+              self.batsmanStrengthsOutsLinesDP(new ArrayDataProvider(arr,{keyAttributes:'line'}));
+              arr = []
+              for (const [key, value] of Object.entries(data.outs_lengths_counter)) {
+                arr.push({ "length": key, "count": Number(value) });
+              }
+              self.batsmanStrengthsOutsLengthsDP(new ArrayDataProvider(arr,{keyAttributes:'length'}));
             }
           }
         );

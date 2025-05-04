@@ -346,6 +346,29 @@ ul#matches-pagination li a.active-page {
   transform: scale(1.5);
 }
 
+/* .vertical-heading {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-weight: bold;
+} */
+
+
+.stacked-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: large;
+  text-align: center;
+}
+
+.stacked-text::before {
+  content: attr(data-text);
+  display: block;
+  white-space: pre;
+}
+
+
 
 /* learn tab/page */
 
