@@ -3,7 +3,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         'oj-st-scroll-to-top/loader','oj-player-card/loader','ojs/ojinputtext','oj-c/button',
         'ojs/ojlistview','ojs/ojinputsearch','ojs/ojdrawerlayout','ojs/ojformlayout',
         'ojs/ojactioncard','ojs/ojwaterfalllayout','oj-c/avatar','ojs/ojradioset',
-        'oj-c/list-view','oj-c/list-item-layout', 'oj-c/input-text'],
+        'oj-c/list-view','oj-c/list-item-layout', 'oj-c/input-text','ojs/ojchart'],
  function(ko, Context,accUtils,CommonUtils, Constants, DataUtils, ArrayDataProvider) {
     function PlayerDetailsViewModel(routerArgs) {
 
@@ -31,16 +31,18 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       self.drawerOpened = ko.observable(false);
       //self.drawerToggle = () => self.drawerOpened(!self.drawerOpened());
-      self.drawerNavSelection = ko.observable("overview");
+      self.drawerNavSelection = ko.observable("batting");
 
       self.playerBattingWfDP =  ko.observable(new ArrayDataProvider([], {}));
       self.playerBowlingWfDP =  ko.observable(new ArrayDataProvider([], {}));
 
       self.foursHighlightsImageSrc = ko.observable();
       self.sixesHighlightsImageSrc = ko.observable();
+      
+      //self.batsmanStrengthsData = ko.observable();
+      self.batsmanStrengths4sLinesDP = ko.observable(new ArrayDataProvider([],{}));
 
-
-      self.selectedStrengthsOption = ko.observable("highlights");
+      self.selectedStrengthsOption = ko.observable("strengths");
 
     /********************** logic to extract module params *************************/
       
@@ -178,7 +180,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
                 "bowlingSR":data.wickets!=0 ? (data.ballsBowled/data.wickets).toFixed(2) : 0,
                 "bowlingAvg":data.wickets!=0 ? (parseInt(data.runsConceded)/data.wickets).toFixed(2) : 0,
               }
-              console.log("stats: ", stats)
+              //console.log("stats: ", stats)
             }
           }
         );
@@ -424,6 +426,29 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
         }
       };
 
+      self.getBatsmanStrengths = function(){
+        var getBatsmanStrengthsUrl = Constants.FLASK_SERVICES_CONTEXT_PATH + "bat/strengths/players/"+self.currentPlayerId();
+        CommonUtils.ajaxCall('GET',getBatsmanStrengthsUrl,true,"","json","",
+          function(data){},    //success call back
+          function(data){},    //failure call back
+          //complete call back
+          (xhr, res) => { 
+            if (res.status == 200){
+              var data = res.responseJSON.data.fours_lines_counter;
+              //self.batsmanStrengthsData(data);
+              //fill 4s data for lines
+              foursLinesData = Object.entries(data).map(([line, count]) => ({  line, count  }));
+              for (const [key, value] of Object.entries(data)) {
+                foursLinesData.push({ "line": key, id:key, "count": Number(value) });
+              }
+              //console.log(foursLinesData)
+              self.batsmanStrengths4sLinesDP(new ArrayDataProvider(foursLinesData,{keyAttributes:'line'}));
+
+            }
+          }
+        );
+      }
+
       self.drawerOpen = function(){
         self.drawerOpened(true);
         document.getElementById("drawerOpenButtonDiv").style.display="none";
@@ -441,12 +466,12 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //on initial load:
       document.getElementById('global-loader-progresscircle').style.display = "block";
-      self.getPlayerCareerStats();
+      //self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
       self.getPlayerBasicDetails();
       self.getPlayerPhoto();
       self.getBattingSixesHighlights();
-
+      self.getBatsmanStrengths();
       
 
       this.disconnected = () => {
