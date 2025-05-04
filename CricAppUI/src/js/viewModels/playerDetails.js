@@ -495,7 +495,7 @@ define(['knockout', 'ojs/ojcontext','../accUtils','../utils/CommonUtils', '../ut
 
       //on initial load:
       document.getElementById('global-loader-progresscircle').style.display = "block";
-      //self.getPlayerCareerStats();
+      self.getPlayerCareerStats();
       self.getBattingFoursHighlights();
       self.getPlayerBasicDetails();
       self.getPlayerPhoto();
